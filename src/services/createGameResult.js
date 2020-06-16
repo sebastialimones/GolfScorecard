@@ -11,6 +11,7 @@ export const createGameResult = async ({ player, result }) => {
       course: "Son Servera Golf",
     };
     await db.collection('games').doc(newGameResult.id).set(newGameResult);
+    return;
   } catch (error) {
     console.log('Error creating a game result');
     console.log(error);

@@ -7,6 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { Button } from '../Elements/button';
 import { ListOfHoles } from '../ListOfHoles';
 import { createGameResult } from '../../services';
+import { Notification } from '../Notification';
 
 const PossiblePlayers = [
   {
@@ -29,40 +30,75 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Form = styled.form``;
-const SelectPlayerContainer = styled.div`
-`;
-const HolesFormContainer = styled.div`
-`;
+const SelectPlayerContainer = styled.div``;
+const HolesFormContainer = styled.div``;
+
 export const Home = () => {
   const classes = useStyles();
   const [player, setPlayer] = useState('');
   const [result, setResult] = useState([]);
+  const [errorCode, setErrorCode] = useState();
+  const [openAlert, setOpenAlert] = useState(false);
 
   const handlePlayerChange = (event) => {
     setPlayer(event.target.value);
   };
 
-  const  Send = async (event) => {
-    event.preventDefault();
-    console.log(player, result);
-    try {
-      await createGameResult({
-        player: player,
-        result
-      })
-    }
-    catch (error){
-      console.log('Error creating game');
-      console.log(error);
-    }
+  const clearInputs = () => {
     setResult([]);
     setPlayer('');
+  };
+
+  const  Send = async (event) => {
+    event.preventDefault();
+    if (player && result[0]) {
+      try {
+        await createGameResult({
+          player: player,
+          result
+        })
+        setOpenAlert(true)
+      }
+      catch (error){
+        errorCode.message = error.message ? error.message: errorCode.message;
+        setOpenAlert(true)
+        setErrorCode(errorCode);
+      }
+    } else {
+      dataIncomplete();
+    }
+  };
+
+  const dataIncomplete = () => { 
+    if(!player){
+      const errorCode = { 
+        message:  "Falta introduir un jugador.",
+        severity: "error" 
+    }
+      setErrorCode(errorCode); 
+    } else if(!result[0]){
+      const errorCode = { 
+        message:  "Falta introduir algun resultat",
+        severity: "error" 
+       }
+      setErrorCode(errorCode);
+    }
+    setOpenAlert(true)
   };
 
   const handleHoleResult = ( holeResult) => {    
     const newArray = result.slice();
     newArray.push(holeResult);
     setResult(newArray);
+  };
+
+  const handleCloseAlert = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setErrorCode();
+    clearInputs()
+    setOpenAlert(false);
   };
 
   return (
@@ -90,6 +126,12 @@ export const Home = () => {
       </HolesFormContainer>
     </Form>
       <Button type="submit" primary onClick={ Send }>Send</Button>
+      <Notification
+        onClose={ handleCloseAlert }
+        message={ errorCode ? errorCode.message : "Perfe!" }
+        open={ openAlert }
+        severity={errorCode ? errorCode.severity : "success" }
+      />
     </React.Fragment>
   );
 }
