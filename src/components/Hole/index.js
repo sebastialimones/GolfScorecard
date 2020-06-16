@@ -2,8 +2,11 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 
 export const Hole = ({ holeNumber, handleHoleResult }) => {
-
   const PossibleScore = [
+    {
+      value: 0,
+      label: 0,
+    },
     {
       value: 1,
       label: 1,
@@ -36,12 +39,16 @@ export const Hole = ({ holeNumber, handleHoleResult }) => {
       value: 8,
       label: 8,
     },
+    {
+      value: "mosca",
+      label: "🦟",
+    },
   ];
 
   const setHoleResult = (event) => {
     const holeResultObj = { 
       "holeNumber": holeNumber,
-      "result" : Number(event.currentTarget.value)
+      "result" : event.currentTarget.value === "mosca" ? "mosca" : Number(event.currentTarget.value)
     }
     handleHoleResult(holeResultObj)
   }

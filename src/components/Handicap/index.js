@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '../Elements/button';
 import { ListOfHoles } from '../ListOfHoles';
-import { createGameResult } from '../../services';
+import { createPlayerHandicap } from '../../services';
 import { Notification } from '../Notification';
 import { Players } from '../Players';
 
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 const Form = styled.form``;
 const HolesFormContainer = styled.div``;
 
-export const Home = () => {
+export const Handicap = () => {
   const classes = useStyles();
   const [player, setPlayer] = useState('');
   const [result, setResult] = useState([]);
@@ -40,7 +40,7 @@ export const Home = () => {
     event.preventDefault();
     if (player && result[0]) {
       try {
-        await createGameResult({
+        await createPlayerHandicap({
           player: player,
           result
         })
