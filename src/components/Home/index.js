@@ -6,6 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Button } from '../Elements/button';
 import { ListOfHoles } from '../ListOfHoles';
+import { createGameResult } from '../../services';
 
 const PossiblePlayers = [
   {
@@ -39,12 +40,23 @@ export const Home = () => {
 
   const handlePlayerChange = (event) => {
     setPlayer(event.target.value);
-    setResult([])
   };
 
   const  Send = async (event) => {
     event.preventDefault();
-    console.log(player, result)
+    console.log(player, result);
+    try {
+      await createGameResult({
+        player: player,
+        result
+      })
+    }
+    catch (error){
+      console.log('Error creating game');
+      console.log(error);
+    }
+    setResult([]);
+    setPlayer('');
   };
 
   const handleHoleResult = ( holeResult) => {    
