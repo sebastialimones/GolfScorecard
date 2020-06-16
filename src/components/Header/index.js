@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const Container = styled.header`
   align-items: center;
   display: flex;
-  background: linear-gradient(to Left, #87c7df, #648896);
+  background: linear-gradient(to Left, #f857a6, #ff5858);
   width: 100%;
   margin-bottom: 1.5em;
 `;
@@ -23,7 +23,7 @@ export const Header = () => {
     <Container>
       <HeaderContainer>
         <HeaderText>
-          Scorecard!
+          The scorecard
         </HeaderText>
       </HeaderContainer>
     </Container>
