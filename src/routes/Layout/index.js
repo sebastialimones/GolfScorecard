@@ -5,7 +5,7 @@ import { Header } from '../../components/Header';
 
 export const Layout = ({ children }) => (
     <Container>
-        <Header />
+      <Header />
       { children }
     </Container>
   );
