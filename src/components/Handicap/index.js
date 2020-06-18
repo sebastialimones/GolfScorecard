@@ -19,11 +19,14 @@ const useStyles = makeStyles((theme) => ({
 
 const Form = styled.form``;
 const HolesFormContainer = styled.div``;
+const CourseHandicap = styled.h1``;
+
 
 export const Handicap = () => {
   const classes = useStyles();
   const [player, setPlayer] = useState('');
   const [result, setResult] = useState([]);
+  const [holeHandicap, setHoleHandicap] = useState([]);
   const [errorCode, setErrorCode] = useState();
   const [openAlert, setOpenAlert] = useState(false);
 
@@ -33,16 +36,18 @@ export const Handicap = () => {
 
   const clearInputs = () => {
     setResult([]);
+    setHoleHandicap([]);
     setPlayer('');
   };
 
   const  Send = async (event) => {
     event.preventDefault();
-    if (player && result[0]) {
+    if (player) {
       try {
         await createPlayerHandicap({
           player: player,
-          result
+          result,
+          holeHandicap
         })
         setOpenAlert(true)
       }
@@ -63,7 +68,7 @@ export const Handicap = () => {
         severity: "error" 
     }
       setErrorCode(errorCode); 
-    } else if(!result[0]){
+    } else if(result){
       const errorCode = { 
         message:  "Falta introduir algun resultat",
         severity: "error" 
@@ -79,6 +84,12 @@ export const Handicap = () => {
     setResult(newArray);
   };
 
+  const handleHoleHandicap = (holeResult) => {    
+    const newArray = holeHandicap.slice();
+    newArray.push(holeResult);
+    setHoleHandicap(newArray);
+  };
+
   const handleCloseAlert = (event) => {
     setErrorCode();
     clearInputs()
@@ -91,6 +102,12 @@ export const Handicap = () => {
         <Players handlePlayerChange={ handlePlayerChange } value={ player }/>
         <HolesFormContainer>
           <ListOfHoles handleHoleResult={ handleHoleResult }/>
+        </HolesFormContainer>
+      </Form>
+      <CourseHandicap>Course Handicap</CourseHandicap>
+      <Form className={classes.root} noValidate autoComplete="off"> 
+        <HolesFormContainer>
+          <ListOfHoles handleHoleResult={ handleHoleHandicap }/>
         </HolesFormContainer>
       </Form>
         <Button type="submit" primary onClick={ Send }>Send</Button>

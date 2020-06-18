@@ -17,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const Container = styled.div`
+  margin-left: 1em;
+`;
 const Form = styled.form``;
 const HolesFormContainer = styled.div``;
 
@@ -86,7 +89,7 @@ export const Home = () => {
   };
 
   return (
-    <React.Fragment>
+    <Container>
       <Form className={classes.root} noValidate autoComplete="off"> 
         <Players handlePlayerChange={ handlePlayerChange } value={ player }/>
         <HolesFormContainer>
@@ -100,6 +103,6 @@ export const Home = () => {
           open={ openAlert }
           severity={errorCode ? errorCode.severity : "success" }
         />
-    </React.Fragment>
+    </Container>
   );
 }

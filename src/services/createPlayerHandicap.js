@@ -1,11 +1,12 @@
 import { v4 as uuidv4 } from 'uuid';
 import { db, Timestamp } from './admin';
 
-export const createPlayerHandicap = async ({ player, result }) => {
+export const createPlayerHandicap = async ({ player, result, holeHandicap }) => {
   try {
     const newHandicapResult = {
       player,
       result,
+      holeHandicap,
       timestamp: Timestamp.now(),
       id: uuidv4(),
       course: "Son Servera Golf",

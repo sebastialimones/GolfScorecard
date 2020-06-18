@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+
 import { Players } from '../Players';
 import { fetchResults, fetchPlayer } from '../../services/index';
-import { Result } from '../Result';
+import { ListOfResults } from '../ListOfResults';
+
+const Container = styled.div`
+  margin-left: 1em;
+`;
 
 export const Dashboard = () => {
   const [player, setPlayer] = useState('');
@@ -16,26 +22,23 @@ export const Dashboard = () => {
     const getPlayerHandicap = async () => {
       const data = await fetchPlayer(player);
       setplayerHandicap(data);
-      calculator()
     }
     player && getResult() && getPlayerHandicap() 
-  }, [player])
+  },[player])
 
   const handlePlayerChange = (playerName) => {
-    setPlayer(playerName)
-  }
-
-  const calculator = () => {
-    console.log(gamesResults)
-    console.log(playerHandicap)
-
+    setPlayer('');
+    setPlayer(playerName);
   }
 
   return(
-    <React.Fragment>
+    <Container>
       <Players handlePlayerChange={ handlePlayerChange } value={ player } />
-      <Result playerDetails={ playerHandicap } gamesResults={ gamesResults }/>
-    </React.Fragment>
+        {
+        playerHandicap && gamesResults &&
+        <ListOfResults results={ gamesResults } playerHandicap={ playerHandicap } />
+        }
+    </Container>
   )
 };
 
