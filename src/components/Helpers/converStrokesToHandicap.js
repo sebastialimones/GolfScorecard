@@ -20,7 +20,7 @@ export const convertStrokesToHandicap = (result, playerHandicap) => {
       const totalPointsPerGame = sumPointsPerGame(resultWithHandicap);
       const totalStrokes = sumStrokes(resultWithHandicap);
       const totalMosques = sumMosques(resultWithHandicap);
-      const totalPointsPerHandicap = sumPointsPerHandicap(playerHandicap);
+      const totalPointsPerHandicap = sumPointsPerHandicap(result.playerHandicap);
       const dateConverted = convertMillisToDate(result.timestamp);
       result.completeResult = resultWithHandicap;
       result.totalPoints = totalPointsPerGame;
