@@ -5,7 +5,7 @@ export const convertStrokesToHandicap = (result, playerHandicap) => {
     const resultWithHandicap = [];
     result.result.map((hole) => {
         if([hole.holeNumber - 1]){
-          const strokesWithHandicap = hole.result - playerHandicap.result[hole.holeNumber - 1].result;
+          const strokesWithHandicap = hole.result - result.playerHandicap[hole.holeNumber - 1].result;
           const pointsPerHole = convertStrokesWHandicapToPoints(strokesWithHandicap, playerHandicap.holeHandicap[hole.holeNumber - 1].result);
           const handicappedResult = {
             holeNumber : hole.holeNumber,
