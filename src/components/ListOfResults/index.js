@@ -11,9 +11,9 @@ const ResultContainer = styled.div`
 
 export const ListOfResults = ({ results, playerHandicap }) => {
   const completeResult = [];
-
+  results.length && playerHandicap.length &&
   results.map((result) => {
-    const completeResultPerGame = convertStrokesToHandicap(result, playerHandicap[0].result, playerHandicap[0].holeHandicap);
+    const completeResultPerGame = convertStrokesToHandicap(result, playerHandicap[0]);
     completeResult.push(completeResultPerGame);
     return undefined;
   }

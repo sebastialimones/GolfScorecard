@@ -30,7 +30,6 @@ export const GameResult = ({ result }) => {
       }
       </DataItem>
       <DataItem>
-
       {
         `Punts totals:  ${result.totalPoints} `
       }
@@ -38,6 +37,11 @@ export const GameResult = ({ result }) => {
       <DataItem>
       {
         `Cops totals:  ${result.totalStrokes} amb ${result.totalMosques} 🦟`
+      }
+      </DataItem>
+      <DataItem>
+      {
+        `Handicap:  ${result.totalPointsPerHandicap}  cops`
       }
       </DataItem>
     </ResultContainer>
