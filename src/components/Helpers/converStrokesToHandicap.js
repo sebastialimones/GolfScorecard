@@ -1,15 +1,15 @@
-import { convertStrokesWHandicapToPoints, sumPoints, sumStrokes, convertMillisToDate, sumMosques } from './index';
+import { convertStrokesWHandicapToPoints, sumPointsPerGame, sumPointsPerHandicap, sumStrokes, convertMillisToDate, sumMosques } from './index';
 
-export const convertStrokesToHandicap = (result, strokesPerHandicap, strokesPerHole) => {
+export const convertStrokesToHandicap = (result, playerHandicap) => {
   if(result){
     const resultWithHandicap = [];
     result.result.map((hole) => {
         if([hole.holeNumber - 1]){
-          const strokesWithHandicap = hole.result - strokesPerHandicap[hole.holeNumber - 1].result;
-          const pointsPerHole = convertStrokesWHandicapToPoints(strokesWithHandicap, strokesPerHole[hole.holeNumber - 1].result);
+          const strokesWithHandicap = hole.result - playerHandicap.result[hole.holeNumber - 1].result;
+          const pointsPerHole = convertStrokesWHandicapToPoints(strokesWithHandicap, playerHandicap.holeHandicap[hole.holeNumber - 1].result);
           const handicappedResult = {
             holeNumber : hole.holeNumber,
-            par: strokesPerHole[hole.holeNumber - 1].result,
+            par: playerHandicap.holeHandicap[hole.holeNumber - 1].result,
             strokes : hole.result,
             points : pointsPerHole,
           }
@@ -17,12 +17,14 @@ export const convertStrokesToHandicap = (result, strokesPerHandicap, strokesPerH
         }
         return undefined;
       })
-      const totalPoints = sumPoints(resultWithHandicap);
+      const totalPointsPerGame = sumPointsPerGame(resultWithHandicap);
       const totalStrokes = sumStrokes(resultWithHandicap);
       const totalMosques = sumMosques(resultWithHandicap);
+      const totalPointsPerHandicap = sumPointsPerHandicap(playerHandicap);
       const dateConverted = convertMillisToDate(result.timestamp);
       result.completeResult = resultWithHandicap;
-      result.totalPoints = totalPoints;
+      result.totalPoints = totalPointsPerGame;
+      result.totalPointsPerHandicap = totalPointsPerHandicap;
       result.totalStrokes = totalStrokes;
       result.totalMosques = totalMosques;
       result.timestamp = dateConverted;

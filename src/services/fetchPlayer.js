@@ -7,7 +7,7 @@ export const fetchPlayer = async (playerName) => {
       const snapshots = await playerRef.get();
       snapshots.forEach((snapshot) => {
         const player = snapshot.data();
-        if (player.player === playerName) {
+        if (player.name === playerName) {
           players.push((player));
         } 
       });

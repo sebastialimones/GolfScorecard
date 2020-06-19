@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '../Elements/button';
 import { ListOfHoles } from '../ListOfHoles';
-import { createGameResult } from '../../services';
+import { createGameResult, fetchPlayer } from '../../services';
 import { Notification } from '../Notification';
 import { Players } from '../Players';
 
@@ -29,6 +29,15 @@ export const Home = () => {
   const [result, setResult] = useState([]);
   const [errorCode, setErrorCode] = useState();
   const [openAlert, setOpenAlert] = useState(false);
+  const [playerHandicap, setplayerHandicap] = useState();
+
+  useEffect(() => {
+    const getPlayerHandicap = async () => {
+      const data = await fetchPlayer(player);
+      setplayerHandicap(data);
+    }
+    player && getPlayerHandicap() 
+  },[player])
 
   const handlePlayerChange = (playerName) => {
     setPlayer(playerName);
@@ -41,13 +50,15 @@ export const Home = () => {
 
   const  Send = async (event) => {
     event.preventDefault();
-    if (player && result[0]) {
+    if (playerHandicap[0] && result[0]) {
       try {
-        await createGameResult({
-          player: player,
+        const gameResult = await createGameResult({
+          playerHandicap,
           result
         })
-        setOpenAlert(true)
+        gameResult === 'success'
+        ? setOpenAlert(true)
+        : console.log('error')
       }
       catch (error){
         errorCode.message = error.message ? error.message: errorCode.message;
