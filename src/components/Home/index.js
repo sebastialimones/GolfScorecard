@@ -78,7 +78,15 @@ export const Home = () => {
 
   const handleHoleResult = (holeResult) => {    
     const newArray = result.slice();
-    newArray.push(holeResult);
+    const holesAlreadyIntroduced = newArray.map(a => a.holeNumber);
+    if(newArray.length){
+    const index = holesAlreadyIntroduced.indexOf(holeResult.holeNumber);
+    index === -1
+      ? newArray.push(holeResult)
+      : newArray.splice(index,1,holeResult)
+    }else{
+      newArray.push(holeResult);
+    }
     setResult(newArray);
   };
 
@@ -93,7 +101,7 @@ export const Home = () => {
       <Form className={classes.root} noValidate autoComplete="off"> 
         <Players handlePlayerChange={ handlePlayerChange } value={ player }/>
         <HolesFormContainer>
-          <ListOfHoles handleHoleResult={ handleHoleResult }/>
+          <ListOfHoles handleHoleResult={ handleHoleResult } />
         </HolesFormContainer>
       </Form>
         <Button type="submit" primary onClick={ Send }>Send</Button>
@@ -106,3 +114,4 @@ export const Home = () => {
     </Container>
   );
 }
+

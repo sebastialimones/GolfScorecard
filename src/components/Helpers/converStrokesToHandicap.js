@@ -1,9 +1,9 @@
-import { convertStrokesWHandicapToPoints, sumPoints, sumStrokes, convertMillisToDate } from './index';
+import { convertStrokesWHandicapToPoints, sumPoints, sumStrokes, convertMillisToDate, sumMosques } from './index';
 
 export const convertStrokesToHandicap = (result, strokesPerHandicap, strokesPerHole) => {
   if(result){
     const resultWithHandicap = [];
-    result.result.forEach((hole) => {
+    result.result.map((hole) => {
         if([hole.holeNumber - 1]){
           const strokesWithHandicap = hole.result - strokesPerHandicap[hole.holeNumber - 1].result;
           const pointsPerHole = convertStrokesWHandicapToPoints(strokesWithHandicap, strokesPerHole[hole.holeNumber - 1].result);
@@ -15,13 +15,16 @@ export const convertStrokesToHandicap = (result, strokesPerHandicap, strokesPerH
           }
           resultWithHandicap.push(handicappedResult)
         }
+        return undefined;
       })
       const totalPoints = sumPoints(resultWithHandicap);
       const totalStrokes = sumStrokes(resultWithHandicap);
+      const totalMosques = sumMosques(resultWithHandicap);
       const dateConverted = convertMillisToDate(result.timestamp);
       result.completeResult = resultWithHandicap;
       result.totalPoints = totalPoints;
       result.totalStrokes = totalStrokes;
+      result.totalMosques = totalMosques;
       result.timestamp = dateConverted;
       return result;
     }

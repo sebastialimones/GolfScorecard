@@ -37,7 +37,7 @@ export const GameResult = ({ result }) => {
       </DataItem>
       <DataItem>
       {
-        `Cops Totals:  ${result.totalStrokes} `
+        `Cops totals:  ${result.totalStrokes} amb ${result.totalMosques} 🦟`
       }
       </DataItem>
     </ResultContainer>

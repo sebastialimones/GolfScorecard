@@ -12,10 +12,12 @@ const ResultContainer = styled.div`
 export const ListOfResults = ({ results, playerHandicap }) => {
   const completeResult = [];
 
-  results.forEach((result) => {
+  results.map((result) => {
     const completeResultPerGame = convertStrokesToHandicap(result, playerHandicap[0].result, playerHandicap[0].holeHandicap);
     completeResult.push(completeResultPerGame);
-  })
+    return undefined;
+  }
+  )
   
   return(
     <ResultContainer>
