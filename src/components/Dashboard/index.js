@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Players } from '../Players';
 import { fetchResults, fetchPlayer } from '../../services/index';
 import { ListOfResults } from '../ListOfResults';
+// import { ResultsTable } from '../ResultsTable';
 
 const Container = styled.div`
   margin-left: 1em;
@@ -35,9 +36,10 @@ export const Dashboard = () => {
     <Container>
       <Players handlePlayerChange={ handlePlayerChange } value={ player } />
         {
-        playerHandicap && gamesResults &&
-        <ListOfResults results={ gamesResults } playerHandicap={ playerHandicap } />
+          playerHandicap && gamesResults &&
+          <ListOfResults results={ gamesResults } playerHandicap={ playerHandicap } />
         }
+        {/* <ResultsTable results={ gamesResults }/> */}
     </Container>
   )
 };

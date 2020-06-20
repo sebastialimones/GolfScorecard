@@ -80,9 +80,18 @@ export const Handicap = () => {
 
   const handleHoleResult = (holeResult) => {    
     const newArray = result.slice();
-    newArray.push(holeResult);
+    const holesAlreadyIntroduced = newArray.map(a => a.holeNumber);
+    if(newArray.length){
+    const index = holesAlreadyIntroduced.indexOf(holeResult.holeNumber);
+    index === -1
+      ? newArray.push(holeResult)
+      : newArray.splice(index,1,holeResult)
+    }else{
+      newArray.push(holeResult);
+    }
     setResult(newArray);
   };
+
 
   const handleHoleHandicap = (holeResult) => {    
     const newArray = holeHandicap.slice();
