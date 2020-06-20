@@ -14,8 +14,8 @@ const PossiblePlayers = [
     label: 'Añaterve'
   },
   {
-    value: 'Sebastià (pare)',
-    label: 'Sebastià (pare)'
+    value: 'Sebastià (Papá)',
+    label: 'Sebastià (Papá)'
   }
 ]
 
