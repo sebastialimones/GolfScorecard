@@ -4,7 +4,7 @@ import { db, Timestamp } from './admin';
 export const createPlayerHandicap = async ({ player, result, holeHandicap }) => {
   try {
     const newHandicapResult = {
-      player,
+      name: player,
       result,
       holeHandicap,
       timestamp: Timestamp.now(),
