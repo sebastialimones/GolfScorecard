@@ -4,7 +4,7 @@ import { db, Timestamp } from './admin';
 export const createGameResult = async ({ playerHandicap, result }) => {
   try {
     const newGameResult = {
-      player: playerHandicap[0].name,
+      name: playerHandicap[0].name,
       result,
       timestamp: Timestamp.now(),
       id: uuidv4(),
