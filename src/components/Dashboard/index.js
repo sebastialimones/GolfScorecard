@@ -8,12 +8,18 @@ import { ListOfResults } from '../ListOfResults';
 import { ResultsTable } from '../ResultsTable';
 import Switch from '@material-ui/core/Switch';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 
-const Container = styled.div`
+const Container = styled.div` 
+`;
+
+const MenuContainer = styled.div`
   display: flex;
-  /* flex-direction: 's' */
-  margin-left: 1em;
+  justify-content: space-around;
+  align-items: center;
+`;
+
+const DataContainer = styled.div`
+  margin: 1em;
 `;
 
 const SwitchContainer = styled.div`
@@ -49,6 +55,7 @@ const AntSwitch = withStyles((theme) => ({
     borderRadius: 16 / 2,
     opacity: 1,
     backgroundColor: theme.palette.common.white,
+    height: '90%',
   },
   checked: {},
 }))(Switch);
@@ -84,24 +91,28 @@ export const Dashboard = () => {
 
   return(
     <Container>
-      <Players handlePlayerChange={ handlePlayerChange } value={ player } />
-      <SwitchContainer>
-        <Grid component="label" container alignItems="center" spacing={1}>
-          <Grid item>Holes</Grid>
-          <Grid item>
-            <AntSwitch checked={ switchState.checkedA } onChange={ handleSwitchChange } name="checkedA" />
+      <MenuContainer>
+        <Players handlePlayerChange={ handlePlayerChange } value={ player } />
+        <SwitchContainer>
+          <Grid component="label" container alignItems="center" spacing={1}>
+            <Grid item>Holes</Grid>
+            <Grid item>
+              <AntSwitch checked={ switchState.checkedA } onChange={ handleSwitchChange } name="checkedA" />
+            </Grid>
+            <Grid item>Results</Grid>
           </Grid>
-          <Grid item>Results</Grid>
-        </Grid>
-      </SwitchContainer>
+        </SwitchContainer>
+      </MenuContainer>
+      <DataContainer>
         {
           playerHandicap && gamesResults && switchState.checkedA &&
           <ListOfResults results={ gamesResults } playerHandicap={ playerHandicap } />
         }
         {
           playerHandicap && gamesResults && !switchState.checkedA &&
-        <ResultsTable results={ gamesResults }/>
+          <ResultsTable results={ gamesResults }/>
         }
+      </DataContainer>
     </Container>
   )
 };

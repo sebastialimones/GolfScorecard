@@ -87,18 +87,18 @@ export const Home = () => {
     setOpenAlert(true)
   };
 
-  const handleHoleResult = (holeResult) => {    
-    const newArray = result.slice();
-    const holesAlreadyIntroduced = newArray.map(a => a.holeNumber);
-    if(newArray.length){
-    const index = holesAlreadyIntroduced.indexOf(holeResult.holeNumber);
-    index === -1
-      ? newArray.push(holeResult)
-      : newArray.splice(index,1,holeResult)
-    }else{
-      newArray.push(holeResult);
-    }
-    setResult(newArray);
+  const handleHoleResult = (holeResult) => { 
+      const newArray = result.slice();
+      const holesAlreadyIntroduced = newArray.map(a => a.holeNumber);
+      if(newArray.length){
+      const index = holesAlreadyIntroduced.indexOf(holeResult.holeNumber);
+      index === -1
+        ? newArray.push(holeResult)
+        : newArray.splice(index,1,holeResult)
+      }else{
+        newArray.push(holeResult);
+      }
+      setResult(newArray);
   };
 
   const handleCloseAlert = (event) => {
