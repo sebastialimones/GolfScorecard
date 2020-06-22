@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -14,7 +14,7 @@ const StyledTableCell = withStyles((theme) => ({
     color: theme.palette.common.white,
   },
   body: {
-    fontSize: 14,
+    fontSize: 12,
   },
 }))(TableCell);
 
@@ -26,18 +26,6 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData(forat, mitjanaCops, millorResultat, mosques, nombrePartides) {
-  console.log({ forat, mitjanaCops, millorResultat, mosques, nombrePartides })
-  return { forat, mitjanaCops, millorResultat, mosques, nombrePartides };
-}
-
-const rows = [
-  createData('1', 159, 6.0, 24, 4.0),
-  createData('2', 237, 9.0, 37, 4.3),
-  createData('3', 262, 16.0, 24, 6.0),
-  createData('4', 305, 3.7, 67, 4.3),
-  createData('5', 356, 16.0, 49, 3.9),
-];
 
 const useStyles = makeStyles({
   table: {
@@ -47,34 +35,82 @@ const useStyles = makeStyles({
 });
 
 export const ResultsTable = ({ results }) => {
+  const [rows, setRows] = useState([]);
   const classes = useStyles();
-  const completeResult = [];
+  
+  const getResultPerHole = (holeNumber) => {
+    const individualHoleResults = []
+    results
+    .map((game) => {
+      game.result.filter((hole) => hole.holeNumber === holeNumber 
+      ? individualHoleResults.push(hole.result)
+      : null)
+    })
+    return calculateResultPerHole(holeNumber, individualHoleResults)
+  }
+  
+  const calculateResultPerHole = (holeNumber, results) => {
+    let sumResultsPerHole, averageResultPerHole, bestResult;
+    if(results.length){
+      const resultsWithoutMosques = results.filter(result => (typeof result === 'number') && !!result);
+      const numberOfMosques = results.filter(result => (typeof result === 'string') && !!result).length;
+      const numberOfGames = results.length;
+      if(resultsWithoutMosques.length){
+        sumResultsPerHole = resultsWithoutMosques.reduce((a, b) => a + b, 0);
+        averageResultPerHole = sumResultsPerHole / resultsWithoutMosques.length;
+        bestResult = Math.min.apply(null,resultsWithoutMosques);
+      }
+      return createData(holeNumber, averageResultPerHole, bestResult, numberOfMosques, numberOfGames);
+    }
+    return undefined;
+  }
 
+  const iterateOnAllHoles = () => {
+    setRows([]);
+    const numberOfHoles = 18;
+    for (var holeNumber = 0; holeNumber < numberOfHoles; holeNumber++) {
+      getResultPerHole(holeNumber + 1, results);
+    } 
+  }
+  
+  useEffect(() => {
+    if(results){
+      iterateOnAllHoles()
+    }
+  },[results])
+  
+  const createData = (forat, averageResultPerHole, bestResult, numberOfMosques, numberOfGames) => {
+    setRows(rows => [ ...rows, { forat, averageResultPerHole, bestResult, numberOfMosques, numberOfGames }])
+    return;
+  }
 
   return (
     <TableContainer component={ Paper }>
       <Table className={classes.table} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>Forat</StyledTableCell>
-            <StyledTableCell align="right">Mitjana cops</StyledTableCell>
-            <StyledTableCell align="right">Millor resultat</StyledTableCell>
-            <StyledTableCell align="right">Mosques</StyledTableCell>
-            <StyledTableCell align="right">Partides</StyledTableCell>
+            <StyledTableCell align="left">Forat</StyledTableCell>
+            <StyledTableCell align="left">Mitjana cops</StyledTableCell>
+            <StyledTableCell align="left">Millor resultat</StyledTableCell>
+            <StyledTableCell align="left">Mosques</StyledTableCell>
+            <StyledTableCell align="left">Partides</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          { rows 
+            ? rows.map((row) => (
             <StyledTableRow key={row.forat}>
               <StyledTableCell component="th" scope="row">
                 {row.forat}
               </StyledTableCell>
-              <StyledTableCell align="right">{row.mitjanaCops}</StyledTableCell>
-              <StyledTableCell align="right">{row.millorResultat}</StyledTableCell>
-              <StyledTableCell align="right">{row.millorResultat}</StyledTableCell>
-              <StyledTableCell align="right">{row.nombrePartides}</StyledTableCell>
+              <StyledTableCell align="left">{row.averageResultPerHole}</StyledTableCell>
+              <StyledTableCell align="left">{row.bestResult}</StyledTableCell>
+              <StyledTableCell align="left">{row.numberOfMosques}</StyledTableCell>
+              <StyledTableCell align="left">{row.numberOfGames}</StyledTableCell>
             </StyledTableRow>
-          ))}
+          ))
+          : null
+          }
         </TableBody>
       </Table>
     </TableContainer>
