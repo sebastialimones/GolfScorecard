@@ -17,8 +17,10 @@ export const ListOfResults = ({ results, playerHandicap }) => {
     const completeResultPerGame = convertStrokesToHandicap(result, playerHandicap[0]);
     completeResult.push(completeResultPerGame);
     return undefined;
+  })
+  if( completeResult.length){
+    completeResult.sort((result1, result2) => result2.timestamp - result1.timestamp)
   }
-  )
   
   return(
     <ResultContainer>

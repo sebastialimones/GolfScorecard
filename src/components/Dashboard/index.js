@@ -6,8 +6,8 @@ import { Players } from '../Players';
 import { fetchResults, fetchPlayer } from '../../services/index';
 import { ListOfResults } from '../ListOfResults';
 import { ResultsTable } from '../ResultsTable';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
-import Grid from '@material-ui/core/Grid';
 
 const Container = styled.div` 
 `;
@@ -25,40 +25,59 @@ const DataContainer = styled.div`
 const SwitchContainer = styled.div`
 `;
 
-const AntSwitch = withStyles((theme) => ({
+const IOSSwitch = withStyles((theme) => ({
   root: {
-    width: 28,
-    height: 16,
+    width: 42,
+    height: 26,
     padding: 0,
-    display: 'flex',
+    margin: theme.spacing(1),
   },
   switchBase: {
-    padding: 2,
-    color: theme.palette.grey[500],
+    padding: 1,
     '&$checked': {
-      transform: 'translateX(12px)',
+      transform: 'translateX(16px)',
       color: theme.palette.common.white,
       '& + $track': {
+        backgroundColor: '#52d869',
         opacity: 1,
-        backgroundColor: theme.palette.primary.main,
-        borderColor: theme.palette.primary.main,
+        border: 'none',
       },
+    },
+    '&$focusVisible $thumb': {
+      color: '#52d869',
+      border: '6px solid #fff',
     },
   },
   thumb: {
-    width: 12,
-    height: 12,
-    boxShadow: 'none',
+    width: 24,
+    height: 22.3,
   },
   track: {
-    border: `1px solid ${theme.palette.grey[500]}`,
-    borderRadius: 16 / 2,
+    borderRadius: 26 / 2,
+    border: `1px solid ${theme.palette.grey[400]}`,
+    backgroundColor: theme.palette.secondary.light,
     opacity: 1,
-    backgroundColor: theme.palette.common.white,
-    height: '90%',
+    height: '95%',
+    transition: theme.transitions.create(['background-color', 'border']),
   },
   checked: {},
-}))(Switch);
+  focusVisible: {},
+}))(({ classes, ...props }) => {
+  return (
+    <Switch
+      focusVisibleClassName={classes.focusVisible}
+      disableRipple
+      classes={{
+        root: classes.root,
+        switchBase: classes.switchBase,
+        thumb: classes.thumb,
+        track: classes.track,
+        checked: classes.checked,
+      }}
+      {...props}
+    />
+  );
+});
 
 export const Dashboard = () => {
   const [player, setPlayer] = useState('');
@@ -94,13 +113,10 @@ export const Dashboard = () => {
       <MenuContainer>
         <Players handlePlayerChange={ handlePlayerChange } value={ player } />
         <SwitchContainer>
-          <Grid component="label" container alignItems="center" spacing={1}>
-            <Grid item>Holes</Grid>
-            <Grid item>
-              <AntSwitch checked={ switchState.checkedA } onChange={ handleSwitchChange } name="checkedA" />
-            </Grid>
-            <Grid item>Results</Grid>
-          </Grid>
+          <FormControlLabel
+            control={<IOSSwitch checked={ switchState.checkedA } onChange={ handleSwitchChange } name="checkedA" />}
+            label=""
+          />
         </SwitchContainer>
       </MenuContainer>
       <DataContainer>
