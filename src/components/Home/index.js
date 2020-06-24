@@ -21,9 +21,6 @@ const useStyles = makeStyles((theme) => ({
 const Container = styled.div`
   margin-left: 1em;
 `;
-const LiveScore = styled.div`
-  
-`;
 const Form = styled.form``;
 const HolesFormContainer = styled.div``;
 
