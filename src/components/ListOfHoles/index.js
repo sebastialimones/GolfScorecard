@@ -1,7 +1,7 @@
 import React from 'react';
 import { Hole } from '../Hole';
 
-export const ListOfHoles = ({ handleHoleResult }) => {
+export const ListOfHoles = ({ handleHoleResult, player, liveScore, currentHole }) => {
   const numberOfHoles = 18;
 
   var totalHoles = [];
@@ -11,7 +11,14 @@ export const ListOfHoles = ({ handleHoleResult }) => {
 
   return(
     totalHoles.map((index) =>     
-      <Hole key={ index } holeNumber={ index + 1} handleHoleResult={ handleHoleResult } />
+      <Hole 
+        key={ index } 
+        holeNumber={ index + 1} 
+        handleHoleResult={ handleHoleResult } 
+        player={ player } 
+        liveScore={ liveScore }
+        currentHole={ currentHole }
+      />
     )
   )
 }

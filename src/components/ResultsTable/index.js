@@ -25,7 +25,7 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-export const ResultsTable = ({ results }) => {
+export const ResultsTable = ({ results, playerHandicap }) => {
   const [rows, setRows] = useState([]);
 
   const calculateResultPerHole = useCallback((holeNumber, results) => {
@@ -33,13 +33,14 @@ export const ResultsTable = ({ results }) => {
     if(results.length){
       const resultsWithoutMosques = results.filter(result => (typeof result === 'number') && !!result);
       const numberOfMosques = results.filter(result => (typeof result === 'string') && !!result).length;
-      const numberOfGames = results.length;
+      const handicap = playerHandicap[0].holeHandicap[holeNumber - 1].result;
+      const numberOfGames = results.length
       if(resultsWithoutMosques.length){
         sumResultsPerHole = resultsWithoutMosques.reduce((a, b) => a + b, 0);
         averageResultPerHole = (sumResultsPerHole / resultsWithoutMosques.length).toPrecision(2);
         bestResult = Math.min.apply(null,resultsWithoutMosques);
       }
-      return createData(holeNumber, averageResultPerHole, bestResult, numberOfMosques, numberOfGames);
+      return createData(holeNumber, averageResultPerHole, bestResult, numberOfMosques, handicap, numberOfGames);
     }
     return undefined;
   }, []);
@@ -68,8 +69,8 @@ export const ResultsTable = ({ results }) => {
     }
   },[results, iterateOnAllHoles])
   
-  const createData = (forat, averageResultPerHole, bestResult, numberOfMosques, numberOfGames) => {
-    setRows(rows => [ ...rows, { forat, averageResultPerHole, bestResult, numberOfMosques, numberOfGames }])
+  const createData = (forat, averageResultPerHole, bestResult, numberOfMosques, handicap, numberOfGames) => {
+    setRows(rows => [ ...rows, { forat, averageResultPerHole, bestResult, numberOfMosques, handicap, numberOfGames }])
     return;
   }
 
@@ -78,11 +79,12 @@ export const ResultsTable = ({ results }) => {
       <Table aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell align="left">Forat</StyledTableCell>
-            <StyledTableCell align="left">Voltes</StyledTableCell>
-            <StyledTableCell align="left">Mitjana cops</StyledTableCell>
-            <StyledTableCell align="left">Millor resultat</StyledTableCell>
+            <StyledTableCell align="left">Nº</StyledTableCell>
+            <StyledTableCell align="left">Hdp</StyledTableCell>
+            <StyledTableCell align="left">Mitja</StyledTableCell>
+            <StyledTableCell align="left">Millor</StyledTableCell>
             <StyledTableCell align="left">🦟</StyledTableCell>
+            <StyledTableCell align="left">Nombre</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -92,10 +94,11 @@ export const ResultsTable = ({ results }) => {
               <StyledTableCell component="th" scope="row">
                 {row.forat}
               </StyledTableCell>
-              <StyledTableCell align="left">{row.numberOfGames}</StyledTableCell>
+              <StyledTableCell align="left">{row.handicap}</StyledTableCell>
               <StyledTableCell align="left">{row.averageResultPerHole}</StyledTableCell>
               <StyledTableCell align="left">{row.bestResult}</StyledTableCell>
               <StyledTableCell align="left">{row.numberOfMosques}</StyledTableCell>
+              <StyledTableCell align="left">{row.numberOfGames}</StyledTableCell>
             </StyledTableRow>
           ))
           : null

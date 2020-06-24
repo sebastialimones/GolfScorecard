@@ -7,6 +7,7 @@ import { ListOfHoles } from '../ListOfHoles';
 import { createGameResult, fetchPlayer } from '../../services';
 import { Notification } from '../Notification';
 import { Players } from '../Players';
+import { convertStrokesWHandicapToPoints } from '../Helpers/convertStrokesWHandicapToPoints';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,6 +21,9 @@ const useStyles = makeStyles((theme) => ({
 const Container = styled.div`
   margin-left: 1em;
 `;
+const LiveScore = styled.div`
+  
+`;
 const Form = styled.form``;
 const HolesFormContainer = styled.div``;
 
@@ -27,6 +31,8 @@ export const Home = () => {
   const classes = useStyles();
   const [player, setPlayer] = useState('');
   const [result, setResult] = useState([]);
+  const [liveScore, setLiveScore] = useState(0);
+  const [currentHole, setCurrentHole] = useState('');
   const [errorCode, setErrorCode] = useState();
   const [openAlert, setOpenAlert] = useState(false);
   const [playerHandicap, setplayerHandicap] = useState();
@@ -38,6 +44,17 @@ export const Home = () => {
     }
     player && getPlayerHandicap() 
   },[player])
+
+  useEffect(() => {
+    const liveScoreCreator = () => {
+      const holeNumber = result[result.length - 1].holeNumber;
+      const strokesWithHandicap = result[result.length - 1].result - playerHandicap[0].result[holeNumber - 1].result;
+      const pointsPerHole = convertStrokesWHandicapToPoints(strokesWithHandicap, playerHandicap[0].holeHandicap[holeNumber - 1].result);
+      setLiveScore(liveScore + pointsPerHole);
+    }
+    result.length && liveScoreCreator()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[result, player])
 
   const handlePlayerChange = (playerName) => {
     setPlayer(playerName);
@@ -71,23 +88,19 @@ export const Home = () => {
   };
 
   const dataIncomplete = () => { 
-    if(!player){
-      const errorCode = { 
-        message:  "Falta introduir un jugador",
-        severity: "error" 
-    }
-      setErrorCode(errorCode); 
-    } else if(!result[0]){
+    if(!result[0]){
       const errorCode = { 
         message:  "Falta introduir algun resultat",
         severity: "error" 
        }
       setErrorCode(errorCode);
-    }
+      setErrorCode(errorCode); 
+    } 
     setOpenAlert(true)
   };
 
   const handleHoleResult = (holeResult) => { 
+    setCurrentHole(holeResult.holeNumber)
     const newArray = result.slice();
     const holesAlreadyIntroduced = newArray.map(a => a.holeNumber);
     if(newArray.length){
@@ -113,7 +126,12 @@ export const Home = () => {
       <Form className={classes.root} noValidate autoComplete="off"> 
         <Players handlePlayerChange={ handlePlayerChange } value={ player }/>
         <HolesFormContainer>
-          <ListOfHoles handleHoleResult={ handleHoleResult } />
+          <ListOfHoles 
+            handleHoleResult={ handleHoleResult } 
+            player={ player } 
+            liveScore={ liveScore }
+            currentHole={ currentHole }
+          />
         </HolesFormContainer>
       </Form>
         <Button type="submit" primary onClick={ Send }>Send</Button>

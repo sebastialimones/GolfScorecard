@@ -126,7 +126,7 @@ export const Dashboard = () => {
         }
         {
           playerHandicap && gamesResults && !switchState.checkedA &&
-          <ResultsTable results={ gamesResults }/>
+          <ResultsTable results={ gamesResults } playerHandicap={ playerHandicap }/>
         }
       </DataContainer>
     </Container>
