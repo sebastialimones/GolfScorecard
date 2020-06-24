@@ -1,7 +1,14 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
+import { LiveScore } from '../LiveScore';
+import styled from 'styled-components';
 
-export const Hole = ({ holeNumber, handleHoleResult }) => {
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const Hole = ({ holeNumber, handleHoleResult, player, liveScore, currentHole }) => {
   const PossibleScore = [
     {
       value: 0,
@@ -50,25 +57,33 @@ export const Hole = ({ holeNumber, handleHoleResult }) => {
       "holeNumber": holeNumber,
       "result" : event.currentTarget.value === "mosca" ? "mosca" : Number(event.currentTarget.value)
     }
+
     handleHoleResult(holeResultObj)
   }
 
   return(
-    <TextField
-      id="hole-number"
-      select
-      label={`Hole number: ${holeNumber}`}
-      onChange= { setHoleResult }
-      SelectProps={{
-        native: true,
-      }}
-      variant="outlined"
-    >
-      { PossibleScore.map((option) => (
-        <option key={option.value} value={option.value}>
-          {option.label}
-        </option>
-      )) }
-    </TextField>
+    <Container>
+      <TextField
+        id="hole-number"
+        select
+        label={`Hole number: ${holeNumber}`}
+        onChange= { setHoleResult }
+        SelectProps={{
+          native: true,
+        }}
+        variant="outlined"
+        disabled={ player ? false : true }
+      >
+        { PossibleScore.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        )) }
+      </TextField>
+      {
+        currentHole === holeNumber &&
+        <LiveScore liveScore={ liveScore }></LiveScore>
+      }
+    </Container>
   )
 }

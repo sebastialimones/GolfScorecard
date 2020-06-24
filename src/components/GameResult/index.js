@@ -41,7 +41,7 @@ export const GameResult = ({ result }) => {
       </DataItem>
       <DataItem>
       {
-        `Handicap:  ${result.totalPointsPerHandicap}  cops`
+        `Handicap:  ${result.totalPointsPerHandicap} cops`
       }
       </DataItem>
     </ResultContainer>
