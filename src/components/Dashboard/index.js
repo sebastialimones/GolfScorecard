@@ -88,16 +88,20 @@ export const Dashboard = () => {
   });
 
   useEffect(() => {
-    const getResult = async () => {
-      const data = await fetchResults(player);
-      setGamesResults(data);
-    }
     const getPlayerHandicap = async () => {
       const data = await fetchPlayer(player);
       setplayerHandicap(data);
     }
-    player && getResult() && getPlayerHandicap() 
+    player && getPlayerHandicap() 
   },[player])
+
+  useEffect(() => {
+    const getResult = async () => {
+      const data = await fetchResults(playerHandicap);
+      setGamesResults(data);
+    }
+    playerHandicap && getResult()  
+  },[playerHandicap])
 
   const handlePlayerChange = (playerName) => {
     setPlayer('');
