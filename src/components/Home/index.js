@@ -36,10 +36,11 @@ export const Home = () => {
 
   useEffect(() => {
     const getPlayerHandicap = async () => {
+      setResult([]);
       const data = await fetchPlayer(player);
       setplayerHandicap(data);
     }
-    player && getPlayerHandicap() 
+    player && getPlayerHandicap();
   },[player])
 
   const liveScoreCreator =  useCallback(() => {
@@ -56,7 +57,7 @@ export const Home = () => {
 
   useEffect(() => {
     result.length && liveScoreCreator()
-  },[result, player,liveScoreCreator])
+  },[result, player, liveScoreCreator])
 
 
   const handlePlayerChange = (playerName) => {
@@ -69,7 +70,7 @@ export const Home = () => {
     setPlayer('');
   };
 
-  const  Send = async (event) => {
+  const  send = async (event) => {
     event.preventDefault();
     if (playerHandicap[0] && result[0]) {
       try {
@@ -138,7 +139,7 @@ export const Home = () => {
           />
         </HolesFormContainer>
       </Form>
-        <Button type="submit" primary onClick={ Send }>Send</Button>
+        <Button type="submit" primary onClick={ send }>Send</Button>
         <Notification
           onClose={ handleCloseAlert }
           message={ errorCode ? errorCode.message : "Perfe!" }

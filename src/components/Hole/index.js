@@ -8,7 +8,7 @@ const Container = styled.div`
   align-items: center;
 `;
 
-export const Hole = ({ holeNumber, handleHoleResult, player, liveScore, currentHole }) => {
+export const Hole = ({ holeNumber, handleHoleResult, player, liveScore, currentHole }) => {  
   const PossibleScore = [
     {
       value: 0,
@@ -57,7 +57,6 @@ export const Hole = ({ holeNumber, handleHoleResult, player, liveScore, currentH
       "holeNumber": holeNumber,
       "result" : event.currentTarget.value === "mosca" ? "mosca" : Number(event.currentTarget.value)
     }
-
     handleHoleResult(holeResultObj)
   }
 
@@ -67,18 +66,20 @@ export const Hole = ({ holeNumber, handleHoleResult, player, liveScore, currentH
         id="hole-number"
         select
         label={`Hole number: ${holeNumber}`}
-        onChange= { setHoleResult }
+        onChange={ setHoleResult }
         SelectProps={{
           native: true,
         }}
         variant="outlined"
         disabled={ player ? false : true }
       >
-        { PossibleScore.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
+        { 
+          PossibleScore.map((option) => (
+          <option key={ option.value } value={ option.value }>
+            { option.label }
           </option>
-        )) }
+        )) 
+        }
       </TextField>
       {
         currentHole === holeNumber &&

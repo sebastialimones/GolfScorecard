@@ -40,7 +40,7 @@ export const Handicap = () => {
     setPlayer('');
   };
 
-  const  Send = async (event) => {
+  const  send = async (event) => {
     event.preventDefault();
     if (player) {
       try {
@@ -119,7 +119,7 @@ export const Handicap = () => {
           <ListOfHoles handleHoleResult={ handleHoleHandicap }/>
         </HolesFormContainer>
       </Form>
-        <Button type="submit" primary onClick={ Send }>Send</Button>
+        <Button type="submit" primary onClick={ send }>Send</Button>
         <Notification
           onClose={ handleCloseAlert }
           message={ errorCode ? errorCode.message : "Perfe!" }

@@ -3,8 +3,8 @@ import { Hole } from '../Hole';
 
 export const ListOfHoles = ({ handleHoleResult, player, liveScore, currentHole }) => {
   const numberOfHoles = 18;
-
   var totalHoles = [];
+  
   for (var j = 0; j < numberOfHoles; j++) {
     totalHoles.push(j);
   }
