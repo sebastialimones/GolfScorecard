@@ -43,7 +43,7 @@ export const ResultsTable = ({ results, playerHandicap }) => {
       return createData(holeNumber, averageResultPerHole, bestResult, numberOfMosques, handicap, numberOfGames);
     }
     return undefined;
-  }, []);
+  }, [playerHandicap]);
   
   const getResultPerHole = useCallback((holeNumber) => {
     const individualHoleResults = []

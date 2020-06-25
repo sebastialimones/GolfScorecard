@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -42,19 +42,26 @@ export const Home = () => {
     player && getPlayerHandicap() 
   },[player])
 
+  const liveScoreCreator =  useCallback(() => {
+    const newArray = result.slice();
+    let totalPointsLiveScore = 0;
+    newArray.map((score) => {
+      const strokesWithHandicap = score.result - playerHandicap[0].result[score.holeNumber - 1].result;
+      const pointsPerHole = convertStrokesWHandicapToPoints(strokesWithHandicap, playerHandicap[0].holeHandicap[score.holeNumber - 1].result);
+      totalPointsLiveScore = totalPointsLiveScore + pointsPerHole;
+      setLiveScore(totalPointsLiveScore);
+      return undefined;
+    })
+  },[result, playerHandicap])
+
   useEffect(() => {
-    const liveScoreCreator = () => {
-      const holeNumber = result[result.length - 1].holeNumber;
-      const strokesWithHandicap = result[result.length - 1].result - playerHandicap[0].result[holeNumber - 1].result;
-      const pointsPerHole = convertStrokesWHandicapToPoints(strokesWithHandicap, playerHandicap[0].holeHandicap[holeNumber - 1].result);
-      setLiveScore(liveScore + pointsPerHole);
-    }
     result.length && liveScoreCreator()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[result, player])
+  },[result, player,liveScoreCreator])
+
 
   const handlePlayerChange = (playerName) => {
     setPlayer(playerName);
+    setResult([]);
   };
 
   const clearInputs = () => {
@@ -100,14 +107,14 @@ export const Home = () => {
     setCurrentHole(holeResult.holeNumber)
     const newArray = result.slice();
     const holesAlreadyIntroduced = newArray.map(a => a.holeNumber);
-    if(newArray.length){
-    const index = holesAlreadyIntroduced.indexOf(holeResult.holeNumber);
-    index === -1
-      ? newArray.push(holeResult)
-      : newArray.splice(index,1,holeResult)
-    }else{
-      newArray.push(holeResult);
-    }
+      if(newArray.length){
+      const index = holesAlreadyIntroduced.indexOf(holeResult.holeNumber);
+      index === -1
+        ? newArray.push(holeResult)
+        : newArray.splice(index,1,holeResult)
+      }else{
+        newArray.push(holeResult);
+      }
     const zeroFilter = newArray.filter(a => a.result !== 0);
     setResult(zeroFilter);
   };
