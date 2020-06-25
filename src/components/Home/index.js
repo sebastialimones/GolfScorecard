@@ -17,12 +17,14 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-
 const Container = styled.div`
   margin-left: 1em;
 `;
 const Form = styled.form``;
-const HolesFormContainer = styled.div``;
+const HolesFormContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 export const Home = () => {
   const classes = useStyles();
@@ -39,6 +41,7 @@ export const Home = () => {
       setResult([]);
       const data = await fetchPlayer(player);
       setplayerHandicap(data);
+      setLiveScore(0);
     }
     player && getPlayerHandicap();
   },[player])
@@ -67,6 +70,7 @@ export const Home = () => {
 
   const clearInputs = () => {
     setResult([]);
+    setLiveScore(0);
     setPlayer('');
   };
 

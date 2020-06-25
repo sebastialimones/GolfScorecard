@@ -17,6 +17,9 @@ export const convertStrokesWHandicapToPoints = (strokesMinusHandicap, parPerHole
   } else if(strokesMinusHandicap + 3 === parPerHole){
     const points = 5;
     return points;
+  }else if(strokesMinusHandicap + 4 === parPerHole){
+    const points = 6;
+    return points;
   } else {
     return 0;
   }

@@ -6,6 +6,7 @@ export const createGameResult = async ({ playerHandicap, result }) => {
     const newGameResult = {
       name: playerHandicap[0].name,
       result,
+      playerId: playerHandicap[0].playerId,
       timestamp: Timestamp.now(),
       id: uuidv4(),
       course: "Son Servera Golf",

@@ -9,6 +9,7 @@ export const createPlayerHandicap = async ({ player, result, holeHandicap }) => 
       holeHandicap,
       timestamp: Timestamp.now(),
       id: uuidv4(),
+      playerId: uuidv4(),
       course: "Son Servera Golf",
     };
     await db.collection('players').doc(newHandicapResult.id).set(newHandicapResult);

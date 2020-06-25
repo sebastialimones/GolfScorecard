@@ -8,12 +8,31 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import { red, green } from '@material-ui/core/colors';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
   },
   body: {
     fontSize: 11,
+  },
+}))(TableCell);
+
+const StyledTableCellBest = withStyles((theme) => ({
+  head: {
+  },
+  body: {
+    fontSize: 12,
+    color: green[600],
+  },
+}))(TableCell);
+
+const StyledTableCellWorst = withStyles((theme) => ({
+  head: {
+  },
+  body: {
+    fontSize: 12,
+    color: red[500],
   },
 }))(TableCell);
 
@@ -95,8 +114,18 @@ export const ResultsTable = ({ results, playerHandicap }) => {
                 {row.forat}
               </StyledTableCell>
               <StyledTableCell align="left">{row.handicap}</StyledTableCell>
-              <StyledTableCell align="left">{row.averageResultPerHole}</StyledTableCell>
-              <StyledTableCell align="left">{row.bestResult}</StyledTableCell>
+              {
+                row.averageResultPerHole < row.handicap + 1
+                  ? <StyledTableCellBest align="left">{row.averageResultPerHole}</StyledTableCellBest>
+                  : row.averageResultPerHole > row.handicap + 1.5 
+                    ? <StyledTableCellWorst align="left">{row.averageResultPerHole}</StyledTableCellWorst>
+                    : <StyledTableCell align="left">{row.averageResultPerHole}</StyledTableCell>
+              }
+              {
+                row.bestResult < row.handicap 
+                  ? <StyledTableCellBest align="left">{row.bestResult}</StyledTableCellBest>
+                  : <StyledTableCell align="left">{row.bestResult}</StyledTableCell>
+              }
               <StyledTableCell align="left">{row.numberOfMosques}</StyledTableCell>
               <StyledTableCell align="left">{row.numberOfGames}</StyledTableCell>
             </StyledTableRow>
