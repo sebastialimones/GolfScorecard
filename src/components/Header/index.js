@@ -34,22 +34,32 @@ const HeaderText = styled.p`
   font-size: 1.8em;
 `;
 
+const HeaderNameMapper = {
+  '/': 'Scorecard',
+  '/dashboard': 'Dashboard',
+  '/login': 'Entrar a desastres de golf',
+  '/signup': 'Nou usuari',
+};
+
 export const Header = () => {
   const currentLocation = useLocation()
   return (
     <Container>
       <HeaderContainer>
+        <HeaderText>
         {
-        currentLocation.pathname !== "/dashboard" 
-        ? <HeaderText>Scorecard</HeaderText>
-        : <HeaderText>Dashboard</HeaderText>
-      }
+        HeaderNameMapper[currentLocation.pathname] 
+        }
+        </HeaderText>
       </HeaderContainer>
-      {
-        currentLocation.pathname !== "/dashboard" 
-        ? <StyledLink to="/dashboard">Dashboard</StyledLink>
-        : <StyledLink to="/">Scorecard</StyledLink>
-      }
+        {
+        currentLocation.pathname === "/dashboard" &&
+          <StyledLink to="/">Scorecard</StyledLink>
+        }
+        {
+        currentLocation.pathname === "/" &&
+          <StyledLink to="/dashboard">Dashboard</StyledLink>
+        }
     </Container>
   )
 };

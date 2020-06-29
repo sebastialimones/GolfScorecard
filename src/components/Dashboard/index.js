@@ -8,6 +8,7 @@ import { ListOfResults } from '../ListOfResults';
 import { ResultsTable } from '../ResultsTable';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
+import { useCurrentUser } from '../../hooks/userCurrentUser';
 
 const Container = styled.div` 
 `;
@@ -79,13 +80,21 @@ const IOSSwitch = withStyles((theme) => ({
   );
 });
 
-export const Dashboard = () => {
+export const Dashboard = ({ history }) => {
   const [player, setPlayer] = useState('');
   const [gamesResults, setGamesResults] = useState();
   const [playerHandicap, setplayerHandicap] = useState();
   const [switchState, setSwitchState] = useState({
     checkedA: true,
   });
+  const [user, isFetchingUser] = useCurrentUser();
+  const currentUserId = user && user.id;
+
+  useEffect(() => {
+    if (!currentUserId && !isFetchingUser) {
+      history.push('/login');
+    }
+  }, [isFetchingUser, history, currentUserId, user]);
 
   useEffect(() => {
     const getPlayerHandicap = async () => {

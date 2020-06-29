@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 
+import { auth } from '../../services/admin';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '../Elements/button';
 import { ListOfHoles } from '../ListOfHoles';
 import { createGameResult, fetchPlayer } from '../../services';
 import { Notification } from '../Notification';
 import { Players } from '../Players';
+import { useCurrentUser } from '../../hooks/userCurrentUser';
 import { convertStrokesWHandicapToPoints } from '../Helpers/convertStrokesWHandicapToPoints';
 
 const useStyles = makeStyles((theme) => ({
@@ -26,7 +28,7 @@ const HolesFormContainer = styled.div`
   flex-direction: column;
 `;
 
-export const Home = () => {
+export const Home = ({ history }) => {
   const classes = useStyles();
   const [player, setPlayer] = useState('');
   const [result, setResult] = useState([]);
@@ -35,6 +37,14 @@ export const Home = () => {
   const [errorCode, setErrorCode] = useState();
   const [openAlert, setOpenAlert] = useState(false);
   const [playerHandicap, setplayerHandicap] = useState();
+  const [user, isFetchingUser] = useCurrentUser();
+  const currentUserId = user && user.id;
+
+  useEffect(() => {
+    if (!currentUserId && !isFetchingUser) {
+      history.push('/login');
+    }
+  }, [isFetchingUser, history, currentUserId, user]);
 
   useEffect(() => {
     const getPlayerHandicap = async () => {
@@ -44,7 +54,7 @@ export const Home = () => {
       setLiveScore(0);
     }
     player && getPlayerHandicap();
-  },[player])
+  },[player, user])
 
   const liveScoreCreator =  useCallback(() => {
     const newArray = result.slice();
@@ -63,6 +73,11 @@ export const Home = () => {
   },[result, player, liveScoreCreator])
 
 
+  const logout = () => {
+    auth.signOut();
+  };
+
+
   const handlePlayerChange = (playerName) => {
     setPlayer(playerName);
     setResult([]);
@@ -76,7 +91,7 @@ export const Home = () => {
 
   const  send = async (event) => {
     event.preventDefault();
-    if (playerHandicap[0] && result[0]) {
+    if (playerHandicap && result) {
       try {
         const gameResult = await createGameResult({
           playerHandicap,
@@ -150,7 +165,13 @@ export const Home = () => {
           open={ openAlert }
           severity={errorCode ? errorCode.severity : "success" }
         />
+        <div>
+        <button type="button" onClick={ logout }>
+          Logout
+        </button>
+      </div>
     </Container>
+    
   );
 }
 

@@ -6,3 +6,4 @@ export * from './createGameResult';
 export * from './fetchResults';
 export * from './createPlayerHandicap';
 export * from './fetchPlayer';
+export * from './createUser';
