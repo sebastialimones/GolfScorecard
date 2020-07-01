@@ -1,13 +1,13 @@
 import { db } from './admin';
 
-export const fetchPlayer = async (playerName) => {
+export const fetchPlayer = async (currentUserId, course) => {
     try {
       const playerRef = db.collection('players');
       const players = [];
       const snapshots = await playerRef.get();
       snapshots.forEach((snapshot) => {
         const player = snapshot.data();
-        if (player.name === playerName) {
+        if (player.uid === currentUserId && player.course === course) {
           players.push((player));
         } 
       });

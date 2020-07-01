@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 
-import { Players } from '../Players';
-import { fetchResults, fetchPlayer } from '../../services/index';
+import { Courses } from '../Courses';
+import { fetchResults, fetchPlayer, fetchCoursesPerUser } from '../../services/index';
 import { ListOfResults } from '../ListOfResults';
 import { ResultsTable } from '../ResultsTable';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
+import { useCurrentUser } from '../../hooks/userCurrentUser';
 
 const Container = styled.div` 
 `;
@@ -79,43 +80,65 @@ const IOSSwitch = withStyles((theme) => ({
   );
 });
 
-export const Dashboard = () => {
-  const [player, setPlayer] = useState('');
+export const Dashboard = ({ history }) => {
+  const [coursesName, setCoursesName] = useState([]);
+  const [selectedCourse, setSelectedCourse] = useState('');
   const [gamesResults, setGamesResults] = useState();
   const [playerHandicap, setplayerHandicap] = useState();
   const [switchState, setSwitchState] = useState({
     checkedA: true,
   });
+  const [user, isFetchingUser] = useCurrentUser();
+  const currentUserId = user && user.id;
+
+  useEffect(() => {
+    if (!currentUserId && !isFetchingUser) {
+      history.push('/login');
+    }
+  }, [isFetchingUser, history, currentUserId, user]);
+
+  useEffect(() => {
+    const getCourses = async () => {
+      const courses = await fetchCoursesPerUser(currentUserId); 
+      courses && courses.map((course) => {
+        setCoursesName(coursesName => [...coursesName, course]);
+        return undefined;
+      })
+    };
+    currentUserId && getCourses();
+  }, [user, currentUserId])
 
   useEffect(() => {
     const getPlayerHandicap = async () => {
-      const data = await fetchPlayer(player);
+      const data = await fetchPlayer(currentUserId, selectedCourse);
       setplayerHandicap(data);
     }
-    player && getPlayerHandicap() 
-  },[player])
+    currentUserId && selectedCourse && getPlayerHandicap();
+  },[currentUserId, selectedCourse, user])
 
   useEffect(() => {
     const getResult = async () => {
-      const data = await fetchResults(playerHandicap);
-      setGamesResults(data);
+      const data = await fetchResults(playerHandicap, selectedCourse);
+      if(data){
+        setGamesResults(data);
+      }
     }
-    playerHandicap && getResult()  
-  },[playerHandicap])
-
-  const handlePlayerChange = (playerName) => {
-    setPlayer('');
-    setPlayer(playerName);
-  }
+    playerHandicap && selectedCourse && getResult()  
+  },[playerHandicap, selectedCourse])
 
   const handleSwitchChange = (event) => {
     setSwitchState({ ...switchState, [event.target.name]: event.target.checked });
   };
 
+  const handleCourseChange = (courseName) => {
+    setGamesResults([]);
+    setSelectedCourse(courseName);
+  };
+
   return(
     <Container>
       <MenuContainer>
-        <Players handlePlayerChange={ handlePlayerChange } value={ player } />
+        { coursesName && <Courses handleCourseChange={ handleCourseChange } value={ selectedCourse } courses={ coursesName } /> }
         <SwitchContainer>
           <FormControlLabel
             control={<IOSSwitch checked={ switchState.checkedA } onChange={ handleSwitchChange } name="checkedA" />}

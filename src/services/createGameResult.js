@@ -1,16 +1,15 @@
 import { v4 as uuidv4 } from 'uuid';
 import { db, Timestamp } from './admin';
 
-export const createGameResult = async ({ playerHandicap, result }) => {
+export const createGameResult = async ({ playerHandicap, result, selectedCourse }) => {
   try {
     const newGameResult = {
-      name: playerHandicap[0].name,
       result,
-      playerId: playerHandicap[0].playerId,
       timestamp: Timestamp.now(),
       id: uuidv4(),
-      course: "Son Servera Golf",
-      playerHandicap: playerHandicap[0].result
+      course: selectedCourse,
+      playerHandicap: playerHandicap[0].result,
+      uid: playerHandicap[0].uid
     };
     await db.collection('games').doc(newGameResult.id).set(newGameResult);
     return "success";

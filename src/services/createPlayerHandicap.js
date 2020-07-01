@@ -1,16 +1,16 @@
 import { v4 as uuidv4 } from 'uuid';
 import { db, Timestamp } from './admin';
 
-export const createPlayerHandicap = async ({ player, result, holeHandicap }) => {
+export const createPlayerHandicap = async ({ uid, course, personalHandicap, coursePar }) => {
+  console.log(uid, course, personalHandicap, coursePar)
   try {
     const newHandicapResult = {
-      name: player,
-      result,
-      holeHandicap,
+      uid: uid,
+      result: personalHandicap,
+      holeHandicap: coursePar,
       timestamp: Timestamp.now(),
       id: uuidv4(),
-      playerId: uuidv4(),
-      course: "Son Servera Golf",
+      course: course,
     };
     await db.collection('players').doc(newHandicapResult.id).set(newHandicapResult);
     return;

@@ -4,9 +4,10 @@ import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '../Elements/button';
 import { ListOfHoles } from '../ListOfHoles';
-import { createGameResult, fetchPlayer } from '../../services';
+import { createGameResult, fetchPlayer, fetchCoursesPerUser } from '../../services';
 import { Notification } from '../Notification';
-import { Players } from '../Players';
+import { Courses } from '../Courses';
+import { useCurrentUser } from '../../hooks/userCurrentUser';
 import { convertStrokesWHandicapToPoints } from '../Helpers/convertStrokesWHandicapToPoints';
 
 const useStyles = makeStyles((theme) => ({
@@ -26,25 +27,43 @@ const HolesFormContainer = styled.div`
   flex-direction: column;
 `;
 
-export const Home = () => {
+export const Home = ({ history }) => {
   const classes = useStyles();
-  const [player, setPlayer] = useState('');
+  const [coursesName, setCoursesName] = useState([]);
+  const [selectedCourse, setSelectedCourse] = useState('');
   const [result, setResult] = useState([]);
   const [liveScore, setLiveScore] = useState(0);
   const [currentHole, setCurrentHole] = useState('');
   const [errorCode, setErrorCode] = useState();
   const [openAlert, setOpenAlert] = useState(false);
   const [playerHandicap, setplayerHandicap] = useState();
+  const [user, isFetchingUser] = useCurrentUser();
+  const currentUserId = user && user.id;
+
+  useEffect(() => {
+    !currentUserId && !isFetchingUser && history.push('/login');
+  }, [isFetchingUser, history, currentUserId, user]);
+
+  useEffect(() => {
+    const getCourses = async () => {
+      const courses = await fetchCoursesPerUser(currentUserId); 
+      courses && courses.map((course) => {
+        setCoursesName(coursesName => [...coursesName, course]);
+        return undefined;
+      })
+    };
+    currentUserId && getCourses();
+  }, [user, currentUserId])
 
   useEffect(() => {
     const getPlayerHandicap = async () => {
       setResult([]);
-      const data = await fetchPlayer(player);
+      const data = await fetchPlayer(currentUserId, selectedCourse);
       setplayerHandicap(data);
       setLiveScore(0);
     }
-    player && getPlayerHandicap();
-  },[player])
+    currentUserId && selectedCourse && getPlayerHandicap();
+  },[currentUserId, selectedCourse, user])
 
   const liveScoreCreator =  useCallback(() => {
     const newArray = result.slice();
@@ -60,27 +79,27 @@ export const Home = () => {
 
   useEffect(() => {
     result.length && liveScoreCreator()
-  },[result, player, liveScoreCreator])
+  },[result, liveScoreCreator])
 
-
-  const handlePlayerChange = (playerName) => {
-    setPlayer(playerName);
+  const handleCourseChange = (courseName) => {
+    setSelectedCourse(courseName);
     setResult([]);
   };
 
   const clearInputs = () => {
     setResult([]);
     setLiveScore(0);
-    setPlayer('');
+    setSelectedCourse('');
   };
 
   const  send = async (event) => {
     event.preventDefault();
-    if (playerHandicap[0] && result[0]) {
+    if (playerHandicap && result) {
       try {
         const gameResult = await createGameResult({
           playerHandicap,
-          result
+          result,
+          selectedCourse
         })
         gameResult === 'success'
         ? setOpenAlert(true)
@@ -126,18 +145,19 @@ export const Home = () => {
 
   const handleCloseAlert = (event) => {
     setErrorCode();
-    clearInputs()
+    clearInputs();
+    setSelectedCourse('');
     setOpenAlert(false);
   };
 
   return (
     <Container>
       <Form className={classes.root} noValidate autoComplete="off"> 
-        <Players handlePlayerChange={ handlePlayerChange } value={ player }/>
+        <Courses handleCourseChange={ handleCourseChange } value={ selectedCourse } courses={ coursesName } />
         <HolesFormContainer>
           <ListOfHoles 
             handleHoleResult={ handleHoleResult } 
-            player={ player } 
+            selectedCourse={ selectedCourse } 
             liveScore={ liveScore }
             currentHole={ currentHole }
           />

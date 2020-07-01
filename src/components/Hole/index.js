@@ -8,7 +8,7 @@ const Container = styled.div`
   align-items: center;
 `;
 
-export const Hole = ({ holeNumber, handleHoleResult, player, liveScore, currentHole }) => {  
+export const Hole = ({ holeNumber, handleHoleResult, selectedCourse, liveScore, currentHole }) => {  
   const PossibleScore = [
     {
       value: 0,
@@ -63,15 +63,15 @@ export const Hole = ({ holeNumber, handleHoleResult, player, liveScore, currentH
   return(
     <Container>
       <TextField
-        id="hole-number"
+        id="Forat nº"
         select
-        label={`Hole number: ${holeNumber}`}
+        label={`Forat nº: ${holeNumber}`}
         onChange={ setHoleResult }
         SelectProps={{
           native: true,
         }}
         variant="outlined"
-        disabled={ player ? false : true }
+        disabled={ selectedCourse && selectedCourse.length ? false : true }
       >
         { 
           PossibleScore.map((option) => (
