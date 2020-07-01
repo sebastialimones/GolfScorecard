@@ -1,10 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import { Layout } from './Layout';
 import { Home } from '../components/Home';
 import { Dashboard } from '../components/Dashboard';
-import { Handicap } from '../components/Handicap';
+import { NewCourse } from '../components/NewCourse';
 import { Login } from '../components/Login';
 import { SignUp } from '../components/SignUp';
 
@@ -13,17 +13,19 @@ export const Routes = () => {
   const renderLogin = (props) => <Login { ...props } />;
   const renderSignUp = (props) => <SignUp { ...props } />;
   const renderDashboard = (props) => <Dashboard { ...props } />;
-  const renderHandicap = (props) => <Handicap { ...props } />;
+  const renderNewCourse = (props) => <NewCourse { ...props } />;
 
   return(
     <Router>
-      <Layout>
-        <Route exact path="/" render={ renderHome } />
-        <Route exact path="/login" render={ renderLogin } />
-        <Route exact path="/signup" render={ renderSignUp } />
-        <Route exact path="/dashboard" render={ renderDashboard } />
-        <Route exact path="/handicap" render={ renderHandicap } />
-      </Layout>
+      <Switch>
+        <Layout>
+          <Route exact path="/" render={ renderHome } />
+          <Route exact path="/login" render={ renderLogin } />
+          <Route exact path="/signup" render={ renderSignUp } />
+          <Route exact path="/dashboard" render={ renderDashboard } />
+          <Route exact path="/newCourse" render={ renderNewCourse } />
+        </Layout>
+      </Switch>
     </Router>
 
   )

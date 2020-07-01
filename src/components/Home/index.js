@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 
-import { auth } from '../../services/admin';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '../Elements/button';
 import { ListOfHoles } from '../ListOfHoles';
-import { createGameResult, fetchPlayer } from '../../services';
+import { createGameResult, fetchPlayer, fetchCoursesPerUser } from '../../services';
 import { Notification } from '../Notification';
-import { Players } from '../Players';
+import { Courses } from '../Courses';
 import { useCurrentUser } from '../../hooks/userCurrentUser';
 import { convertStrokesWHandicapToPoints } from '../Helpers/convertStrokesWHandicapToPoints';
 
@@ -30,7 +29,8 @@ const HolesFormContainer = styled.div`
 
 export const Home = ({ history }) => {
   const classes = useStyles();
-  const [player, setPlayer] = useState('');
+  const [coursesName, setCoursesName] = useState([]);
+  const [selectedCourse, setSelectedCourse] = useState('');
   const [result, setResult] = useState([]);
   const [liveScore, setLiveScore] = useState(0);
   const [currentHole, setCurrentHole] = useState('');
@@ -41,20 +41,29 @@ export const Home = ({ history }) => {
   const currentUserId = user && user.id;
 
   useEffect(() => {
-    if (!currentUserId && !isFetchingUser) {
-      history.push('/login');
-    }
+    !currentUserId && !isFetchingUser && history.push('/login');
   }, [isFetchingUser, history, currentUserId, user]);
+
+  useEffect(() => {
+    const getCourses = async () => {
+      const courses = await fetchCoursesPerUser(currentUserId); 
+      courses && courses.map((course) => {
+        setCoursesName(coursesName => [...coursesName, course]);
+        return undefined;
+      })
+    };
+    currentUserId && getCourses();
+  }, [user, currentUserId])
 
   useEffect(() => {
     const getPlayerHandicap = async () => {
       setResult([]);
-      const data = await fetchPlayer(player);
+      const data = await fetchPlayer(currentUserId, selectedCourse);
       setplayerHandicap(data);
       setLiveScore(0);
     }
-    player && getPlayerHandicap();
-  },[player, user])
+    currentUserId && selectedCourse && getPlayerHandicap();
+  },[currentUserId, selectedCourse, user])
 
   const liveScoreCreator =  useCallback(() => {
     const newArray = result.slice();
@@ -70,23 +79,17 @@ export const Home = ({ history }) => {
 
   useEffect(() => {
     result.length && liveScoreCreator()
-  },[result, player, liveScoreCreator])
+  },[result, liveScoreCreator])
 
-
-  const logout = () => {
-    auth.signOut();
-  };
-
-
-  const handlePlayerChange = (playerName) => {
-    setPlayer(playerName);
+  const handleCourseChange = (courseName) => {
+    setSelectedCourse(courseName);
     setResult([]);
   };
 
   const clearInputs = () => {
     setResult([]);
     setLiveScore(0);
-    setPlayer('');
+    setSelectedCourse('');
   };
 
   const  send = async (event) => {
@@ -95,7 +98,8 @@ export const Home = ({ history }) => {
       try {
         const gameResult = await createGameResult({
           playerHandicap,
-          result
+          result,
+          selectedCourse
         })
         gameResult === 'success'
         ? setOpenAlert(true)
@@ -141,18 +145,19 @@ export const Home = ({ history }) => {
 
   const handleCloseAlert = (event) => {
     setErrorCode();
-    clearInputs()
+    clearInputs();
+    setSelectedCourse('');
     setOpenAlert(false);
   };
 
   return (
     <Container>
       <Form className={classes.root} noValidate autoComplete="off"> 
-        <Players handlePlayerChange={ handlePlayerChange } value={ player }/>
+        <Courses handleCourseChange={ handleCourseChange } value={ selectedCourse } courses={ coursesName } />
         <HolesFormContainer>
           <ListOfHoles 
             handleHoleResult={ handleHoleResult } 
-            player={ player } 
+            selectedCourse={ selectedCourse } 
             liveScore={ liveScore }
             currentHole={ currentHole }
           />
@@ -165,13 +170,7 @@ export const Home = ({ history }) => {
           open={ openAlert }
           severity={errorCode ? errorCode.severity : "success" }
         />
-        <div>
-        <button type="button" onClick={ logout }>
-          Logout
-        </button>
-      </div>
     </Container>
-    
   );
 }
 

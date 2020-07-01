@@ -1,22 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import { HamburguerMenu } from '../Elements/hamburguerMenu';
+import { useCurrentUser } from '../../hooks/userCurrentUser';
+import { withRouter } from 'react-router-dom';
 
-const StyledLink = styled(Link)`
-  border-radius: 6px;
-  background-color: #FC587E;
-  color: white;
-  border: 1px solid white;
-  font-size: 1rem;
-  padding: 1em;
-  margin: 1em;
-  text-decoration: none;
-  cursor: pointer;
-  &:focus {
-    outline: none;
-    box-shadow: 0px 0px 5px 0px #FC587E;
-  }
-`;
 const Container = styled.header`
   align-items: center;
   display: flex;
@@ -35,14 +23,29 @@ const HeaderText = styled.p`
 `;
 
 const HeaderNameMapper = {
-  '/': 'Scorecard',
-  '/dashboard': 'Dashboard',
+  '/': 'Resultat',
+  '/dashboard': 'Estadístiques',
   '/login': 'Entrar a desastres de golf',
   '/signup': 'Nou usuari',
+  '/newcourse': 'Crear camp',
 };
 
-export const Header = () => {
-  const currentLocation = useLocation()
+const Header = ({ history }) => {
+  const currentLocation = useLocation();
+  const [user, isFetchingUser] = useCurrentUser();
+
+  const routeCreateCourse = () => {
+    history.push('/newcourse');
+  };
+
+  const routeResultsClick = () => {
+    history.push('/');
+  };
+
+  const routeDashboardHomeClick = () => {
+    history.push('/dashboard');
+  };
+
   return (
     <Container>
       <HeaderContainer>
@@ -52,14 +55,13 @@ export const Header = () => {
         }
         </HeaderText>
       </HeaderContainer>
-        {
-        currentLocation.pathname === "/dashboard" &&
-          <StyledLink to="/">Scorecard</StyledLink>
-        }
-        {
-        currentLocation.pathname === "/" &&
-          <StyledLink to="/dashboard">Dashboard</StyledLink>
-        }
+        { 
+        !isFetchingUser && user 
+        ? <HamburguerMenu routeCreateCourse={ routeCreateCourse } routeDashboardHomeClick={ routeDashboardHomeClick } currentLocation={ currentLocation } routeResultsClick={ routeResultsClick }></HamburguerMenu>
+        : null
+         }
     </Container>
   )
 };
+
+export default withRouter(Header);

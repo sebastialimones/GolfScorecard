@@ -102,7 +102,6 @@ export const Login = ({ history }) => {
   };
 
   const signUp = (event) => {
-    console.log(event)
     event.preventDefault();
     if(event){
       history.push('/signup');

@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import styled, { css } from 'styled-components';
+import styled  from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
-import IconButton from '@material-ui/core/IconButton';
 import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import Input from '@material-ui/core/Input';
 import FormControl from '@material-ui/core/FormControl';
-import passwordVisibile from '../../assets/show_pw.svg';
-import passwordNotVisibile from '../../assets/hide_pw.png';
 import { auth } from '../../services';
 import { errorCodes } from './helpers';
 import { Notification } from '../Notification';
@@ -44,17 +40,18 @@ const FormArea = styled.div`
   `}
 `;
 
-const PositionedButton = styled(Button)`
-  margin: 2rem 0 0 0;
+const BackToLogin = styled.div`
+  margin: 2rem 0 0 1.8em;
+  color: gray;
 `;
 
-const Icon = styled.div`
-  height: 1rem;
-  width: 1rem;
-  background: url(${passwordNotVisibile}) no-repeat left center;
-    ${props => props.passwordVisibility && css`
-      background: url(${passwordVisibile}) no-repeat left center;
-  `}
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const PositionedButton = styled(Button)`
+  margin: 2rem 0 0 0;
 `;
 
 const useStyles = makeStyles(theme => ({
@@ -65,28 +62,22 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const SignUp = ({ history }) => {
-
   const [newEmail, setNewEmail] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [errorCode, setErrorCode] = useState();
   const [openAlert, setOpenAlert] = useState(false);
-  const [passwordVisibility, setPasswordVisibility] = useState(false);
   const [user, isFetchingUser] = useCurrentUser();
   const userId = user && user.id;
   const classes = useStyles();
 
   useEffect(() => {
-    userId &&
+    userId && !isFetchingUser &&
     createUser(user)
-  }, [userId, user]);
+  }, [userId, user, isFetchingUser]);
 
   const clearInputs = () => {
     setNewEmail('');
     setNewPassword('');
-  };
-
-  const handlePasswordVisibility = () => {
-    setPasswordVisibility(!passwordVisibility);
   };
 
   const handleNewEmailChange = (event) => {
@@ -104,6 +95,10 @@ export const SignUp = ({ history }) => {
     setErrorCode();
     clearInputs()
     setOpenAlert(false);
+  };
+
+  const handleBackToLogin = (event) => {
+    history.push('./login')
   };
 
   const register = async (event) => {
@@ -137,22 +132,14 @@ export const SignUp = ({ history }) => {
            <Input
              id="standard-adornment-password"
              onChange={ handleNewPasswordChange }
-             type={passwordVisibility ? 'text' : 'password'}
-             value={newPassword}
-             endAdornment={
-               <InputAdornment position="end">
-                 <IconButton
-                   aria-label="toggle password visibility"
-                   onClick={ handlePasswordVisibility }
-                   onMouseDown={ handlePasswordVisibility }
-                 >
-                   <Icon passwordVisibility={ passwordVisibility} />
-                 </IconButton>
-               </InputAdornment>
-             }
+             type={ 'text' }
+             value={ newPassword }
            />
         </FormControl>
-        <PositionedButton type="submit" primary>Registra't</PositionedButton>
+        <ButtonContainer>
+          <PositionedButton type="submit" primary>Registra't</PositionedButton>
+          <BackToLogin onClick={ handleBackToLogin }>Torna a inici de sessió</BackToLogin>
+        </ButtonContainer>
         </Form>
       </FormArea>
       <Notification

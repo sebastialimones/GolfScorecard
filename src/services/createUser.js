@@ -5,6 +5,7 @@ export const createUser = async (user) => {
     const newUser = {
       timestamp: Timestamp.now(),
       uid: user.id,
+      email: user.email,
     };
     await db.collection('users').doc(user.id).set(newUser);
     return;
