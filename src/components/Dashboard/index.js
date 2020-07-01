@@ -10,8 +10,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import { useCurrentUser } from '../../hooks/userCurrentUser';
 
-const Container = styled.div` 
-`;
+const Container = styled.div` `;
 
 const MenuContainer = styled.div`
   display: flex;
@@ -23,8 +22,7 @@ const DataContainer = styled.div`
   margin: 1em;
 `;
 
-const SwitchContainer = styled.div`
-`;
+const SwitchContainer = styled.div``;
 
 const IOSSwitch = withStyles((theme) => ({
   root: {

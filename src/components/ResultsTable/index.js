@@ -81,7 +81,7 @@ export const ResultsTable = ({ results, playerHandicap }) => {
       getResultPerHole(holeNumber + 1, results);
     } 
   },[getResultPerHole, results]);
-  
+
   useEffect(() => {
     if(results){
       iterateOnAllHoles()
@@ -115,9 +115,11 @@ export const ResultsTable = ({ results, playerHandicap }) => {
               </StyledTableCell>
               <StyledTableCell align="left">{row.handicap}</StyledTableCell>
               {
-                row.averageResultPerHole < row.handicap + 1
+                row.averageResultPerHole < row.handicap + 1 &&
+                (row.numberOfMosques/row.numberOfGames * 100) < 15 
                   ? <StyledTableCellBest align="left">{row.averageResultPerHole}</StyledTableCellBest>
-                  : row.averageResultPerHole > row.handicap + 1.5 
+                  : row.averageResultPerHole > row.handicap + 1.5 ||
+                  (row.numberOfMosques/row.numberOfGames * 100) > 30 
                     ? <StyledTableCellWorst align="left">{row.averageResultPerHole}</StyledTableCellWorst>
                     : <StyledTableCell align="left">{row.averageResultPerHole}</StyledTableCell>
               }
