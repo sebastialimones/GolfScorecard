@@ -5,25 +5,25 @@ export const errorCodes = {
   'auth/email-already-in-use': {
     id: 1,
     code: 'email-already-in-use',
-    message: 'Error: Already exists an account with the given email address.',
+    message: 'Error: Ya existe una cuenta con tu cuenta de email.',
     severity: 'error',
   },
   'auth/invalid-email': {
     id: 2,
     code: 'invalid-email',
-    message: 'Error: Email address is not valid.',
+    message: 'Error: Este email no es válido.',
     severity: 'error',
   },
   'auth/operation-not-allowed': {
     id: 3,
     code: 'operation-not-allowed',
-    message: 'Error: Email/password accounts are not enabled.',
+    message: 'Error: Email/password no es válido.',
     severity: 'error',
   },
   'auth/weak-password': {
     id: 4,
     code: 'weak-password',
-    message: 'Error: Password is not strong enough.',
+    message: 'Error: Password es demasiado débil.',
     severity: 'error',
   },
 };

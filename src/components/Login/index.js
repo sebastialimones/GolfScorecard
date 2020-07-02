@@ -38,10 +38,21 @@ const ButtonsContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  margin-top: 1.5em;
 `;
 
-const PositionedButton = styled(Button)`
-  margin: 2rem 0 0 0;
+const PositionedButtonLogin = styled(Button)`
+  margin: 1rem 0 0 0;
+`;
+
+const PositionedButtonSignUp = styled(Button)`
+  margin: 1rem 0 0 0;
+`;
+
+const  ForgotPassword = styled.div`
+  margin: 1.7rem 0 0 0;
+  font-size: 12px;
+  color: gray;
 `;
 
 const useStyles = makeStyles(theme => ({
@@ -80,6 +91,20 @@ export const Login = ({ history }) => {
     setPassword(event.currentTarget.value);
   };
 
+  const handleForgotPassword = async () => {
+    try {
+      await auth.sendPasswordResetEmail(email);
+      setOpenAlert(true);
+    } catch (error) {
+      console.log(error)
+      const errorCode = errorCodes[error.code];
+      errorCode.message = error.message ? error.message: errorCode.message;
+      console.log(errorCode, errorCode.message)
+      setErrorCode(errorCode);
+      setOpenAlert(true);
+    }
+  };
+
   const login = async (event) => {
     event.preventDefault();
     try {
@@ -87,7 +112,7 @@ export const Login = ({ history }) => {
     } catch (error) {
       const errorCode = errorCodes[error.code];
       errorCode.message = error.message ? error.message: errorCode.message;
-      setOpenAlert(true)
+      setOpenAlert(true);
       setErrorCode(errorCode);
     }
   };
@@ -127,17 +152,18 @@ export const Login = ({ history }) => {
             className={classes.root}
           />
           <ButtonsContainer>
-            <PositionedButton primary type="submit">Inicia sessió</PositionedButton>
-            <PositionedButton type="button" onClick={ signUp }>Registra't</PositionedButton>
+            <PositionedButtonLogin primary type="submit">Inicia sessió</PositionedButtonLogin>
+            <PositionedButtonSignUp type="button" onClick={ signUp }>Registra't</PositionedButtonSignUp>
           </ButtonsContainer>
+            <ForgotPassword onClick={ handleForgotPassword }>Has oblida't la contrasenya?</ForgotPassword>
         </Form>
       </FormArea>
       
       <Notification
         onClose={ handleCloseAlert }
-        message={ errorCode && errorCode.message }
+        message={ errorCode ? errorCode.message : "Mail enviado!" }
         open={ openAlert }
-        severity={errorCode && errorCode.severity}
+        severity={  errorCode ? errorCode.severity : "success" }
       />
     </Wrapper>
   );

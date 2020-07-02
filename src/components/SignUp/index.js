@@ -41,7 +41,8 @@ const FormArea = styled.div`
 `;
 
 const BackToLogin = styled.div`
-  margin: 2rem 0 0 1.8em;
+  margin: 1.7rem 0 0 0;
+  font-size: 12px;
   color: gray;
 `;
 
