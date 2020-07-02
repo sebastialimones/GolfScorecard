@@ -168,7 +168,7 @@ export const Home = ({ history }) => {
           onClose={ handleCloseAlert }
           message={ errorCode ? errorCode.message : "Perfe!" }
           open={ openAlert }
-          severity={errorCode ? errorCode.severity : "success" }
+          severity={ errorCode ? errorCode.severity : "success" }
         />
     </Container>
   );
