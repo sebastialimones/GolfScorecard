@@ -1,14 +1,35 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
+import { makeStyles } from '@material-ui/core/styles';
 import { LiveScore } from '../LiveScore';
 import styled from 'styled-components';
 
 const Container = styled.div`
   display: flex;
   align-items: center;
+  margin-top: 0.7em;
 `;
 
-export const Hole = ({ holeNumber, handleHoleResult, selectedCourse, liveScore, currentHole }) => {  
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& .MuiTextField-root': {
+      margin: theme.spacing(1),
+      width: '25ch',
+    },
+    '& .MuiSelect-outlined': {
+      minWidth: '170px',
+    },
+  },
+  input: {
+    '& .MuiOutlinedInput': {
+      marginBottom: '10px',
+    }
+  },
+}));
+
+export const Hole = ({ holeNumber, handleHoleResult, selectedCourse, liveScore, currentHole, label, value }) => {  
+  const classes = useStyles();
+
   const PossibleScore = [
     {
       value: 0,
@@ -63,15 +84,17 @@ export const Hole = ({ holeNumber, handleHoleResult, selectedCourse, liveScore, 
   return(
     <Container>
       <TextField
+        className={ classes.root }
         id="Forat nº"
         select
-        label={`Forat nº: ${holeNumber}`}
+        label={ label ? label : `Forat nº: ${ holeNumber }`}
         onChange={ setHoleResult }
         SelectProps={{
           native: true,
         }}
         variant="outlined"
         disabled={ selectedCourse && selectedCourse.length ? false : true }
+        value={ value ? value : undefined }
       >
         { 
           PossibleScore.map((option) => (
@@ -82,7 +105,7 @@ export const Hole = ({ holeNumber, handleHoleResult, selectedCourse, liveScore, 
         }
       </TextField>
       {
-        currentHole === holeNumber &&
+        currentHole && currentHole === holeNumber &&
         <LiveScore liveScore={ liveScore }></LiveScore>
       }
     </Container>

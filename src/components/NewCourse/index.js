@@ -64,11 +64,12 @@ export const NewCourse = ({ history }) => {
     setCourseName('');
   };
 
-  const  send = async (event) => {
+  const send = async (event) => {
     event.preventDefault();
     if(courseName && coursePar.length === 18){
       try {
         await createPlayerHandicap({
+          email: user.email,
           uid: currentUserId,
           course: courseName,
           personalHandicap,
@@ -115,6 +116,7 @@ export const NewCourse = ({ history }) => {
         newArray.push(holeResult);
       }
     const zeroFilter = newArray.filter(a => a.result !== 0);
+    zeroFilter.sort((result1, result2) => result1.holeNumber - result2.holeNumber)
     setCoursePar(zeroFilter);
   };
 
@@ -155,7 +157,7 @@ export const NewCourse = ({ history }) => {
       />      
       <CourseHandicap>Nombre de cops de cada forat del camp</CourseHandicap>
         <HolesFormContainer>
-          <ListOfHoles handleHoleResult={ handleCoursePar } selectedCourse={ courseName }/>
+          <ListOfHoles handleHoleResult={ handleCoursePar } selectedCourse={ courseName } />
         </HolesFormContainer>
         <CourseHandicap>Introdueix els forats on tens algun cop</CourseHandicap>
         <HolesFormContainer>

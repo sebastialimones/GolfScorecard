@@ -7,7 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { purple } from '@material-ui/core/colors';
 
-export const HamburguerMenu = ({ routeCreateCourse, routeDashboardHomeClick, routeResultsClick }) => {
+export const HamburguerMenu = ({ routeCreateCourse, routeDashboardHomeClick, routeResultsClick, routeCoursesClick }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -37,6 +37,12 @@ export const HamburguerMenu = ({ routeCreateCourse, routeDashboardHomeClick, rou
     handleClose();
   };
 
+  const handleCourseClick = (event) => {
+    event.preventDefault();
+    routeCoursesClick();
+    handleClose();
+  };
+
   const handleLogOut = () => {
     auth.signOut();
     handleClose();
@@ -51,8 +57,8 @@ export const HamburguerMenu = ({ routeCreateCourse, routeDashboardHomeClick, rou
       onClick={ handleClick }
       style={{ color: purple[50] }}
       >
-      <MoreVertIcon fontSize='large'/>
-    </IconButton>
+        <MoreVertIcon fontSize='large'/>
+      </IconButton>
     <Menu
       id="fade-menu"
       anchorEl={ anchorEl }
@@ -64,6 +70,7 @@ export const HamburguerMenu = ({ routeCreateCourse, routeDashboardHomeClick, rou
       <MenuItem onClick={ handleResultsClick }>Tarjeta</MenuItem>
       <MenuItem onClick={ handleDashboardClick }>Estadístiques</MenuItem>
       <MenuItem onClick={ handleCreateCourse }>Crear camp</MenuItem>
+      <MenuItem onClick={ handleCourseClick }>Camps</MenuItem>
       <MenuItem onClick={ handleLogOut }>Logout</MenuItem>
     </Menu>
   </div>
