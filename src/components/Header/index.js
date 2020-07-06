@@ -26,7 +26,6 @@ const HeaderNameMapper = {
   '/': 'Resultat',
   '/dashboard': 'Estadístiques',
   '/login': 'Entrar a desastres de golf',
-  '/signup': 'Nou usuari',
   '/newcourse': 'Crear camp',
   '/courses': 'Camps',
 };
