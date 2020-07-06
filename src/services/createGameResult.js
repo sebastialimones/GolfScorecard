@@ -1,9 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
 import { db, Timestamp } from './admin';
 
-export const createGameResult = async ({ playerHandicap, result, selectedCourse }) => {
+export const createGameResult = async ({ user, playerHandicap, result, selectedCourse }) => {
   try {
     const newGameResult = {
+      email: user.email,
       result,
       timestamp: Timestamp.now(),
       id: uuidv4(),

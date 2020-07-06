@@ -86,7 +86,7 @@ export const ResultsTable = ({ results, playerHandicap }) => {
     if(results){
       iterateOnAllHoles()
     }
-  },[results, iterateOnAllHoles])
+  },[results, iterateOnAllHoles]);
   
   const createData = (forat, averageResultPerHole, bestResult, numberOfMosques, handicap, numberOfGames) => {
     setRows(rows => [ ...rows, { forat, averageResultPerHole, bestResult, numberOfMosques, handicap, numberOfGames }])
@@ -116,7 +116,7 @@ export const ResultsTable = ({ results, playerHandicap }) => {
               <StyledTableCell align="left">{row.handicap}</StyledTableCell>
               {
                 row.averageResultPerHole < row.handicap + 1 &&
-                (row.numberOfMosques/row.numberOfGames * 100) < 15 
+                (row.numberOfMosques/row.numberOfGames * 100) < 21 
                   ? <StyledTableCellBest align="left">{row.averageResultPerHole}</StyledTableCellBest>
                   : row.averageResultPerHole > row.handicap + 1.5 ||
                   (row.numberOfMosques/row.numberOfGames * 100) > 30 

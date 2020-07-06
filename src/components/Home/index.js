@@ -18,10 +18,13 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
+
 const Container = styled.div`
   margin-left: 1em;
 `;
+
 const Form = styled.form``;
+
 const HolesFormContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -97,6 +100,7 @@ export const Home = ({ history }) => {
     if (playerHandicap && result) {
       try {
         const gameResult = await createGameResult({
+          user,
           playerHandicap,
           result,
           selectedCourse

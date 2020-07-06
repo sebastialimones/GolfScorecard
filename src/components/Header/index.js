@@ -28,6 +28,7 @@ const HeaderNameMapper = {
   '/login': 'Entrar a desastres de golf',
   '/signup': 'Nou usuari',
   '/newcourse': 'Crear camp',
+  '/courses': 'Camps',
 };
 
 const Header = ({ history }) => {
@@ -46,6 +47,10 @@ const Header = ({ history }) => {
     history.push('/dashboard');
   };
 
+  const routeCoursesClick = () => {
+    history.push('/courses');
+  };
+
   return (
     <Container>
       <HeaderContainer>
@@ -57,7 +62,12 @@ const Header = ({ history }) => {
       </HeaderContainer>
         { 
         !isFetchingUser && user 
-        ? <HamburguerMenu routeCreateCourse={ routeCreateCourse } routeDashboardHomeClick={ routeDashboardHomeClick } currentLocation={ currentLocation } routeResultsClick={ routeResultsClick }></HamburguerMenu>
+        ? <HamburguerMenu 
+          routeCreateCourse={ routeCreateCourse } 
+          routeDashboardHomeClick={ routeDashboardHomeClick } 
+          routeCoursesClick= { routeCoursesClick }
+          routeResultsClick={ routeResultsClick }>
+          </HamburguerMenu>
         : null
          }
     </Container>

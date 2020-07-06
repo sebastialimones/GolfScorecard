@@ -1,10 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
 import { db, Timestamp } from './admin';
 
-export const createPlayerHandicap = async ({ uid, course, personalHandicap, coursePar }) => {
-  console.log(uid, course, personalHandicap, coursePar)
+export const createPlayerHandicap = async ({ email, uid, course, personalHandicap, coursePar }) => {
   try {
     const newHandicapResult = {
+      email: email,
       uid: uid,
       result: personalHandicap,
       holeHandicap: coursePar,

@@ -8,3 +8,4 @@ export * from './createPlayerHandicap';
 export * from './fetchPlayer';
 export * from './createUser';
 export * from './fetchCoursesPerUser';
+export * from './updatePlayerHandicap';
