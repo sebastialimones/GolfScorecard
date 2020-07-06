@@ -3,11 +3,12 @@ import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { auth } from '../../services';
-import { errorCodes } from './helpers';
+import { signUpErrorCodes, loginErrorCodes } from './helpers';
 import { Notification } from '../Notification';
 import { useCurrentUser } from '../../hooks/userCurrentUser';
 import { Button } from '../../components/Elements/button';
 import media from '../../styles/media'
+import { createUser } from '../../services/createUser';
 
 const Wrapper = styled.div`
   background-color: white;
@@ -75,6 +76,7 @@ export const Login = ({ history }) => {
   useEffect(() => {
     if (!isFetchingUser && userId) {
       history.push('/');
+      createUser(user)
     }
   }, [userId, user, isFetchingUser, history]);
 
@@ -97,7 +99,7 @@ export const Login = ({ history }) => {
       setOpenAlert(true);
     } catch (error) {
       console.log(error)
-      const errorCode = errorCodes[error.code];
+      const errorCode = loginErrorCodes[error.code];
       errorCode.message = error.message ? error.message: errorCode.message;
       console.log(errorCode, errorCode.message)
       setErrorCode(errorCode);
@@ -110,7 +112,7 @@ export const Login = ({ history }) => {
     try {
       await auth.signInWithEmailAndPassword(email, password);
     } catch (error) {
-      const errorCode = errorCodes[error.code];
+      const errorCode = loginErrorCodes[error.code];
       errorCode.message = error.message ? error.message: errorCode.message;
       setOpenAlert(true);
       setErrorCode(errorCode);
@@ -126,12 +128,19 @@ export const Login = ({ history }) => {
     setOpenAlert(false);
   };
 
-  const signUp = (event) => {
+  const signUp = async (event) => {
     event.preventDefault();
-    if(event){
-      history.push('/signup');
+    try {
+      await auth.createUserWithEmailAndPassword(email, password);
+      history.push('/');
+    } catch (error) {
+      console.log(error)
+      const errorCode = signUpErrorCodes[error.code];
+      errorCode.message = error.message ? error.message: errorCode.message;
+      setOpenAlert(true)
+      setErrorCode(errorCode);
     }
-  };
+  }
 
   return (
     <Wrapper>
