@@ -44,7 +44,7 @@ export const Home = ({ history }) => {
   const currentUserId = user && user.id;
 
   useEffect(() => {
-    !currentUserId && !isFetchingUser && history.push('/login');
+    !currentUserId && !isFetchingUser && history.push('/landing');
   }, [isFetchingUser, history, currentUserId, user]);
 
   useEffect(() => {
@@ -167,7 +167,7 @@ export const Home = ({ history }) => {
           />
         </HolesFormContainer>
       </Form>
-        <Button type="submit" primary onClick={ send }>Send</Button>
+        <Button type="submit" primary onClick={ send }>Enviar</Button>
         <Notification
           onClose={ handleCloseAlert }
           message={ errorCode ? errorCode.message : "Perfe!" }

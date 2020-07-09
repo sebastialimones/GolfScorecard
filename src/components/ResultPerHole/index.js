@@ -11,16 +11,16 @@ export const ResultPerHole = ({ result }) => {
     <ResultContainer>
       <ListContainer>
         <List>
-          {`Forat: ${result.holeNumber}`}
+          {`Hoyo: ${result.holeNumber}`}
         </List>
         <List>
           {`Par: ${result.par}`}
         </List>
         <List>
-          {`Cops: ${result.strokes}`}
+          {`Golpes: ${result.strokes}`}
         </List>
         <List>
-          {`Punts: ${result.points}`}
+          {`Puntos: ${result.points}`}
         </List>
       </ListContainer>
     </ResultContainer>

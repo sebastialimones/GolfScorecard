@@ -68,6 +68,14 @@ export const Hole = ({ holeNumber, handleHoleResult, selectedCourse, liveScore, 
       label: 8,
     },
     {
+      value: 9,
+      label: 9,
+    },
+    {
+      value: 10,
+      label: 10,
+    },
+    {
       value: "mosca",
       label: "🦟",
     },
@@ -85,9 +93,9 @@ export const Hole = ({ holeNumber, handleHoleResult, selectedCourse, liveScore, 
     <Container>
       <TextField
         className={ classes.root }
-        id="Forat nº"
+        id="Hoyo nº"
         select
-        label={ label ? label : `Forat nº: ${ holeNumber }`}
+        label={ label ? label : `Hoyo nº: ${ holeNumber }`}
         onChange={ setHoleResult }
         SelectProps={{
           native: true,
