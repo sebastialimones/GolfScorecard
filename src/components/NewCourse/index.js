@@ -23,7 +23,14 @@ const Container = styled.div`
 `;
 const Form = styled.form``;
 const HolesFormContainer = styled.div``;
-const CourseHandicap = styled.h1`
+const CourseHandicap = styled.div`
+  margin-top: 25px;
+  font-size: 34px;
+  font-weight: 800;
+  padding: 7px;
+`;
+const CourseHandicapSubtitle = styled.div`
+  font-size: 20px;
   padding: 7px;
 `;
 
@@ -39,7 +46,7 @@ export const NewCourse = ({ history }) => {
   const currentUserId = user && user.id;
 
   useEffect(() => {
-    !currentUserId && !isFetchingUser && history.push('/login');
+    !currentUserId && !isFetchingUser && history.push('/landing');
   }, [isFetchingUser, history, currentUserId, user]);
 
   useEffect(() => {
@@ -149,17 +156,19 @@ export const NewCourse = ({ history }) => {
     <Container>
       <Form className={classes.root} noValidate autoComplete="off"> 
       <TextField
-        id="camp"
-        label="Nom del camp"
+        id="campo"
+        label="Nombre del campo"
         onChange={ handleCourseChange }
         value={ courseName }
         className={classes.root}
       />      
-      <CourseHandicap>Nombre de cops de cada forat del camp</CourseHandicap>
+      <CourseHandicap>Handicap del hoyo.</CourseHandicap>
+      <CourseHandicapSubtitle>Ej: Hoyo 1 - par 4</CourseHandicapSubtitle>
         <HolesFormContainer>
           <ListOfHoles handleHoleResult={ handleCoursePar } selectedCourse={ courseName } />
         </HolesFormContainer>
-        <CourseHandicap>Introdueix els forats on tens algun cop</CourseHandicap>
+        <CourseHandicap>¿Dónde tienes golpes?</CourseHandicap>
+        <CourseHandicapSubtitle>Ej: Hoyo 1 - 1 golpe</CourseHandicapSubtitle>
         <HolesFormContainer>
           <ListOfHoles handleHoleResult={ handlePersonalHandicap } selectedCourse={ courseName }/>
         </HolesFormContainer>

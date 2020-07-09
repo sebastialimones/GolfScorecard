@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { auth } from '../../services';
 import { signUpErrorCodes, loginErrorCodes } from './helpers';
 import { Notification } from '../Notification';
-import { useCurrentUser } from '../../hooks/userCurrentUser';
 import { Button } from '../../components/Elements/button';
 import media from '../../styles/media'
-import { createUser } from '../../services/createUser';
 
 const Wrapper = styled.div`
   background-color: white;
@@ -28,11 +26,10 @@ const Form = styled.form`
 `;
 
 const FormArea = styled.div`
-  padding: 3rem 2rem;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  ${media.mediumScreen`width: 100%;`}
 `;
 
 const ButtonsContainer = styled.div`
@@ -68,17 +65,7 @@ export const Login = ({ history }) => {
   const [password, setPassword] = useState('');
   const [errorCode, setErrorCode] = useState();
   const [openAlert, setOpenAlert] = useState(false);
-  const [user, isFetchingUser] = useCurrentUser();
-  const userId = user && user.id;
-
   const classes = useStyles();
-
-  useEffect(() => {
-    if (!isFetchingUser && userId) {
-      history.push('/');
-      createUser(user)
-    }
-  }, [userId, user, isFetchingUser, history]);
 
   const clearInputs = () => {
     setEmail('');
@@ -98,10 +85,8 @@ export const Login = ({ history }) => {
       await auth.sendPasswordResetEmail(email);
       setOpenAlert(true);
     } catch (error) {
-      console.log(error)
       const errorCode = loginErrorCodes[error.code];
       errorCode.message = error.message ? error.message: errorCode.message;
-      console.log(errorCode, errorCode.message)
       setErrorCode(errorCode);
       setOpenAlert(true);
     }
@@ -132,9 +117,7 @@ export const Login = ({ history }) => {
     event.preventDefault();
     try {
       await auth.createUserWithEmailAndPassword(email, password);
-      history.push('/');
     } catch (error) {
-      console.log(error)
       const errorCode = signUpErrorCodes[error.code];
       errorCode.message = error.message ? error.message: errorCode.message;
       setOpenAlert(true)
@@ -161,10 +144,10 @@ export const Login = ({ history }) => {
             className={classes.root}
           />
           <ButtonsContainer>
-            <PositionedButtonLogin primary type="submit">Inicia sessió</PositionedButtonLogin>
-            <PositionedButtonSignUp type="button" onClick={ signUp }>Registra't</PositionedButtonSignUp>
+            <PositionedButtonLogin primary type="submit">Inicia sesión</PositionedButtonLogin>
+            <PositionedButtonSignUp type="button" onClick={ signUp }>Regístrate</PositionedButtonSignUp>
           </ButtonsContainer>
-            <ForgotPassword onClick={ handleForgotPassword }>Has oblida't la contrasenya?</ForgotPassword>
+            <ForgotPassword onClick={ handleForgotPassword }>¿Has olvidado la contraseña?</ForgotPassword>
         </Form>
       </FormArea>
       

@@ -23,11 +23,10 @@ const HeaderText = styled.p`
 `;
 
 const HeaderNameMapper = {
-  '/': 'Resultat',
-  '/dashboard': 'Estadístiques',
-  '/login': 'Entrar a desastres de golf',
-  '/newcourse': 'Crear camp',
-  '/courses': 'Camps',
+  '/': 'Resultado',
+  '/dashboard': 'Estadísticas',
+  '/newcourse': 'Crear campo',
+  '/courses': 'Campos',
 };
 
 const Header = ({ history }) => {
@@ -51,14 +50,17 @@ const Header = ({ history }) => {
   };
 
   return (
-    <Container>
-      <HeaderContainer>
-        <HeaderText>
-        {
-        HeaderNameMapper[currentLocation.pathname] 
-        }
-        </HeaderText>
-      </HeaderContainer>
+    <React.Fragment>
+    { currentLocation.pathname !== '/landing' 
+    ?
+      <Container>
+        <HeaderContainer>
+          <HeaderText>
+          {
+          HeaderNameMapper[currentLocation.pathname] 
+          }
+          </HeaderText>
+        </HeaderContainer>
         { 
         !isFetchingUser && user 
         ? <HamburguerMenu 
@@ -70,6 +72,9 @@ const Header = ({ history }) => {
         : null
          }
     </Container>
+    : undefined
+    }
+    </React.Fragment>
   )
 };
 

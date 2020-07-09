@@ -68,9 +68,9 @@ export const HamburguerMenu = ({ routeCreateCourse, routeDashboardHomeClick, rou
       TransitionComponent={ Fade }
     >
       <MenuItem onClick={ handleResultsClick }>Tarjeta</MenuItem>
-      <MenuItem onClick={ handleDashboardClick }>Estadístiques</MenuItem>
-      <MenuItem onClick={ handleCreateCourse }>Crear camp</MenuItem>
-      <MenuItem onClick={ handleCourseClick }>Camps</MenuItem>
+      <MenuItem onClick={ handleDashboardClick }>Estadísticas</MenuItem>
+      <MenuItem onClick={ handleCreateCourse }>Crear campo</MenuItem>
+      <MenuItem onClick={ handleCourseClick }>Campos</MenuItem>
       <MenuItem onClick={ handleLogOut }>Logout</MenuItem>
     </Menu>
   </div>

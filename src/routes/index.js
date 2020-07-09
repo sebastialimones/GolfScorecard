@@ -7,7 +7,7 @@ import { Dashboard } from '../components/Dashboard';
 import { NewCourse } from '../components/NewCourse';
 import { Login } from '../components/Login';
 import { CourseEditing } from '../components/CourseEditing';
-
+import { LandingPage } from '../components/Landing';
 
 export const Routes = () => {
   const renderHome = (props) => <Home { ...props } />;
@@ -15,6 +15,8 @@ export const Routes = () => {
   const renderDashboard = (props) => <Dashboard { ...props } />;
   const renderNewCourse = (props) => <NewCourse { ...props } />;
   const renderCourseEditing = (props) => <CourseEditing { ...props } />;
+  const renderLandingPage = (props) => <LandingPage { ...props } />;
+
 
 
   return(
@@ -26,6 +28,7 @@ export const Routes = () => {
           <Route exact path="/dashboard" render={ renderDashboard } />
           <Route exact path="/newCourse" render={ renderNewCourse } />
           <Route exact path="/courses" render={ renderCourseEditing } />
+          <Route exact path="/landing" render={ renderLandingPage } />
         </Layout>
       </Switch>
     </Router>

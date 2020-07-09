@@ -27,7 +27,7 @@ export const Courses = ({ handleCourseChange, value, courses }) => {
         className={classes.root}
         id="select-course"
         select
-        label="Courses"
+        label="Campos"
         value={ value }
         onChange={ selectCourse }
         variant="filled"

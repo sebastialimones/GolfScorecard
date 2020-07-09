@@ -26,22 +26,22 @@ export const GameResult = ({ result }) => {
       </Date>
       <DataItem>
       {
-        `Forats:  ${result.result.length} `
+        `Hoyos:  ${result.result.length} `
       }
       </DataItem>
       <DataItem>
       {
-        `Punts totals:  ${result.totalPoints} `
+        `Puntos totales:  ${result.totalPoints} `
       }
       </DataItem>
       <DataItem>
       {
-        `Cops totals:  ${result.totalStrokes} amb ${result.totalMosques} 🦟`
+        `Golpes totales:  ${result.totalStrokes} con ${result.totalMosques} 🦟`
       }
       </DataItem>
       <DataItem>
       {
-        `Handicap:  ${result.totalPointsPerHandicap} cops`
+        `Handicap:  ${result.totalPointsPerHandicap} golpes`
       }
       </DataItem>
     </ResultContainer>
