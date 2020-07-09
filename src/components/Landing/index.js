@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import alligator from '../../assets/alligator.jpg';
 import { Features } from './features';
 import { FAQ } from './faq';
-import { TimelineMax, Power2 } from 'gsap';
+import { gsap, Power2 } from 'gsap';
 import Fade from '@material-ui/core/Fade';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -133,7 +133,6 @@ const DisclaimerContainer = styled.h1`
 export const LandingPage = ({ history }) => {
   const classes = useStyles();
   const AlligatorRef = useRef(null);
-  const tl = new TimelineMax();
   const [open, setOpen] = useState(false);
   const [user, isFetchingUser] = useCurrentUser();
   const userId = user && user.id;
@@ -146,7 +145,7 @@ export const LandingPage = ({ history }) => {
   }, [userId, user, isFetchingUser, history]);
 
   useEffect( () => {
-    tl.fromTo(AlligatorRef.current, 1.5, { x: "-100%", opacity: 0}, { x: "0%", ease: Power2.easeInOut, opacity: 1} )    
+    gsap.timeline().fromTo(AlligatorRef.current, 1.5, { x: "-100%", opacity: 0}, { x: "0%", ease: Power2.easeInOut, opacity: 1} )    
   });
 
   const handleClick = (event) => {
