@@ -5,6 +5,7 @@ import alligator from '../../assets/alligator.jpg';
 import { Features } from './features';
 import { FAQ } from './faq';
 import { gsap, Power2 } from 'gsap';
+import { CSSPlugin } from 'gsap/CSSPlugin'
 import Fade from '@material-ui/core/Fade';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -136,6 +137,7 @@ export const LandingPage = ({ history }) => {
   const [open, setOpen] = useState(false);
   const [user, isFetchingUser] = useCurrentUser();
   const userId = user && user.id;
+  gsap.registerPlugin(CSSPlugin)
 
   useEffect(() => {
     if (!isFetchingUser && userId) {
