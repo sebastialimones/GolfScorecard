@@ -155,7 +155,7 @@ export const LandingPage = ({ history }) => {
 
   useEffect( () => {
     gsap.timeline().fromTo(AlligatorRef.current, 1.5, { x: "-100%", opacity: 0}, { x: "0%", ease: Power2.easeInOut, opacity: 1} )    
-  });
+  }, []);
 
   const handleClick = (event) => {
     setOpen(true);
