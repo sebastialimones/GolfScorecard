@@ -27,7 +27,6 @@ const GreenDataItem = styled.div`
 
 
 export const GameResult = ({ result }) => {
-  console.log(result)
   return(
     <ResultContainer>
       <Date>
