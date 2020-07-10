@@ -42,7 +42,7 @@ const questions = [
     { id: 3, title: '¿Cuál es el total que aparece a la derecha cuando añado un resultado?' , answer: 'Son tus puntos calculados con tu handicap.'  },
     { id: 4, title: '¿Por qué en las estadísticas aparecen hoyos en verde y hoyos en rojo?' , answer: 'Es un algoritmo que calcula tus mejores y peores hoyos.'  },
     { id: 5, title: '¿Cómo empiezo?' , answer: 'Registra tu usuario en login, arriba a la derecha. Sólo un email y una contraseña.'  },
-    { id: 6, title: '¿Cómo sigo?' , answer: 'En el menú (arriba a la derecha), crea un nuevo campo. Añade el handicap del campo y el tuyo. Después ya puedes introducir tu primer resultado en la tarjeta.'  },
+    { id: 6, title: '¿Cómo sigo?' , answer: '1º-En el menú (arriba a la derecha), crea un nuevo campo. 2º-Escrible el nombre del campo. 3º-Añade el handicap del campo y el tuyo propio. Ahora ya puedes incluir tu primer resultado'  },
 ];
 
 export const FAQ = () => (
