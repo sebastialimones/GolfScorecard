@@ -12,8 +12,11 @@ import Backdrop from '@material-ui/core/Backdrop';
 import { Login as LoginComponent } from '../Login';
 import { useCurrentUser } from '../../hooks/userCurrentUser';
 import { createUser } from '../../services/createUser';
+import { useScrollToTop } from '../../hooks/useScrollToTop';
+import { Footer } from '../Footer';
 
 const Container = styled.div`
+  font-family: 'nunito';
 `; 
 
 const FadeContainer = styled.div`
@@ -57,19 +60,21 @@ const useStyles = makeStyles((theme) => ({
 
 const Logo = styled.h3 `
   background: linear-gradient(to Left, #f857a6, #ff5858);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   grid-column: 2/3;
-  font-size: 24px;
+  font-size: 1.7em;
 `
 
 const Login = styled.h3`
   display: block;
   justify-self: end;
   background: linear-gradient(to Left, #f857a6, #ff5858);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-size: 24px;
+  font-size: 1.7em;
 `
 
 const PhotoContainer = styled.div `
@@ -123,6 +128,7 @@ const ExplanationContainer = styled.h3`
 
 const DisclaimerContainer = styled.h1`
   background: linear-gradient(to Left, #f857a6, #ff5858);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent; 
   font-size: 1.2em;
@@ -132,6 +138,7 @@ const DisclaimerContainer = styled.h1`
 `;
 
 export const LandingPage = ({ history }) => {
+  useScrollToTop();
   const classes = useStyles();
   const AlligatorRef = useRef(null);
   const [open, setOpen] = useState(false);
@@ -179,7 +186,7 @@ export const LandingPage = ({ history }) => {
       </ExplanationContainer>
       <FAQ/>
       <DisclaimerContainer>
-        Disclaimer: No hay ni sand saves, ni greens en regulación, ni putts por hoyo, ni calles cogidas. Sólo golpes. Empezemos por aquí y ya veremos si vale la pena añadir el resto. La idea es que sea sencillo y que se traspasen todos los resultados al final de la partida y no al finalizar cada hoyo.
+        Disclaimer: No hay ni sand saves, ni greens en regulación, ni putts por hoyo, ni calles cogidas. Sólo golpes. Empezemos por aquí y ya veremos si vale la pena añadir el resto. La idea es que sea fácil y no de pereza hacerlo. Que nos conocemos.
       </DisclaimerContainer>
       <Modal
         aria-labelledby="transition-modal-title"
@@ -199,6 +206,7 @@ export const LandingPage = ({ history }) => {
           </FadeContainer>
         </Fade>
       </Modal>
+      <Footer />
     </Container>   
   )
 }

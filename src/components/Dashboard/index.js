@@ -91,7 +91,7 @@ export const Dashboard = ({ history }) => {
 
   useEffect(() => {
     if (!currentUserId && !isFetchingUser) {
-      history.push('/login');
+      history.push('/landing');
     }
   }, [isFetchingUser, history, currentUserId, user]);
 

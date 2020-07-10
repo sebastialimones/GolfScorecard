@@ -29,13 +29,12 @@ const FormArea = styled.div`
   padding: 2rem;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
 `;
 
 const ButtonsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   margin-top: 1.5em;
 `;
 
@@ -146,8 +145,8 @@ export const Login = ({ history }) => {
           <ButtonsContainer>
             <PositionedButtonLogin primary type="submit">Inicia sesión</PositionedButtonLogin>
             <PositionedButtonSignUp type="button" onClick={ signUp }>Regístrate</PositionedButtonSignUp>
-          </ButtonsContainer>
             <ForgotPassword onClick={ handleForgotPassword }>¿Has olvidado la contraseña?</ForgotPassword>
+          </ButtonsContainer>
         </Form>
       </FormArea>
       

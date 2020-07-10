@@ -8,6 +8,7 @@ import { NewCourse } from '../components/NewCourse';
 import { Login } from '../components/Login';
 import { CourseEditing } from '../components/CourseEditing';
 import { LandingPage } from '../components/Landing';
+import { CookiesPolicy } from '../components/CookiesPolicy';
 
 export const Routes = () => {
   const renderHome = (props) => <Home { ...props } />;
@@ -16,8 +17,7 @@ export const Routes = () => {
   const renderNewCourse = (props) => <NewCourse { ...props } />;
   const renderCourseEditing = (props) => <CourseEditing { ...props } />;
   const renderLandingPage = (props) => <LandingPage { ...props } />;
-
-
+  const renderCookiesPolicy = (props) => <CookiesPolicy { ...props } />;
 
   return(
     <Router>
@@ -29,6 +29,7 @@ export const Routes = () => {
           <Route exact path="/newCourse" render={ renderNewCourse } />
           <Route exact path="/courses" render={ renderCourseEditing } />
           <Route exact path="/landing" render={ renderLandingPage } />
+          <Route exact path="/cookiespolicy" render={ renderCookiesPolicy } />
         </Layout>
       </Switch>
     </Router>

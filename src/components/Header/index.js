@@ -27,6 +27,7 @@ const HeaderNameMapper = {
   '/dashboard': 'Estadísticas',
   '/newcourse': 'Crear campo',
   '/courses': 'Campos',
+  '/cookiespolicy': 'Política de cookies',
 };
 
 const Header = ({ history }) => {
