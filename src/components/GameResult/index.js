@@ -54,30 +54,25 @@ export const GameResult = ({ result }) => {
         `Handicap:  ${result.totalPointsPerHandicap} golpes`
       }
       </DataItem>
-        { result.totalMosques === 0 
-          ? ((result.result.length * 2) - result.totalPoints) > 0 
+      { ((result.result.length * 2) - result.totalPoints) !== 0
+          ? ((result.result.length * 2) - result.totalPoints) > 0
           ? <RedDataItem>
-            {
-              `Resultado medal: +${result.result.length * 2 - result.totalPoints} `
-            }
-            </RedDataItem>
+          {
+            `Resultado: +${result.result.length * 2 - result.totalPoints} `
+          }
+          </RedDataItem>
           : <GreenDataItem>
           {
-            `Resultado medal: ${result.result.length * 2 - result.totalPoints} `
+            `Resultado: ${result.result.length * 2 - result.totalPoints} `
           }
           </GreenDataItem>
-          : ((result.result.length * 2) - result.totalPoints) > 0 
-          ? <RedDataItem>
-            {
-              `Resultado stableford: +${result.result.length * 2 - result.totalPoints} `
-            }
-            </RedDataItem>
-          : <GreenDataItem>
-          {
-            `Resultado stableford: ${result.result.length * 2 - result.totalPoints} `
-          }
-          </GreenDataItem>
+        :
+        <DataItem>
+        {
+          `Resultado: ${result.result.length * 2 - result.totalPoints} `
         }
+        </DataItem>
+      }
     </ResultContainer>
   )
 }
