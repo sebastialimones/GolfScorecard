@@ -100,10 +100,10 @@ export const ResultsTable = ({ results, playerHandicap }) => {
           <TableRow>
             <StyledTableCell align="left">Nº</StyledTableCell>
             <StyledTableCell align="left">Hdp</StyledTableCell>
-            <StyledTableCell align="left">Mitja</StyledTableCell>
-            <StyledTableCell align="left">Millor</StyledTableCell>
+            <StyledTableCell align="left">Media</StyledTableCell>
+            <StyledTableCell align="left">Mejor</StyledTableCell>
             <StyledTableCell align="left">🦟</StyledTableCell>
-            <StyledTableCell align="left">Nombre</StyledTableCell>
+            <StyledTableCell align="left">Núm</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
