@@ -14,9 +14,13 @@ import { useCurrentUser } from '../../hooks/userCurrentUser';
 import { createUser } from '../../services/createUser';
 import { useScrollToTop } from '../../hooks/useScrollToTop';
 import { Footer } from '../Footer';
+import { MobileCarousel } from './mobileCarousel';
 
 const Container = styled.div`
   font-family: 'nunito';
+`; 
+
+const CarouselContainer = styled.div`
 `; 
 
 const FadeContainer = styled.div`
@@ -84,6 +88,10 @@ const PhotoContainer = styled.div `
   align-items: center;
 `
 
+const ExplanationContainer = styled.div `
+  
+`
+
 const AlligatorContainer = styled.div`
   height: 80%;
   width: 100%;
@@ -117,7 +125,7 @@ const Slogan = styled.h2 `
   z-index: 3;
 `
 
-const ExplanationContainer = styled.h3`
+const ExplanationTitle = styled.h3`
   font-size: 1.5em;
   line-height: 1.4em;
   display: flex;
@@ -178,12 +186,17 @@ export const LandingPage = ({ history }) => {
         </AlligatorContainer>
       </PhotoContainer>
       <ExplanationContainer>
+      <ExplanationTitle>
         Guarda tus partidas de golf de manera sencilla.
-      </ExplanationContainer>
+      </ExplanationTitle>
       <Features />
-      <ExplanationContainer>
-        FAQ
       </ExplanationContainer>
+      <CarouselContainer>
+        <MobileCarousel />
+        <ExplanationTitle>
+          FAQ
+        </ExplanationTitle>
+      </CarouselContainer>
       <FAQ/>
       <DisclaimerContainer>
         Disclaimer: No hay ni sand saves, ni greens en regulación, ni putts por hoyo, ni calles cogidas. Sólo golpes. Empezemos por aquí y ya veremos si vale la pena añadir el resto. La idea es que sea fácil y no de pereza hacerlo. Que nos conocemos.

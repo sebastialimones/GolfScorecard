@@ -10,7 +10,7 @@ const Container = styled.footer`
   margin-top: 2em;
   border-top: 1px solid #eee;
   height: ${height};
-  color: red;
+  color: gray;
 `;
 
 const Text = styled.p`
@@ -23,7 +23,7 @@ export const Footer = () => (
   <Container>
     <Text>© Desastres de Golf</Text>
     <Text>|</Text>
-    <Text>Tots los derechos reservados</Text>
+    <Text>Todos los derechos reservados</Text>
     <Text>|</Text>
     <Text>@sebasLimones</Text>
   </Container>
