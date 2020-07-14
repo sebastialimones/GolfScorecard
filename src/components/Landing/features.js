@@ -7,7 +7,6 @@ const FeaturesContainer = styled.div`
   background-color: white;
   width: 85%;
   margin: 0 auto;
-  margin-bottom: 3em;
   letter-spacing: 1px;
   display: flex;
   flex-direction: row;
@@ -47,7 +46,6 @@ const FeatureLogoAndTitleContainer = styled.div`
     flex-direction: row;
   `}
 `;
-
 
 const FeatureTitle = styled.h3`
   background: linear-gradient(to Left, #f857a6, #ff5858);
@@ -129,7 +127,7 @@ export const Features = () => {
             </FeatureTitle>
           </FeatureLogoAndTitleContainer>
           <FeatureExplanation>
-           Añade TODAS las partidas!
+           Añade TODAS las partidas, en las que hagas desastres también!
           </FeatureExplanation>
         </FeatureBlock>
       </FeaturesContainer>
