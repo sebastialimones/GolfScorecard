@@ -6,11 +6,11 @@ export const useCurrentUser = () => {
   const [isFetchingUser, setFetchingUser] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((firebaseUser) => {
+    const userDetails = auth.onAuthStateChanged((firebaseUser) => {
       setUser(firebaseUser && { id: firebaseUser.uid, email: firebaseUser.email });
       setFetchingUser(false);
     });
-    return unsubscribe;
+    return userDetails;
   }, [setUser, setFetchingUser]);
 
   return [user, isFetchingUser];
