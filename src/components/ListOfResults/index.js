@@ -18,7 +18,7 @@ export const ListOfResults = ({ results, playerHandicap }) => {
     completeResult.push(completeResultPerGame);
     return undefined;
   })
-  if( completeResult.length){
+  if(completeResult.length){
     completeResult.sort((result1, result2) => result2.timestamp - result1.timestamp)
   }
   

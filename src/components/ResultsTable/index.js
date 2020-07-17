@@ -84,14 +84,14 @@ export const ResultsTable = ({ results, playerHandicap }) => {
 
   useEffect(() => {
     if(results){
-      iterateOnAllHoles()
+      iterateOnAllHoles();
     }
   },[results, iterateOnAllHoles]);
   
   const createData = (forat, averageResultPerHole, bestResult, numberOfMosques, handicap, numberOfGames) => {
     setRows(rows => [ ...rows, { forat, averageResultPerHole, bestResult, numberOfMosques, handicap, numberOfGames }])
     return;
-  }
+  };
 
   return (
     <TableContainer component={ Paper }>
