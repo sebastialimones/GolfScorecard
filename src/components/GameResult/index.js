@@ -29,7 +29,7 @@ const GreenDataItem = styled.div`
 `;
 
 
-export const GameResult = ({ result }) => {
+export const GameResult = ({ result, refreshResults }) => {
   const [openEditing, setOpenEditing] = useState(false);
 
   const handleClick = () => {
@@ -66,7 +66,7 @@ export const GameResult = ({ result }) => {
         </DataItem>
         <DataItem>
         {
-          `Golpes totales:  ${result.totalStrokes} con ${result.totalMosques} 🦟`
+          `Golpes totales:  ${result.totalStrokes} - (${result.totalMosques} 🦟)`
         }
         </DataItem>
         <DataItem>
@@ -95,7 +95,7 @@ export const GameResult = ({ result }) => {
         }
       </React.Fragment>
       : 
-      <GamesEditor result={ result }/>
+      <GamesEditor result={ result } refreshResults={ refreshResults }/>
     }
     </ResultContainer>
   )

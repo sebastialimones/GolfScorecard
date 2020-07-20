@@ -67,7 +67,7 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-export const GamesEditor = ({ result }) => {
+export const GamesEditor = ({ result, refreshResults }) => {
   const classes = useStyles();
   const [editRow, setEditRow] = useState('');
   const [openAlert, setOpenAlert] = useState(false);
@@ -93,7 +93,7 @@ export const GamesEditor = ({ result }) => {
   const handleClose = () => {
     setOpen(false);
     updateNewGameResult();
-    //Cridar una funcio a n-es pare pq canvii s'state quan se tanqui s'edutor i fagi un altra fetch a tots es games
+    refreshResults();
   };
 
   const handleCloseAlert = () => {

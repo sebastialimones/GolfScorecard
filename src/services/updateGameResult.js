@@ -5,7 +5,7 @@ export const updateGameResult = async (newGameResult) => {
     const newGameResultRef = db.collection('games').doc(newGameResult.id).update({
       email: newGameResult.email,
       course: newGameResult.course,
-      playerHandicap: newGameResult.result,
+      playerHandicap: newGameResult.playerHandicap,
       id: newGameResult.id,
       result: newGameResult.result,
       timestamp: Timestamp.now(),
