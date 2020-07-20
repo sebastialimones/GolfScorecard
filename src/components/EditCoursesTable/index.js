@@ -95,7 +95,6 @@ export const EditCoursesTable = ({ playerHandicap, selectedCourse }) => {
     setOpen(true);
   };
 
-
   const handleClose = () => {
     updatePlayer();
     setOpen(false);
@@ -121,7 +120,7 @@ export const EditCoursesTable = ({ playerHandicap, selectedCourse }) => {
 
   useEffect(() => {
     if(newPlayerHandicap){
-      iterateOnAllHoles()
+      iterateOnAllHoles();
     }
   },[newPlayerHandicap, iterateOnAllHoles])
   
@@ -215,8 +214,8 @@ export const EditCoursesTable = ({ playerHandicap, selectedCourse }) => {
                   aria-haspopup="true"
                   onClick={ () => handleClick(row) }
                   >
-                    <EditIcon/>
-                  </IconButton>
+                  <EditIcon/>
+                </IconButton>
                 </StyledTableCell>
               </StyledTableRow>
             ))

@@ -10,7 +10,7 @@ const ResultContainer = styled.div`
   margin-left: 18px;
 `;
 
-export const ListOfResults = ({ results, playerHandicap }) => {
+export const ListOfResults = ({ results, playerHandicap, refreshResults }) => {
   const completeResult = [];
   results.length && playerHandicap.length &&
   results.map((result) => {
@@ -18,7 +18,7 @@ export const ListOfResults = ({ results, playerHandicap }) => {
     completeResult.push(completeResultPerGame);
     return undefined;
   })
-  if( completeResult.length){
+  if(completeResult.length){
     completeResult.sort((result1, result2) => result2.timestamp - result1.timestamp)
   }
   
@@ -27,7 +27,7 @@ export const ListOfResults = ({ results, playerHandicap }) => {
     {
       completeResult &&
         completeResult.map((result) =>     
-          <GameResult key={ result.id } result={ result }/>
+          <GameResult key={ result.id } result={ result } refreshResults={ refreshResults }/>
         )
     }
     </ResultContainer>

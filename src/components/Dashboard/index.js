@@ -83,6 +83,7 @@ export const Dashboard = ({ history }) => {
   const [selectedCourse, setSelectedCourse] = useState('');
   const [gamesResults, setGamesResults] = useState();
   const [playerHandicap, setplayerHandicap] = useState();
+  const [modal, setModal] = useState(true);
   const [switchState, setSwitchState] = useState({
     checkedA: true,
   });
@@ -122,7 +123,7 @@ export const Dashboard = ({ history }) => {
       }
     }
     playerHandicap && selectedCourse && getResult()  
-  },[playerHandicap, selectedCourse])
+  },[playerHandicap, selectedCourse, switchState, modal])
 
   const handleSwitchChange = (event) => {
     setSwitchState({ ...switchState, [event.target.name]: event.target.checked });
@@ -131,6 +132,10 @@ export const Dashboard = ({ history }) => {
   const handleCourseChange = (courseName) => {
     setGamesResults([]);
     setSelectedCourse(courseName);
+  };
+
+  const refreshResults = () => {
+    setModal(!modal);
   };
 
   return(
@@ -147,7 +152,7 @@ export const Dashboard = ({ history }) => {
       <DataContainer>
         {
           playerHandicap && gamesResults && switchState.checkedA &&
-          <ListOfResults results={ gamesResults } playerHandicap={ playerHandicap } />
+          <ListOfResults results={ gamesResults } playerHandicap={ playerHandicap } refreshResults={ refreshResults } />
         }
         {
           playerHandicap && gamesResults && !switchState.checkedA &&

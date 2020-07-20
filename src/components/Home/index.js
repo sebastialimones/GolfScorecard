@@ -35,6 +35,7 @@ export const Home = ({ history }) => {
   const [coursesName, setCoursesName] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState('');
   const [result, setResult] = useState([]);
+  const [emptyResult, setEmptyResult] = useState([]);
   const [liveScore, setLiveScore] = useState(0);
   const [currentHole, setCurrentHole] = useState('');
   const [errorCode, setErrorCode] = useState();
@@ -56,26 +57,42 @@ export const Home = ({ history }) => {
       })
     };
     currentUserId && getCourses();
-  }, [user, currentUserId])
+  }, [user, currentUserId]);
 
   useEffect(() => {
     const getPlayerHandicap = async () => {
-      setResult([]);
       const data = await fetchPlayer(currentUserId, selectedCourse);
       setplayerHandicap(data);
       setLiveScore(0);
     }
     currentUserId && selectedCourse && getPlayerHandicap();
-  },[currentUserId, selectedCourse, user])
+  },[currentUserId, selectedCourse, user]);
+
+  useEffect(() => {
+    const emptyResult = [];
+    const numberOfHoles = 19;
+    for (var holeNumber = 1; holeNumber < numberOfHoles; holeNumber++){
+      const result = {
+        holeNumber : holeNumber,
+        result : 0
+      };
+      emptyResult.push(result);
+    };
+    setEmptyResult(emptyResult);
+    setResult(emptyResult);
+  },[]);
 
   const liveScoreCreator =  useCallback(() => {
     const newArray = result.slice();
     let totalPointsLiveScore = 0;
     newArray.map((score) => {
-      const strokesWithHandicap = score.result - playerHandicap[0].result[score.holeNumber - 1].result;
-      const pointsPerHole = convertStrokesWHandicapToPoints(strokesWithHandicap, playerHandicap[0].holeHandicap[score.holeNumber - 1].result);
-      totalPointsLiveScore = totalPointsLiveScore + pointsPerHole;
-      setLiveScore(totalPointsLiveScore);
+      if(score.result > 0){
+        const strokesWithHandicap = score.result - playerHandicap[0].result[score.holeNumber - 1].result;
+        const pointsPerHole = convertStrokesWHandicapToPoints(strokesWithHandicap, playerHandicap[0].holeHandicap[score.holeNumber - 1].result);
+        totalPointsLiveScore = totalPointsLiveScore + pointsPerHole;
+        setLiveScore(totalPointsLiveScore);
+        return undefined;
+      }
       return undefined;
     })
   },[result, playerHandicap])
@@ -86,18 +103,18 @@ export const Home = ({ history }) => {
 
   const handleCourseChange = (courseName) => {
     setSelectedCourse(courseName);
-    setResult([]);
+    setResult(emptyResult);
   };
 
   const clearInputs = () => {
-    setResult([]);
+    setResult(emptyResult);
     setLiveScore(0);
     setSelectedCourse('');
   };
 
-  const  send = async (event) => {
+  const send = async (event) => {
     event.preventDefault();
-    if (playerHandicap && result) {
+    if(playerHandicap && result) {
       try {
         const gameResult = await createGameResult({
           user,
@@ -126,7 +143,6 @@ export const Home = ({ history }) => {
         severity: "error" 
        }
       setErrorCode(errorCode);
-      setErrorCode(errorCode); 
     } 
     setOpenAlert(true)
   };
@@ -134,17 +150,8 @@ export const Home = ({ history }) => {
   const handleHoleResult = (holeResult) => { 
     setCurrentHole(holeResult.holeNumber)
     const newArray = result.slice();
-    const holesAlreadyIntroduced = newArray.map(a => a.holeNumber);
-      if(newArray.length){
-      const index = holesAlreadyIntroduced.indexOf(holeResult.holeNumber);
-      index === -1
-        ? newArray.push(holeResult)
-        : newArray.splice(index,1,holeResult)
-      }else{
-        newArray.push(holeResult);
-      }
-    const zeroFilter = newArray.filter(a => a.result !== 0);
-    setResult(zeroFilter);
+    newArray.length && newArray.splice(holeResult.holeNumber - 1,1,holeResult)
+    setResult(newArray);
   };
 
   const handleCloseAlert = (event) => {
