@@ -37,7 +37,9 @@ export const CourseEditing = ({ history }) => {
       courses && courses.map((course) => {
         setCoursesName(coursesName => [...coursesName, course]);
         return undefined;
-      })
+      });
+      const lastSelectedCourse = localStorage.getItem('selectedCourse');
+      setSelectedCourse(lastSelectedCourse);
     };
     currentUserId && getCourses();
   }, [user, currentUserId])
@@ -52,6 +54,7 @@ export const CourseEditing = ({ history }) => {
 
   const handleCourseChange = (courseName) => {
     setSelectedCourse(courseName);
+    localStorage.setItem('selectedCourse', courseName);
   };
 
   return(

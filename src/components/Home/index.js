@@ -55,6 +55,8 @@ export const Home = ({ history }) => {
         setCoursesName(coursesName => [...coursesName, course]);
         return undefined;
       })
+      const lastSelectedCourse = localStorage.getItem('selectedCourse');
+      setSelectedCourse(lastSelectedCourse);
     };
     currentUserId && getCourses();
   }, [user, currentUserId]);
@@ -64,7 +66,7 @@ export const Home = ({ history }) => {
       const data = await fetchPlayer(currentUserId, selectedCourse);
       setplayerHandicap(data);
       setLiveScore(0);
-    }
+    };
     currentUserId && selectedCourse && getPlayerHandicap();
   },[currentUserId, selectedCourse, user]);
 
@@ -103,6 +105,7 @@ export const Home = ({ history }) => {
 
   const handleCourseChange = (courseName) => {
     setSelectedCourse(courseName);
+    localStorage.setItem('selectedCourse', courseName);
     setResult(emptyResult);
   };
 
@@ -154,7 +157,7 @@ export const Home = ({ history }) => {
     setResult(newArray);
   };
 
-  const handleCloseAlert = (event) => {
+  const handleCloseAlert = () => {
     setErrorCode();
     clearInputs();
     setSelectedCourse('');
@@ -163,7 +166,7 @@ export const Home = ({ history }) => {
 
   return (
     <Container>
-      <Form className={classes.root} noValidate autoComplete="off"> 
+      <Form className={classes.root} noValidate autoComplete="off">
         <Courses handleCourseChange={ handleCourseChange } value={ selectedCourse } courses={ coursesName } />
         <HolesFormContainer>
           <ListOfHoles 

@@ -18,7 +18,7 @@ export const Courses = ({ handleCourseChange, value, courses }) => {
   const classes = useStyles();
   const selectCourse = (event) => {
     handleCourseChange(event.target.value)
-  }
+  };
 
   return(
     <SelectPlayerContainer>
