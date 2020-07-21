@@ -67,10 +67,10 @@ export const ResultsTable = ({ results, playerHandicap }) => {
   const getResultPerHole = useCallback((holeNumber) => {
     const individualHoleResults = []
     results.map((game) => {
-      return game.result.filter((hole) => hole.holeNumber === holeNumber 
+      return game.result.filter((hole) => hole.holeNumber === holeNumber && hole.result !== 0
         ? individualHoleResults.push(hole.result)
         : null)
-    })
+    });
     return calculateResultPerHole(holeNumber, individualHoleResults)
   },[results, calculateResultPerHole]);
 

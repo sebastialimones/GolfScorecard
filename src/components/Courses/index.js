@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SelectPlayerContainer = styled.div``;
+const SelectCourseContainer = styled.div``;
 
 export const Courses = ({ handleCourseChange, value, courses }) => {
   const classes = useStyles();
@@ -21,7 +21,7 @@ export const Courses = ({ handleCourseChange, value, courses }) => {
   };
 
   return(
-    <SelectPlayerContainer>
+    <SelectCourseContainer>
       <TextField
         disabled={ courses && courses.length ? false : true }
         className={classes.root}
@@ -42,6 +42,6 @@ export const Courses = ({ handleCourseChange, value, courses }) => {
           </MenuItem>
         )) }
       </TextField>
-    </SelectPlayerContainer>
+    </SelectCourseContainer>
   )
 };

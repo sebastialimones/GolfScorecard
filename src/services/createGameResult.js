@@ -10,7 +10,8 @@ export const createGameResult = async ({ user, playerHandicap, result, selectedC
       id: uuidv4(),
       course: selectedCourse,
       playerHandicap: playerHandicap[0].result,
-      uid: playerHandicap[0].uid
+      uid: playerHandicap[0].uid,
+      status: 'active'
     };
     await db.collection('games').doc(newGameResult.id).set(newGameResult);
     return "success";

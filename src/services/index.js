@@ -11,3 +11,4 @@ export * from './fetchCoursesPerUser';
 export * from './updatePlayerHandicap';
 export * from './updateGameResult';
 export * from './fetchResult';
+export * from './deleteGameResult';

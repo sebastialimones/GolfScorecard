@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
 import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 import { GamesEditor } from '../GamesEditor';
+import { deleteGameResult } from '../../services/deleteGameResult';
+import { Notification } from '../Notification';
 
 const ResultContainer = styled.div`
   margin-bottom: 1em;
@@ -31,9 +34,31 @@ const GreenDataItem = styled.div`
 
 export const GameResult = ({ result, refreshResults }) => {
   const [openEditing, setOpenEditing] = useState(false);
+  const [showDeleteIcon, setShowDeleteIcon] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [errorCode, setErrorCode] = useState();
 
   const handleClick = () => {
-    setOpenEditing(!openEditing)
+    setOpenEditing(!openEditing);
+    setShowDeleteIcon(!showDeleteIcon)
+  };
+
+  const deleteClick = async () => {
+    try {
+      await deleteGameResult(result);
+      setOpenAlert(true);
+    }
+    catch (error){
+      errorCode.message = error.message ? error.message: errorCode.message;
+      setOpenAlert(true)
+      setErrorCode(errorCode);
+    }
+  };
+
+  const handleCloseAlert = () => {
+    setErrorCode();
+    setOpenAlert(false);
+    refreshResults();
   };
 
   return(
@@ -50,6 +75,17 @@ export const GameResult = ({ result, refreshResults }) => {
         >
         <EditIcon/>
       </IconButton>
+      { showDeleteIcon &&
+      <IconButton
+        aria-label="more"
+        aria-controls="fade-menu"
+        aria-haspopup="true"
+        onClick={ deleteClick }
+        color='secondary'
+        >
+        <DeleteIcon/>
+      </IconButton>
+      }
       </Date>
       {
       !openEditing ?
@@ -97,6 +133,12 @@ export const GameResult = ({ result, refreshResults }) => {
       : 
       <GamesEditor result={ result } refreshResults={ refreshResults }/>
     }
+    <Notification
+      onClose={ handleCloseAlert }
+      message={ errorCode ? errorCode.message : "Partida borrada" }
+      open={ openAlert }
+      severity={ errorCode ? errorCode.severity : "success" }
+    />
     </ResultContainer>
   )
 }
