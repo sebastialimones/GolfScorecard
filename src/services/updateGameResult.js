@@ -10,6 +10,7 @@ export const updateGameResult = async (newGameResult) => {
       result: newGameResult.result,
       timestamp: Timestamp.now(),
       uid: newGameResult.uid,
+      status: 'active'
     })
     return newGameResultRef;
   } catch (error) {

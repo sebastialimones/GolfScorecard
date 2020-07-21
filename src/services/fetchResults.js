@@ -8,7 +8,7 @@ export const fetchResults = async (playerHandicap, selectedCourse) => {
     const snapshots = await gamesRef.get();
     snapshots.forEach((snapshot) => {
       const game = snapshot.data();
-      if (game.uid === playerHandicap[0].uid && game.course === selectedCourse) {
+      if (game.uid === playerHandicap[0].uid && game.course === selectedCourse && game.status !== 'deleted') {
         games.push(convertGame(game));
       } 
     });
