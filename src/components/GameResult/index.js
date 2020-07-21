@@ -55,6 +55,13 @@ export const GameResult = ({ result, refreshResults }) => {
     }
   };
 
+  const deleteConfirmation = () => {
+    const confirmation = window.confirm('¿Estás seguro que quieres borrar esta partida?');
+    if(confirmation === true){
+      deleteClick();
+    };
+  };
+
   const handleCloseAlert = () => {
     setErrorCode();
     setOpenAlert(false);
@@ -80,7 +87,7 @@ export const GameResult = ({ result, refreshResults }) => {
         aria-label="more"
         aria-controls="fade-menu"
         aria-haspopup="true"
-        onClick={ deleteClick }
+        onClick={ deleteConfirmation }
         color='secondary'
         >
         <DeleteIcon/>
