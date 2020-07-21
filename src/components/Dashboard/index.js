@@ -103,6 +103,8 @@ export const Dashboard = ({ history }) => {
         setCoursesName(coursesName => [...coursesName, course]);
         return undefined;
       })
+      const lastSelectedCourse = localStorage.getItem('selectedCourse');
+      setSelectedCourse(lastSelectedCourse);
     };
     currentUserId && getCourses();
   }, [user, currentUserId])
@@ -132,6 +134,7 @@ export const Dashboard = ({ history }) => {
   const handleCourseChange = (courseName) => {
     setGamesResults([]);
     setSelectedCourse(courseName);
+    localStorage.setItem('selectedCourse', courseName);
   };
 
   const refreshResults = () => {
