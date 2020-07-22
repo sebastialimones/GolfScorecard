@@ -9,7 +9,7 @@ export const createdGameMessages = {
   },
   2: {
     id: 2,
-    message: 'También se puede ir a caminar por la montaña'
+    message: 'También puedes ir a caminar por la montaña'
   },
   3: {
     id: 3,
@@ -17,7 +17,7 @@ export const createdGameMessages = {
   },
   4: {
     id: 4,
-    message: 'Tiger Woods año 2009'
+    message: 'Tiger Woods, año 2009'
   },
   5: {
     id: 5,
@@ -33,7 +33,7 @@ export const createdGameMessages = {
   },
   8: {
     id: 8,
-    message: 'Bueeeno...'
+    message: 'Bien ha ido si no has roto ningún palo'
   },
   9: {
     id: 9,
@@ -45,15 +45,15 @@ export const createdGameMessages = {
   },
   11: {
     id: 11,
-    message: 'Hemos hecho algo de deporte...'
+    message: 'Algo de deporte has hecho...'
   },
   12: {
     id: 12,
-    message: 'Bueeeno...'
+    message: 'Ni bien, ni mal, ni todo lo contrario'
   },
   13: {
     id: 13,
-    message: 'Bueeeno...'
+    message: 'Como un empate fuera de casa...'
   },
   14: {
     id: 14,
@@ -73,7 +73,7 @@ export const createdGameMessages = {
   },
   18: {
     id: 18,
-    message: 'Enhorabuena, muy buena vuelta!'
+    message: 'Hoy no pagas!'
   },
   19: {
     id: 19,
@@ -89,6 +89,18 @@ export const createdGameMessages = {
   },
   22: {
     id: 22,
-    message: 'JO-DER, no hay palabras... buenos sí PUTO AMO'
+    message: 'JO-DER, no hay palabras... bueno sí: PUTO AMO'
+  },
+  23: {
+    id: 23,
+    message: 'Hoy ha entrado TODO!'
+  },
+  24: {
+    id: 24,
+    message: '¿Qué acaba de pasar aquí?'
+  },
+  25: {
+    id: 25,
+    message: 'Recuerda este día muchacho...'
   },
 };

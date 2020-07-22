@@ -43,7 +43,7 @@ export const Home = ({ history }) => {
   const [openAlert, setOpenAlert] = useState(false);
   const [playerHandicap, setplayerHandicap] = useState();
   const [user, isFetchingUser] = useCurrentUser();
-  const [holePlayed, setHolesPlayed] = useState(0);
+  const [holesPlayed, setHolesPlayed] = useState(0);
   const currentUserId = user && user.id;
 
   useEffect(() => {
@@ -171,10 +171,10 @@ export const Home = ({ history }) => {
 
   const successMessage = () => {
     if(openAlert && !errorCode){
-      const successNumber = liveScore / holePlayed;
+      const successNumber = liveScore / holesPlayed;
       const messageRating = (successNumber.toFixed(2) * 15) / 1.55555;
-      if(messageRating > 22){
-        const successMessage = createdGameMessages[22].message;
+      if(messageRating > 25){
+        const successMessage = createdGameMessages[25].message;
         return successMessage;
       };
       const successMessage = createdGameMessages[Math.floor(messageRating)].message;
