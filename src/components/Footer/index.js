@@ -25,6 +25,6 @@ export const Footer = () => (
     <Text>|</Text>
     <Text>Todos los derechos reservados</Text>
     <Text>|</Text>
-    <Text>@sebasLimones</Text>
+    <Text>desastresdegolf@gmail.com</Text>
   </Container>
 )
