@@ -9,6 +9,7 @@ import { Notification } from '../Notification';
 import { Courses } from '../Courses';
 import { useCurrentUser } from '../../hooks/userCurrentUser';
 import { convertStrokesWHandicapToPoints } from '../Helpers/convertStrokesWHandicapToPoints';
+import { createdGameMessages } from './helpers';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,6 +43,7 @@ export const Home = ({ history }) => {
   const [openAlert, setOpenAlert] = useState(false);
   const [playerHandicap, setplayerHandicap] = useState();
   const [user, isFetchingUser] = useCurrentUser();
+  const [holePlayed, setHolesPlayed] = useState(0);
   const currentUserId = user && user.id;
 
   useEffect(() => {
@@ -87,16 +89,19 @@ export const Home = ({ history }) => {
   const liveScoreCreator =  useCallback(() => {
     const newArray = result.slice();
     let totalPointsLiveScore = 0;
+    let numberOfHoles = 0;
     newArray.map((score) => {
-      if(score.result > 0){
+      if(score.result > 0 || score.result === 'mosca'){
         const strokesWithHandicap = score.result - playerHandicap[0].result[score.holeNumber - 1].result;
         const pointsPerHole = convertStrokesWHandicapToPoints(strokesWithHandicap, playerHandicap[0].holeHandicap[score.holeNumber - 1].result);
         totalPointsLiveScore = totalPointsLiveScore + pointsPerHole;
         setLiveScore(totalPointsLiveScore);
+        numberOfHoles = numberOfHoles + 1;
+        setHolesPlayed(numberOfHoles);
         return undefined;
       }
       return undefined;
-    })
+    });
   },[result, playerHandicap])
 
   useEffect(() => {
@@ -125,7 +130,7 @@ export const Home = ({ history }) => {
           result,
           selectedCourse
         })
-        gameResult === 'success'
+        gameResult !== 'error'
         ? setOpenAlert(true)
         : console.log('error')
       }
@@ -164,6 +169,19 @@ export const Home = ({ history }) => {
     setOpenAlert(false);
   };
 
+  const successMessage = () => {
+    if(openAlert && !errorCode){
+      const successNumber = liveScore / holePlayed;
+      const messageRating = (successNumber.toFixed(2) * 15) / 1.55555;
+      if(messageRating > 22){
+        const successMessage = createdGameMessages[22].message;
+        return successMessage;
+      };
+      const successMessage = createdGameMessages[Math.floor(messageRating)].message;
+      return successMessage;
+    };
+  };
+
   return (
     <Container>
       <Form className={classes.root} noValidate autoComplete="off">
@@ -180,7 +198,7 @@ export const Home = ({ history }) => {
         <Button type="submit" primary onClick={ send }>Enviar</Button>
         <Notification
           onClose={ handleCloseAlert }
-          message={ errorCode ? errorCode.message : "Perfe!" }
+          message={ errorCode ? errorCode.message : successMessage() }
           open={ openAlert }
           severity={ errorCode ? errorCode.severity : "success" }
         />

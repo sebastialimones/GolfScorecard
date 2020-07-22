@@ -69,7 +69,7 @@ export const HamburguerMenu = ({ routeCreateCourse, routeDashboardHomeClick, rou
     >
       <MenuItem onClick={ handleResultsClick }>Tarjeta</MenuItem>
       <MenuItem onClick={ handleDashboardClick }>Estadísticas</MenuItem>
-      <MenuItem onClick={ handleCreateCourse }>Crear campo</MenuItem>
+      <MenuItem onClick={ handleCreateCourse }>Nuevo campo</MenuItem>
       <MenuItem onClick={ handleCourseClick }>Campos</MenuItem>
       <MenuItem onClick={ handleLogOut }>Logout</MenuItem>
     </Menu>

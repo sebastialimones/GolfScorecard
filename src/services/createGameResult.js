@@ -13,8 +13,8 @@ export const createGameResult = async ({ user, playerHandicap, result, selectedC
       uid: playerHandicap[0].uid,
       status: 'active'
     };
-    await db.collection('games').doc(newGameResult.id).set(newGameResult);
-    return "success";
+    const newGameCreated = await db.collection('games').doc(newGameResult.id).set(newGameResult);
+    return newGameCreated;
   } catch (error) {
     console.log('Error creating a game result');
     console.log(error);
