@@ -22,5 +22,5 @@
   "display": "standalone",
   "orientation": "portrait",
   "scope": "/",
-  "start_url": "/https://www.desastresdegolf.com/"
+  "start_url": "https://www.desastresdegolf.com/"
 }
