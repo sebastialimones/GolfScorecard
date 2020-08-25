@@ -33,7 +33,7 @@ export const createdGameMessages = {
   },
   8: {
     id: 8,
-    message: 'Bien ha ido si no has roto ningún palo'
+    message: 'Enhorabuena si no has roto ningún palo'
   },
   9: {
     id: 9,
