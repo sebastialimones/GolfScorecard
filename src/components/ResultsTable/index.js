@@ -9,6 +9,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { red, green } from '@material-ui/core/colors';
+import { convertStrokesWHandicapToPoints } from '../Helpers';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -49,17 +50,27 @@ export const ResultsTable = ({ results, playerHandicap }) => {
 
   const calculateResultPerHole = useCallback((holeNumber, results) => {
     let sumResultsPerHole, averageResultPerHole, bestResult;
+    let numberMosques = 0;
     if(results.length){
-      const resultsWithoutMosques = results.filter(result => (typeof result === 'number') && !!result);
-      const numberOfMosques = results.filter(result => (typeof result === 'string') && !!result).length;
+      const resultsWithousStringMosques = results.filter(result => (typeof result === 'number') && !!result);
       const handicap = playerHandicap[0].holeHandicap[holeNumber - 1].result;
       const numberOfGames = results.length
-      if(resultsWithoutMosques.length){
-        sumResultsPerHole = resultsWithoutMosques.reduce((a, b) => a + b, 0);
-        averageResultPerHole = (sumResultsPerHole / resultsWithoutMosques.length).toPrecision(2);
-        bestResult = Math.min.apply(null,resultsWithoutMosques);
-      }
-      return createData(holeNumber, averageResultPerHole, bestResult, numberOfMosques, handicap, numberOfGames);
+      const stringMosques = results.filter(result => (typeof result === 'string') && !!result).length;
+      if(resultsWithousStringMosques.length){
+        sumResultsPerHole = resultsWithousStringMosques.reduce((a, b) => a + b, 0);
+        averageResultPerHole = (sumResultsPerHole / resultsWithousStringMosques.length).toPrecision(2);
+        bestResult = Math.min.apply(null,resultsWithousStringMosques);
+        resultsWithousStringMosques.map((hole) => {
+          const strokesWithHandicap = hole - playerHandicap[0].result[holeNumber - 1].result;
+          const pointsPerHole = convertStrokesWHandicapToPoints(strokesWithHandicap, playerHandicap[0].holeHandicap[holeNumber - 1].result);
+          if(pointsPerHole === 0){
+            numberMosques = numberMosques + 1;
+          };
+          return undefined;
+        });
+      };
+      const totalMosques = stringMosques + numberMosques
+      return createData(holeNumber, averageResultPerHole, bestResult, totalMosques, handicap, numberOfGames);
     }
     return undefined;
   }, [playerHandicap]);
@@ -88,8 +99,8 @@ export const ResultsTable = ({ results, playerHandicap }) => {
     }
   },[results, iterateOnAllHoles]);
   
-  const createData = (forat, averageResultPerHole, bestResult, numberOfMosques, handicap, numberOfGames) => {
-    setRows(rows => [ ...rows, { forat, averageResultPerHole, bestResult, numberOfMosques, handicap, numberOfGames }])
+  const createData = (forat, averageResultPerHole, bestResult, totalMosques, handicap, numberOfGames) => {
+    setRows(rows => [ ...rows, { forat, averageResultPerHole, bestResult, totalMosques, handicap, numberOfGames }])
     return;
   };
 
@@ -116,10 +127,10 @@ export const ResultsTable = ({ results, playerHandicap }) => {
               <StyledTableCell align="left">{row.handicap}</StyledTableCell>
               {
                 row.averageResultPerHole < row.handicap + 1 &&
-                (row.numberOfMosques/row.numberOfGames * 100) < 21 
+                (row.totalMosques/row.numberOfGames * 100) < 21 
                   ? <StyledTableCellBest align="left">{row.averageResultPerHole}</StyledTableCellBest>
                   : row.averageResultPerHole > row.handicap + 1.5 ||
-                  (row.numberOfMosques/row.numberOfGames * 100) > 30 
+                  (row.totalMosques/row.numberOfGames * 100) > 30 
                     ? <StyledTableCellWorst align="left">{row.averageResultPerHole}</StyledTableCellWorst>
                     : <StyledTableCell align="left">{row.averageResultPerHole}</StyledTableCell>
               }
@@ -128,7 +139,7 @@ export const ResultsTable = ({ results, playerHandicap }) => {
                   ? <StyledTableCellBest align="left">{row.bestResult}</StyledTableCellBest>
                   : <StyledTableCell align="left">{row.bestResult}</StyledTableCell>
               }
-              <StyledTableCell align="left">{row.numberOfMosques}</StyledTableCell>
+              <StyledTableCell align="left">{row.totalMosques}</StyledTableCell>
               <StyledTableCell align="left">{row.numberOfGames}</StyledTableCell>
             </StyledTableRow>
           ))
