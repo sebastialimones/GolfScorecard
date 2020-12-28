@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import { makeStyles } from '@material-ui/core/styles';
 
 import { Courses } from '../Courses';
 import { fetchResults, fetchPlayer, fetchCoursesPerUser } from '../../services/index';
@@ -12,6 +14,22 @@ import { useCurrentUser } from '../../hooks/userCurrentUser';
 
 const Container = styled.div` `;
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& .MuiTextField-root': {
+      margin: theme.spacing(1),
+      width: '25ch',
+    },
+    '& .MuiSelect-outlined': {
+      minWidth: '170px',
+    },
+  },
+  input: {
+    '& .MuiOutlinedInput': {
+      marginBottom: '10px',
+    }
+  },
+}));
 const MenuContainer = styled.div`
   display: flex;
   justify-content: space-around;
@@ -53,7 +71,7 @@ const IOSSwitch = withStyles((theme) => ({
   },
   track: {
     borderRadius: 26 / 2,
-    border: `1px solid ${theme.palette.grey[400]}`,
+    border: `1px solid ${ theme.palette.grey[400] }`,
     backgroundColor: theme.palette.secondary.light,
     opacity: 1,
     height: '95%',
@@ -79,21 +97,37 @@ const IOSSwitch = withStyles((theme) => ({
 });
 
 export const Dashboard = ({ history }) => {
+  const classes = useStyles();
   const [coursesName, setCoursesName] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState('');
   const [gamesResults, setGamesResults] = useState();
   const [playerHandicap, setplayerHandicap] = useState();
   const [modal, setModal] = useState(true);
+  const [year, setYear] = useState ('');
   const [switchState, setSwitchState] = useState({
     checkedA: true,
   });
   const [user, isFetchingUser] = useCurrentUser();
   const currentUserId = user && user.id;
+  const years = [ 
+    {
+      value: undefined,
+      label: `All`,
+    },
+    {
+      value: 2020,
+      label: 2020,
+    },
+    {
+      value: 2021,
+      label: 2021,
+    }
+  ];
 
   useEffect(() => {
     if (!currentUserId && !isFetchingUser) {
       history.push('/landing');
-    }
+    };
   }, [isFetchingUser, history, currentUserId, user]);
 
   useEffect(() => {
@@ -113,28 +147,33 @@ export const Dashboard = ({ history }) => {
     const getPlayerHandicap = async () => {
       const data = await fetchPlayer(currentUserId, selectedCourse);
       setplayerHandicap(data);
-    }
+    };
     currentUserId && selectedCourse && getPlayerHandicap();
   },[currentUserId, selectedCourse, user])
 
   useEffect(() => {
     const getResult = async () => {
-      const data = await fetchResults(playerHandicap, selectedCourse);
+      const data = await fetchResults(playerHandicap, selectedCourse, year);
       if(data){
         setGamesResults(data);
-      }
-    }
+      };
+    };
     playerHandicap && selectedCourse && getResult()  
-  },[playerHandicap, selectedCourse, switchState, modal])
+  },[playerHandicap, selectedCourse, switchState, modal, year]);
 
   const handleSwitchChange = (event) => {
     setSwitchState({ ...switchState, [event.target.name]: event.target.checked });
-  };
+    };
 
   const handleCourseChange = (courseName) => {
     setGamesResults([]);
     setSelectedCourse(courseName);
     localStorage.setItem('selectedCourse', courseName);
+  };
+
+  const handleYearChange = (event) => {
+    setGamesResults([]);
+    setYear(event.currentTarget.value)
   };
 
   const refreshResults = () => {
@@ -151,11 +190,32 @@ export const Dashboard = ({ history }) => {
             label=""
           />
         </SwitchContainer>
+        <TextField
+        className={ classes.root }
+        id="Año"
+        select
+        label={ `Año`}
+        onChange={ handleYearChange }
+        SelectProps={{
+          native: true,
+        }}
+        variant="outlined"
+        value={ year }
+        >
+        { 
+          years.map((option) => (
+          <option key={ option.value } value={ option.value }>
+            { option.value }
+          </option>
+        )) 
+        }
+
+        </TextField>
       </MenuContainer>
       <DataContainer>
         {
           playerHandicap && gamesResults && switchState.checkedA &&
-          <ListOfResults results={ gamesResults } playerHandicap={ playerHandicap } refreshResults={ refreshResults } />
+          <ListOfResults year={ year } results={ gamesResults } playerHandicap={ playerHandicap } refreshResults={ refreshResults } />
         }
         {
           playerHandicap && gamesResults && !switchState.checkedA &&

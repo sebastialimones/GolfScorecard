@@ -85,9 +85,9 @@ export const Hole = ({ holeNumber, handleHoleResult, selectedCourse, liveScore, 
     const holeResultObj = { 
       "holeNumber": holeNumber,
       "result" : event.currentTarget.value === "mosca" ? "mosca" : Number(event.currentTarget.value)
-    }
-    handleHoleResult(holeResultObj)
-  }
+    };
+    handleHoleResult(holeResultObj);
+  };
 
   return(
     <Container>
