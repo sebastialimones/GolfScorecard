@@ -1,46 +1,33 @@
  import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
 
 import { Courses } from '../Courses';
+import { Years } from '../Years';
 import { fetchResults, fetchPlayer, fetchCoursesPerUser } from '../../services/index';
 import { ListOfResults } from '../ListOfResults';
 import { ResultsTable } from '../ResultsTable';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import { useCurrentUser } from '../../hooks/userCurrentUser';
+import { fetchYearsPerCourse } from '../../services/fetchYearsPerCourse';
 
 const Container = styled.div` `;
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    '& .MuiTextField-root': {
-      margin: theme.spacing(1),
-      width: '25ch',
-    },
-    '& .MuiSelect-outlined': {
-      minWidth: '170px',
-    },
-  },
-  input: {
-    '& .MuiOutlinedInput': {
-      marginBottom: '10px',
-    }
-  },
-}));
 const MenuContainer = styled.div`
   display: flex;
   justify-content: space-around;
-  align-items: center;
+  align-content: center;
 `;
 
 const DataContainer = styled.div`
   margin: 1em;
 `;
 
-const SwitchContainer = styled.div``;
+const SwitchContainer = styled.div`
+  transform: rotate(90deg);
+  margin-top: 1em;
+`;
 
 const IOSSwitch = withStyles((theme) => ({
   root: {
@@ -97,32 +84,18 @@ const IOSSwitch = withStyles((theme) => ({
 });
 
 export const Dashboard = ({ history }) => {
-  const classes = useStyles();
   const [coursesName, setCoursesName] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState('');
   const [gamesResults, setGamesResults] = useState();
   const [playerHandicap, setplayerHandicap] = useState();
   const [modal, setModal] = useState(true);
-  const [year, setYear] = useState ('');
+  const [selectedYear, setSelectedYear] = useState ('');
+  const [yearsPlayedArray, setYearsPlayedArray] = useState([]);
   const [switchState, setSwitchState] = useState({
     checkedA: true,
   });
   const [user, isFetchingUser] = useCurrentUser();
   const currentUserId = user && user.id;
-  const years = [ 
-    {
-      value: undefined,
-      label: `All`,
-    },
-    {
-      value: 2020,
-      label: 2020,
-    },
-    {
-      value: 2021,
-      label: 2021,
-    }
-  ];
 
   useEffect(() => {
     if (!currentUserId && !isFetchingUser) {
@@ -136,12 +109,30 @@ export const Dashboard = ({ history }) => {
       courses && courses.map((course) => {
         setCoursesName(coursesName => [...coursesName, course]);
         return undefined;
-      })
+      });
       const lastSelectedCourse = localStorage.getItem('selectedCourse');
       setSelectedCourse(lastSelectedCourse);
     };
     currentUserId && getCourses();
-  }, [user, currentUserId])
+  }, [user, currentUserId]);
+
+  useEffect(()=> {
+    const getYearsPerCourse = async () => {
+      const yearsPlayed = await fetchYearsPerCourse(playerHandicap);
+      setYearsPlayedArray([]);
+      yearsPlayed && yearsPlayed.map((year) => {
+        setYearsPlayedArray(yearsPlayedArray => [...yearsPlayedArray, year]);
+        return undefined;
+      });
+      const lastSelectedYear = localStorage.getItem('selectedYear');
+      if(lastSelectedYear){
+        setSelectedYear(lastSelectedYear);
+      }
+    };
+    if(selectedCourse && playerHandicap){
+      getYearsPerCourse();
+    };
+  }, [selectedCourse, playerHandicap]);
 
   useEffect(() => {
     const getPlayerHandicap = async () => {
@@ -153,13 +144,13 @@ export const Dashboard = ({ history }) => {
 
   useEffect(() => {
     const getResult = async () => {
-      const data = await fetchResults(playerHandicap, selectedCourse, year);
+      const data = await fetchResults(playerHandicap, selectedCourse, selectedYear);
       if(data){
         setGamesResults(data);
       };
     };
     playerHandicap && selectedCourse && getResult()  
-  },[playerHandicap, selectedCourse, switchState, modal, year]);
+  },[playerHandicap, selectedCourse, switchState, modal, selectedYear]);
 
   const handleSwitchChange = (event) => {
     setSwitchState({ ...switchState, [event.target.name]: event.target.checked });
@@ -167,13 +158,15 @@ export const Dashboard = ({ history }) => {
 
   const handleCourseChange = (courseName) => {
     setGamesResults([]);
+    setYearsPlayedArray([]);
     setSelectedCourse(courseName);
     localStorage.setItem('selectedCourse', courseName);
   };
 
-  const handleYearChange = (event) => {
+  const handleYearChange = (yearChange) => {
     setGamesResults([]);
-    setYear(event.currentTarget.value)
+    setSelectedYear(yearChange);
+    localStorage.setItem('selectedYear', yearChange);
   };
 
   const refreshResults = () => {
@@ -190,32 +183,12 @@ export const Dashboard = ({ history }) => {
             label=""
           />
         </SwitchContainer>
-        <TextField
-        className={ classes.root }
-        id="Año"
-        select
-        label={ `Año`}
-        onChange={ handleYearChange }
-        SelectProps={{
-          native: true,
-        }}
-        variant="outlined"
-        value={ year }
-        >
-        { 
-          years.map((option) => (
-          <option key={ option.value } value={ option.value }>
-            { option.value }
-          </option>
-        )) 
-        }
-
-        </TextField>
+        { yearsPlayedArray && <Years handleYearChange={ handleYearChange } value={ selectedYear } years={ yearsPlayedArray } />  }
       </MenuContainer>
       <DataContainer>
         {
           playerHandicap && gamesResults && switchState.checkedA &&
-          <ListOfResults year={ year } results={ gamesResults } playerHandicap={ playerHandicap } refreshResults={ refreshResults } />
+          <ListOfResults year={ selectedYear } results={ gamesResults } playerHandicap={ playerHandicap } refreshResults={ refreshResults } />
         }
         {
           playerHandicap && gamesResults && !switchState.checkedA &&

@@ -12,3 +12,4 @@ export * from './updatePlayerHandicap';
 export * from './updateGameResult';
 export * from './fetchResult';
 export * from './deleteGameResult';
+export * from './addYearToCoursePlayed';

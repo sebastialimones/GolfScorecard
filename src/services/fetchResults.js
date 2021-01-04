@@ -6,7 +6,7 @@ export const fetchResults = async (playerHandicap, selectedCourse, year) => {
     const startOfYear = Timestamp.fromMillis(Date.parse(`January 1, ${year}`));
     const endOfYear = Timestamp.fromMillis(Date.parse(`December 31, ${year}`));
     let gamesRef = db.collection('games');
-    if(year){
+    if(year !== 'All'){
       gamesRef = gamesRef
       .where('timestamp', '>', startOfYear)
       .where('timestamp', '<', endOfYear);

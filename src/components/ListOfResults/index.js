@@ -7,7 +7,6 @@ import { convertStrokesToHandicap } from '../Helpers';
 const ResultContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-left: 18px;
 `;
 
 export const ListOfResults = ({ results, playerHandicap, refreshResults }) => {
