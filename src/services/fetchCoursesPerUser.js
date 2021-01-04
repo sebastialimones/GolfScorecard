@@ -10,11 +10,11 @@ export const fetchCoursesPerUser = async (currentUserId) => {
       if (course.uid === currentUserId) {
         const obj = { value: course.course, label: course.course }
         courses.push((obj));
-      } 
+      };
     });
     return courses;
   } catch (error) {
     console.log('Error fetching player');
     console.log(error);
-  }
-}
+  };
+};

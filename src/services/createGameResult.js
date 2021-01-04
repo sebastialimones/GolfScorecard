@@ -1,7 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
 import { db, Timestamp } from './admin';
+import { addYearToCoursePlayed } from './index';
 
 export const createGameResult = async ({ user, playerHandicap, result, selectedCourse }) => {
+  const currentDate = Timestamp.now().toDate();
+  const currentYear = currentDate.getFullYear();
   try {
     const newGameResult = {
       email: user.email,
@@ -14,7 +17,10 @@ export const createGameResult = async ({ user, playerHandicap, result, selectedC
       status: 'active'
     };
     const newGameCreated = await db.collection('games').doc(newGameResult.id).set(newGameResult);
-    return newGameCreated;
+    if(playerHandicap[0].years && playerHandicap[0].years.includes(currentYear)){
+      return newGameCreated;
+    };
+    addYearToCoursePlayed(playerHandicap, currentYear);
   } catch (error) {
     console.log('Error creating a game result');
     console.log(error);

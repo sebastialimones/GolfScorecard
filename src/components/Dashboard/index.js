@@ -1,28 +1,33 @@
-import React, { useState, useEffect } from 'react';
+ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 
 import { Courses } from '../Courses';
+import { Years } from '../Years';
 import { fetchResults, fetchPlayer, fetchCoursesPerUser } from '../../services/index';
 import { ListOfResults } from '../ListOfResults';
 import { ResultsTable } from '../ResultsTable';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import { useCurrentUser } from '../../hooks/userCurrentUser';
+import { fetchYearsPerCourse } from '../../services/fetchYearsPerCourse';
 
 const Container = styled.div` `;
 
 const MenuContainer = styled.div`
   display: flex;
   justify-content: space-around;
-  align-items: center;
+  align-content: center;
 `;
 
 const DataContainer = styled.div`
   margin: 1em;
 `;
 
-const SwitchContainer = styled.div``;
+const SwitchContainer = styled.div`
+  transform: rotate(90deg);
+  margin-top: 1em;
+`;
 
 const IOSSwitch = withStyles((theme) => ({
   root: {
@@ -53,7 +58,7 @@ const IOSSwitch = withStyles((theme) => ({
   },
   track: {
     borderRadius: 26 / 2,
-    border: `1px solid ${theme.palette.grey[400]}`,
+    border: `1px solid ${ theme.palette.grey[400] }`,
     backgroundColor: theme.palette.secondary.light,
     opacity: 1,
     height: '95%',
@@ -84,6 +89,8 @@ export const Dashboard = ({ history }) => {
   const [gamesResults, setGamesResults] = useState();
   const [playerHandicap, setplayerHandicap] = useState();
   const [modal, setModal] = useState(true);
+  const [selectedYear, setSelectedYear] = useState ('');
+  const [yearsPlayedArray, setYearsPlayedArray] = useState([]);
   const [switchState, setSwitchState] = useState({
     checkedA: true,
   });
@@ -93,7 +100,7 @@ export const Dashboard = ({ history }) => {
   useEffect(() => {
     if (!currentUserId && !isFetchingUser) {
       history.push('/landing');
-    }
+    };
   }, [isFetchingUser, history, currentUserId, user]);
 
   useEffect(() => {
@@ -102,39 +109,64 @@ export const Dashboard = ({ history }) => {
       courses && courses.map((course) => {
         setCoursesName(coursesName => [...coursesName, course]);
         return undefined;
-      })
+      });
       const lastSelectedCourse = localStorage.getItem('selectedCourse');
       setSelectedCourse(lastSelectedCourse);
     };
     currentUserId && getCourses();
-  }, [user, currentUserId])
+  }, [user, currentUserId]);
+
+  useEffect(()=> {
+    const getYearsPerCourse = async () => {
+      const yearsPlayed = await fetchYearsPerCourse(playerHandicap);
+      setYearsPlayedArray([]);
+      yearsPlayed && yearsPlayed.map((year) => {
+        setYearsPlayedArray(yearsPlayedArray => [...yearsPlayedArray, year]);
+        return undefined;
+      });
+      const lastSelectedYear = localStorage.getItem('selectedYear');
+      if(lastSelectedYear){
+        setSelectedYear(lastSelectedYear);
+      }
+    };
+    if(selectedCourse && playerHandicap){
+      getYearsPerCourse();
+    };
+  }, [selectedCourse, playerHandicap]);
 
   useEffect(() => {
     const getPlayerHandicap = async () => {
       const data = await fetchPlayer(currentUserId, selectedCourse);
       setplayerHandicap(data);
-    }
+    };
     currentUserId && selectedCourse && getPlayerHandicap();
   },[currentUserId, selectedCourse, user])
 
   useEffect(() => {
     const getResult = async () => {
-      const data = await fetchResults(playerHandicap, selectedCourse);
+      const data = await fetchResults(playerHandicap, selectedCourse, selectedYear);
       if(data){
         setGamesResults(data);
-      }
-    }
+      };
+    };
     playerHandicap && selectedCourse && getResult()  
-  },[playerHandicap, selectedCourse, switchState, modal])
+  },[playerHandicap, selectedCourse, switchState, modal, selectedYear]);
 
   const handleSwitchChange = (event) => {
     setSwitchState({ ...switchState, [event.target.name]: event.target.checked });
-  };
+    };
 
   const handleCourseChange = (courseName) => {
     setGamesResults([]);
+    setYearsPlayedArray([]);
     setSelectedCourse(courseName);
     localStorage.setItem('selectedCourse', courseName);
+  };
+
+  const handleYearChange = (yearChange) => {
+    setGamesResults([]);
+    setSelectedYear(yearChange);
+    localStorage.setItem('selectedYear', yearChange);
   };
 
   const refreshResults = () => {
@@ -151,11 +183,12 @@ export const Dashboard = ({ history }) => {
             label=""
           />
         </SwitchContainer>
+        { yearsPlayedArray && <Years handleYearChange={ handleYearChange } value={ selectedYear } years={ yearsPlayedArray } />  }
       </MenuContainer>
       <DataContainer>
         {
           playerHandicap && gamesResults && switchState.checkedA &&
-          <ListOfResults results={ gamesResults } playerHandicap={ playerHandicap } refreshResults={ refreshResults } />
+          <ListOfResults year={ selectedYear } results={ gamesResults } playerHandicap={ playerHandicap } refreshResults={ refreshResults } />
         }
         {
           playerHandicap && gamesResults && !switchState.checkedA &&
