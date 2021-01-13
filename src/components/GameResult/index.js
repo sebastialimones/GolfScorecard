@@ -21,6 +21,12 @@ const DataItem = styled.div`
   padding: 1px;
 `;
 
+const Rating = styled.div`
+  padding: 1px;
+  font-weight: bold;
+  color: gray;
+`;
+
 const RedDataItem = styled.div`
   padding: 1px;
   color: red;
@@ -136,6 +142,11 @@ export const GameResult = ({ result, refreshResults }) => {
           }
           </DataItem>
         }
+        <Rating>
+        {
+          `Game rating:  ${(result.totalPoints / result.numberOfHoles).toFixed(2)} `
+        }
+        </Rating>
       </React.Fragment>
       : 
       <GamesEditor result={ result } refreshResults={ refreshResults }/>

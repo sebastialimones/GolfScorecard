@@ -21,11 +21,11 @@ export const createdGameMessages = {
   },
   5: {
     id: 5,
-    message: '¿Has pensado en la petanca?'
+    message: 'Tito... muy mal...'
   },
   6: {
     id: 6,
-    message: 'Increíble, pero cierto'
+    message: 'Bastante, bastante mal...'
   },
   7: {
     id: 7,
@@ -37,27 +37,27 @@ export const createdGameMessages = {
   },
   9: {
     id: 9,
-    message: 'No se puede jugar a golf con resaca'
+    message: 'Día para reflexionar...'
   },
   10: {
     id: 10,
-    message: 'Ni fu, ni fa...'
+    message: 'Ni fu, ni fa... pero mal...'
   },
   11: {
     id: 11,
-    message: 'Algo de deporte has hecho...'
+    message: 'Algo de deporte, pero mal...'
   },
   12: {
     id: 12,
-    message: 'Ni bien, ni mal, ni todo lo contrario'
+    message: 'Típico día que no sabe a nada'
   },
   13: {
     id: 13,
-    message: 'Como un empate fuera de casa...'
+    message: 'Mehh... '
   },
   14: {
     id: 14,
-    message: 'Bueeeno...'
+    message: 'Bueeeno... no está del todo horrible'
   },
   15: {
     id: 15,
@@ -69,11 +69,11 @@ export const createdGameMessages = {
   },
   17: {
     id: 17,
-    message: 'Así, sí!'
+    message: 'Si todos sabemos que sabes pegar los golpes'
   },
   18: {
     id: 18,
-    message: 'Hoy no pagas!'
+    message: 'Así tendría que ser cada día!!'
   },
   19: {
     id: 19,
@@ -101,6 +101,6 @@ export const createdGameMessages = {
   },
   25: {
     id: 25,
-    message: 'Recuerda este día muchacho...'
+    message: '¡¡AAiiii la virgen!! ¡Se nos ha aparecido!'
   },
 };
