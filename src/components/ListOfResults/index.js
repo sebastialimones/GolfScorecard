@@ -37,6 +37,18 @@ export const ListOfResults = ({ results, playerHandicap, refreshResults }) => {
   
   return(
     <Container>
+        { 
+        completeResult.length 
+        ? <TotalGames>
+          {`Partidas totales: ${ completeResult.length }`}
+          <br></br>
+          { rating 
+          ? `Rating medio: ${ averageRatingCalculator(rating).toFixed(2) }`
+          : undefined 
+          }
+        </TotalGames>
+        : undefined
+        }
       <ResultContainer>
       {
         completeResult &&
@@ -45,18 +57,6 @@ export const ListOfResults = ({ results, playerHandicap, refreshResults }) => {
           )
       }
       </ResultContainer>
-      { completeResult.length ?
-      <TotalGames>
-        ---------------- <br></br><br></br>
-        {`Partidas totales: ${ completeResult.length }`}
-        <br></br>
-        { rating 
-        ? `Rating medio: ${ averageRatingCalculator(rating).toFixed(2) }`
-        : undefined 
-        }
-      </TotalGames>
-      : undefined
-      }
     </Container>
   )
 };

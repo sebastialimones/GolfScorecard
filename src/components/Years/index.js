@@ -16,7 +16,7 @@ const SelectYearContainer = styled.div``;
 export const Years = ({ handleYearChange, value, years }) => {
   const classes = useStyles();
   const selectedYear = (event) => {
-    handleYearChange(event.target.value)
+    handleYearChange(event.target.value);
   };
 
   return(
@@ -25,13 +25,14 @@ export const Years = ({ handleYearChange, value, years }) => {
         className={ classes.root }
         id="Año"
         select
-        label={ `Año`}
+        // label={ `Año`}
         onChange={ selectedYear }
         SelectProps={{
           native: true,
         }}
         variant="outlined"
         value={ value }
+        disabled={ years.length ? false : true }
         >
         { 
           years.map((option) => (
@@ -42,5 +43,5 @@ export const Years = ({ handleYearChange, value, years }) => {
         }
       </TextField>
     </SelectYearContainer>
-  )
+  );
 };

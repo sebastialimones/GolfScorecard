@@ -6,7 +6,7 @@ export const fetchResults = async (playerHandicap, selectedCourse, year) => {
     const startOfYear = Timestamp.fromMillis(Date.parse(`January 1, ${year}`));
     const endOfYear = Timestamp.fromMillis(Date.parse(`December 31, ${year}`));
     let gamesRef = db.collection('games');
-    if(year !== 'All'){
+    if(year && year !== 'All'){
       gamesRef = gamesRef
       .where('timestamp', '>', startOfYear)
       .where('timestamp', '<', endOfYear);
@@ -17,7 +17,7 @@ export const fetchResults = async (playerHandicap, selectedCourse, year) => {
       const game = snapshot.data();
       if (game.uid === playerHandicap[0].uid && game.course === selectedCourse && game.status !== 'deleted') {
         games.push(convertGame(game));
-      } 
+      };
     });
     return games;
   } catch (error) {

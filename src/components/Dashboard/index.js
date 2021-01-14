@@ -150,11 +150,11 @@ export const Dashboard = ({ history }) => {
       };
     };
     playerHandicap && selectedCourse && getResult()  
-  },[playerHandicap, selectedCourse, switchState, modal, selectedYear]);
+  },[playerHandicap, selectedCourse, switchState, modal, selectedYear, yearsPlayedArray]);
 
   const handleSwitchChange = (event) => {
     setSwitchState({ ...switchState, [event.target.name]: event.target.checked });
-    };
+  };
 
   const handleCourseChange = (courseName) => {
     setGamesResults([]);
