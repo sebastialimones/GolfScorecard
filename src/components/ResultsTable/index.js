@@ -90,13 +90,13 @@ export const ResultsTable = ({ results, playerHandicap }) => {
     const numberOfHoles = 18;
     for (var holeNumber = 0; holeNumber < numberOfHoles; holeNumber++) {
       getResultPerHole(holeNumber + 1, results);
-    } 
+    }; 
   },[getResultPerHole, results]);
 
   useEffect(() => {
     if(results){
       iterateOnAllHoles();
-    }
+    };
   },[results, iterateOnAllHoles]);
   
   const createData = (forat, averageResultPerHole, bestResult, totalMosques, handicap, numberOfGames) => {
@@ -126,11 +126,12 @@ export const ResultsTable = ({ results, playerHandicap }) => {
               </StyledTableCell>
               <StyledTableCell align="left">{row.handicap}</StyledTableCell>
               {
-                row.averageResultPerHole < row.handicap + 1 &&
-                (row.totalMosques/row.numberOfGames * 100) < 21 
+                row.averageResultPerHole <= (row.handicap + playerHandicap[0].result[row.forat - 1].result + 0.7 )
+                && (row.totalMosques/row.numberOfGames * 100) <= 25 
                   ? <StyledTableCellBest align="left">{row.averageResultPerHole}</StyledTableCellBest>
-                  : row.averageResultPerHole > row.handicap + 1.5 ||
-                  (row.totalMosques/row.numberOfGames * 100) > 30 
+                  : row.averageResultPerHole > row.handicap + playerHandicap[0].result[row.forat - 1].result + 0.3 
+                  ||
+                  (row.totalMosques/row.numberOfGames * 100) >= 35 
                     ? <StyledTableCellWorst align="left">{row.averageResultPerHole}</StyledTableCellWorst>
                     : <StyledTableCell align="left">{row.averageResultPerHole}</StyledTableCell>
               }
