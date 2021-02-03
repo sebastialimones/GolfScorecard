@@ -7,8 +7,8 @@ export const fetchCoursesPerUser = async (currentUserId) => {
     const snapshots = await playerRef.get();
     snapshots.forEach((snapshot) => {
       const course = snapshot.data();
-      if (course.uid === currentUserId) {
-        const obj = { value: course.course, label: course.course }
+      if (course.uid === currentUserId && course.status !== 'deleted') {
+        const obj = { value: course.course, label: course.course, id: course.id }
         courses.push((obj));
       };
     });

@@ -13,3 +13,7 @@ export * from './updateGameResult';
 export * from './fetchResult';
 export * from './deleteGameResult';
 export * from './addYearToCoursePlayed';
+export * from './fetchOnBoardingRanking';
+export * from './createOrUpdateUserProfile';
+export * from './fetchUserProfile';
+export * from './deleteCourse';

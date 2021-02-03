@@ -27,7 +27,9 @@ const HeaderNameMapper = {
   '/dashboard': 'Estadísticas',
   '/newcourse': 'Crear campo',
   '/courses': 'Campos',
+  '/ranking': 'Ranking',
   '/cookiespolicy': 'Política de cookies',
+  '/profile': 'Perfil'
 };
 
 const Header = ({ history }) => {
@@ -50,6 +52,14 @@ const Header = ({ history }) => {
     history.push('/courses');
   };
 
+  const routeRankingClick = () => {
+    history.push('/ranking')
+  };
+
+  const routeProfileClick = () => {
+    history.push('/profile')
+  };
+
   return (
     <React.Fragment>
     { currentLocation.pathname !== '/landing' 
@@ -67,8 +77,11 @@ const Header = ({ history }) => {
         ? <HamburguerMenu 
           routeCreateCourse={ routeCreateCourse } 
           routeDashboardHomeClick={ routeDashboardHomeClick } 
-          routeCoursesClick= { routeCoursesClick }
-          routeResultsClick={ routeResultsClick }>
+          routeCoursesClick={ routeCoursesClick }
+          routeResultsClick={ routeResultsClick }
+          routeRankingClick={ routeRankingClick }
+          routeProfileClick={ routeProfileClick }
+          >
           </HamburguerMenu>
         : null
          }

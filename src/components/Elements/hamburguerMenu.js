@@ -7,7 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { purple } from '@material-ui/core/colors';
 
-export const HamburguerMenu = ({ routeCreateCourse, routeDashboardHomeClick, routeResultsClick, routeCoursesClick }) => {
+export const HamburguerMenu = ({ routeCreateCourse, routeDashboardHomeClick, routeResultsClick, routeCoursesClick, routeProfileClick, routeRankingClick }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -37,9 +37,21 @@ export const HamburguerMenu = ({ routeCreateCourse, routeDashboardHomeClick, rou
     handleClose();
   };
 
+  const handleRankingClick = (event) => {
+    event.preventDefault();
+    routeRankingClick();
+    handleClose();
+  };
+
   const handleCourseClick = (event) => {
     event.preventDefault();
     routeCoursesClick();
+    handleClose();
+  };
+
+  const handleProfileClick = (event) => {
+    event.preventDefault();
+    routeProfileClick();
     handleClose();
   };
 
@@ -69,8 +81,10 @@ export const HamburguerMenu = ({ routeCreateCourse, routeDashboardHomeClick, rou
     >
       <MenuItem onClick={ handleResultsClick }>Tarjeta</MenuItem>
       <MenuItem onClick={ handleDashboardClick }>Estadísticas</MenuItem>
+      <MenuItem onClick={ handleRankingClick }>Ranking</MenuItem>
       <MenuItem onClick={ handleCreateCourse }>Nuevo campo</MenuItem>
       <MenuItem onClick={ handleCourseClick }>Campos</MenuItem>
+      <MenuItem onClick={ handleProfileClick }>Perfil</MenuItem>
       <MenuItem onClick={ handleLogOut }>Logout</MenuItem>
     </Menu>
   </div>

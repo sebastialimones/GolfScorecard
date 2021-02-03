@@ -5,7 +5,7 @@ export const fetchResult = async (id) => {
     const gameDoc = await db.collection('games').doc(id).get();
     if (gameDoc.exists) {
       return gameDoc.data();
-    }
+    };
   } catch (error) {
     console.log('Error fetching game');
     console.log(error);
