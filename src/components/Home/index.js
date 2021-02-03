@@ -120,9 +120,17 @@ export const Home = ({ history }) => {
     setSelectedCourse('');
   };
 
+  const checkForBlankResults = (result) => {
+    const blankResults = result.filter((score)=> 
+      score.result !== 0
+    );
+    return blankResults
+  };
+
   const send = async (event) => {
     event.preventDefault();
-    if(playerHandicap && result) {
+    const checkBlankResults = checkForBlankResults(result);
+    if(playerHandicap && result && selectedCourse && checkBlankResults.length) {
       try {
         const gameResult = await createGameResult({
           user,
@@ -135,9 +143,11 @@ export const Home = ({ history }) => {
         : console.log('error')
       }
       catch (error){
-        errorCode.message = error.message ? error.message: errorCode.message;
-        setOpenAlert(true)
-        setErrorCode(errorCode);
+        if(error){
+          error.message = error.message ? error.message: errorCode.message;
+          setOpenAlert(true)
+          setErrorCode(errorCode);
+        };
       }
     } else {
       dataIncomplete();
@@ -145,14 +155,12 @@ export const Home = ({ history }) => {
   };
 
   const dataIncomplete = () => { 
-    if(!result[0]){
       const errorCode = { 
         message:  "Falta introduir algun resultat",
         severity: "error" 
        }
       setErrorCode(errorCode);
-    } 
-    setOpenAlert(true)
+      setOpenAlert(true)
   };
 
   const handleHoleResult = (holeResult) => { 
