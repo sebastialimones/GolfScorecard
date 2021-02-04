@@ -23,14 +23,16 @@ const Container = styled.div`
 `;
 const Form = styled.form``;
 const HolesFormContainer = styled.div``;
+const TitleContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
 const CourseHandicap = styled.div`
   margin-top: 25px;
   font-size: 34px;
   font-weight: 800;
-  padding: 7px;
-`;
-const CourseHandicapSubtitle = styled.div`
-  font-size: 20px;
   padding: 7px;
 `;
 
@@ -59,7 +61,7 @@ export const NewCourse = ({ history }) => {
       initialState.push({ holeNumber: j, result: 0 });
     }
     setPersonalHandicap(initialState)
-  }
+  };
 
   const handleCourseChange = (event) => {
     setCourseName(event.currentTarget.value);
@@ -89,7 +91,7 @@ export const NewCourse = ({ history }) => {
         setOpenAlert(true);
         setErrorCode(errorCode);
       }
-    } else {
+    }else {
       dataIncomplete();
     }
   };
@@ -99,16 +101,17 @@ export const NewCourse = ({ history }) => {
       const errorCode = { 
         message:  "Falta introduir un camp",
         severity: "error" 
-    }
+      }        
+      setOpenAlert(true);
       setErrorCode(errorCode); 
-    } else if(coursePar.length < 18){
+    }else if(coursePar.length < 18){
       const errorCode = { 
         message:  "Falta introduir els cops d'algun forat",
         severity: "error" 
        }
+      setOpenAlert(true);
       setErrorCode(errorCode);
     }
-    setOpenAlert(true)
   };
 
   const handleCoursePar = (holeResult) => { 
@@ -127,7 +130,7 @@ export const NewCourse = ({ history }) => {
     setCoursePar(zeroFilter);
   };
 
-  const handlePersonalHandicap = (holeResult) => {    
+  const handlePersonalHandicap = (holeResult) => { 
     const newArray = personalHandicap.slice();
     const holesAlreadyIntroduced = newArray.map(a => a.holeNumber);
       if(newArray.length){
@@ -137,17 +140,17 @@ export const NewCourse = ({ history }) => {
         : newArray.splice(index,1,holeResult)
       }else{
         newArray.push(holeResult);
-      }
+      };
     setPersonalHandicap(newArray);
   };
 
-  const handleCloseAlertSucces = (event) => {
+  const handleCloseAlertSucces = () => {
     setErrorCode();
     setOpenAlert(false);
     clearInputs();
   };
 
-  const handleCloseAlertError = (event) => {
+  const handleCloseAlertError = () => {
     setErrorCode();
     setOpenAlert(false);
   };
@@ -155,24 +158,27 @@ export const NewCourse = ({ history }) => {
   return (
     <Container>
       <Form className={classes.root} noValidate autoComplete="off"> 
-      <TextField
-        id="campo"
-        label="Nombre del campo"
-        onChange={ handleCourseChange }
-        value={ courseName }
-        className={classes.root}
-      />      
-      <CourseHandicap>Handicap del hoyo.</CourseHandicap>
-      <CourseHandicapSubtitle>Ej: Hoyo 1 - par 4</CourseHandicapSubtitle>
+        <TextField
+          id="campo"
+          label="Nombre del campo"
+          onChange={ handleCourseChange }
+          value={ courseName }
+          className={classes.root}
+        /> 
+        <TitleContainer>   
+          <CourseHandicap>Hoyos</CourseHandicap>
+          <CourseHandicap>Golpes</CourseHandicap>
+        </TitleContainer>  
         <HolesFormContainer>
-          <ListOfHoles handleHoleResult={ handleCoursePar } selectedCourse={ courseName } />
+          <ListOfHoles 
+            handleHoleResult={ handleCoursePar } 
+            selectedCourse={ courseName } 
+            newCourse={ true } 
+            handleHandicapResult={ handlePersonalHandicap }
+            newGame={ true }
+          />
         </HolesFormContainer>
-        <CourseHandicap>¿Dónde tienes golpes?</CourseHandicap>
-        <CourseHandicapSubtitle>Ej: Hoyo 1 - 1 golpe</CourseHandicapSubtitle>
-        <HolesFormContainer>
-          <ListOfHoles handleHoleResult={ handlePersonalHandicap } selectedCourse={ courseName }/>
-        </HolesFormContainer>
-        <Button type="submit" primary onClick={ send }>Send</Button>
+        <Button type="submit" primary onClick={ send }>Enviar</Button>
         <Notification
           onClose={ errorCode ? handleCloseAlertError : handleCloseAlertSucces }
           message={ errorCode ? errorCode.message : "Perfe!" }
