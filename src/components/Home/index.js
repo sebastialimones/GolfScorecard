@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '../Elements/button';
 import { ListOfHoles } from '../ListOfHoles';
-import { createGameResult, fetchPlayer, fetchCoursesPerUser } from '../../services';
+import { createGameResult, fetchPlayer, fetchCoursesPerUser, fetchUserProfile } from '../../services';
 import { Notification } from '../Notification';
 import { Courses } from '../Courses';
 import { useCurrentUser } from '../../hooks/userCurrentUser';
@@ -43,6 +43,7 @@ export const Home = ({ history }) => {
   const [openAlert, setOpenAlert] = useState(false);
   const [playerHandicap, setplayerHandicap] = useState();
   const [user, isFetchingUser] = useCurrentUser();
+  const [userProfile, setUserProfile] = useState('');
   const [holesPlayed, setHolesPlayed] = useState(0);
   const currentUserId = user && user.id;
 
@@ -71,6 +72,14 @@ export const Home = ({ history }) => {
     };
     currentUserId && selectedCourse && getPlayerHandicap();
   },[currentUserId, selectedCourse, user]);
+
+  useEffect(() => {
+    const getUserRankingCodes = async () => {
+      const userRankings = await fetchUserProfile(currentUserId);
+      setUserProfile(userRankings);
+    };
+    currentUserId && getUserRankingCodes();
+  },[currentUserId, user]);
 
   useEffect(() => {
     const emptyResult = [];
@@ -127,30 +136,68 @@ export const Home = ({ history }) => {
     return blankResults
   };
 
+  const numberOfHolesPlayed = (result) => {
+    if(result){
+      let numberOfHoles = 0;
+      result.map((hole) => {
+        if(hole.result !== 0){
+          numberOfHoles = numberOfHoles + 1;
+        };
+        return numberOfHoles;
+      });
+      return numberOfHoles;
+    };
+  };
+
+  const checkMultiplier = () => {
+    return 1;
+  };
+
+  const rankingGameVerifier = () => {
+    let rankingIdVerified = [];
+    userProfile.rankingsIds.length && playerHandicap[0].rankingsIds &&
+    userProfile.rankingsIds.map((rankingId) => {
+      playerHandicap[0].rankingsIds.map((courseRanking) => {
+        if(courseRanking.status === 'active' && courseRanking.id === rankingId.id){
+          rankingIdVerified.push(rankingId);
+          return rankingIdVerified
+        };
+        return rankingIdVerified;
+      })
+      return rankingIdVerified;
+    });
+    return rankingIdVerified;
+  };
+
   const send = async (event) => {
     event.preventDefault();
+    const rankingGameIds = rankingGameVerifier();
     const checkBlankResults = checkForBlankResults(result);
-    if(playerHandicap && result && selectedCourse && checkBlankResults.length) {
-      try {
+    const numberOfHoles = numberOfHolesPlayed(result);
+    const multiplier = checkMultiplier();
+    try {
+      if(playerHandicap && userProfile && result && selectedCourse && checkBlankResults.length && liveScore && numberOfHoles && multiplier ){
         const gameResult = await createGameResult({
           user,
+          userProfile,
           playerHandicap,
           result,
-          selectedCourse
-        })
-        gameResult !== 'error'
-        ? setOpenAlert(true)
-        : console.log('error')
-      }
-      catch (error){
-        if(error){
-          error.message = error.message ? error.message: errorCode.message;
-          setOpenAlert(true)
-          setErrorCode(errorCode);
-        };
-      }
-    } else {
-      dataIncomplete();
+          selectedCourse,
+          liveScore,
+          numberOfHoles,
+          multiplier,
+          rankingGameIds,
+        });
+        return gameResult;
+      } else {
+        dataIncomplete();
+      };
+    } catch (error){
+      if(error){
+        error.message = error.message ? error.message: errorCode.message;
+        setOpenAlert(true)
+        setErrorCode(errorCode);
+      };
     }
   };
 
@@ -212,5 +259,4 @@ export const Home = ({ history }) => {
         />
     </Container>
   );
-}
-
+};

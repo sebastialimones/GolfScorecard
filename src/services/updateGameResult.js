@@ -1,20 +1,19 @@
 import { db, Timestamp } from './admin';
+import { updateGameInRankings } from '../services';
 
 export const updateGameResult = async (newGameResult) => {
   try {
     const newGameResultRef = db.collection('games').doc(newGameResult.id).update({
-      email: newGameResult.email,
-      course: newGameResult.course,
-      playerHandicap: newGameResult.playerHandicap,
-      id: newGameResult.id,
       result: newGameResult.result,
       timestamp: Timestamp.now(),
-      uid: newGameResult.uid,
-      status: 'active'
-    })
+      rating: newGameResult.rating,
+    });
+    if(newGameResult.rankingGames){
+      updateGameInRankings(newGameResult.uid, newGameResult.rating, newGameResult.rankingGames, newGameResult.id);
+    };
     return newGameResultRef;
   } catch (error) {
     console.log('Error updating game result');
     console.log(error);
   }
-}
+};

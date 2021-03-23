@@ -11,7 +11,7 @@ export const fetchYearsPerCourse = async (playerHandicap) => {
     });
     return yearsWithLabel;
   }catch (error) {
-    console.log('Error adding a year played to a course');
+    console.log('Error fetching a year played to a course');
     console.log(error);
   }
 };

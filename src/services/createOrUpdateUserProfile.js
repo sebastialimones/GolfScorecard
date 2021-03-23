@@ -8,7 +8,8 @@ export const createOrUpdateUserProfile = async ({ name, birthDate, dbUserProfile
       birthDate: birthDate,
       email: dbUserProfile.email,
       createdTimestamp: dbUserProfile.timestamp,
-      uid: dbUserProfile.uid
+      uid: dbUserProfile.uid,
+      rankingsIds: dbUserProfile.rankingsIds
     };
     await db.collection('users').doc(dbUserProfile.uid).set(newProfile);
     return;

@@ -11,14 +11,18 @@ import { Ranking } from '../components/Ranking';
 import { LandingPage } from '../components/Landing';
 import { CookiesPolicy } from '../components/CookiesPolicy';
 import { Profile } from '../components/Profile';
+import { RankingGenerator} from '../components/RankingGenerator';
+import { CourseGenerator} from '../components/CourseGenerator';
 
 export const Routes = () => {
   const renderHome = (props) => <Home { ...props } />;
   const renderLogin = (props) => <Login { ...props } />;
   const renderDashboard = (props) => <Dashboard { ...props } />;
   const renderNewCourse = (props) => <NewCourse { ...props } />;
-  const renderRanking = (props) => <Ranking { ...props } />;  
+  const renderRanking= (props) => <Ranking { ...props } />;  
   const renderProfile = (props) => <Profile { ...props } />;
+  const renderRankingGenerator = (props) => <RankingGenerator { ...props } />;
+  const renderCourseGenerator = (props) => <CourseGenerator { ...props } />;
   const renderCourseEditing = (props) => <CourseEditing { ...props } />;
   const renderLandingPage = (props) => <LandingPage { ...props } />;
   const renderCookiesPolicy = (props) => <CookiesPolicy { ...props } />;
@@ -33,6 +37,8 @@ export const Routes = () => {
           <Route exact path="/newCourse" render={ renderNewCourse } />
           <Route exact path="/courses" render={ renderCourseEditing } />
           <Route exact path="/ranking" render={ renderRanking } />
+          <Route exact path="/rankinggenerator" render={ renderRankingGenerator } />
+          <Route exact path="/coursegenerator" render={ renderCourseGenerator } />
           <Route exact path="/profile" render={ renderProfile } />
           <Route exact path="/landing" render={ renderLandingPage } />
           <Route exact path="/cookiespolicy" render={ renderCookiesPolicy } />

@@ -5,9 +5,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Button } from '../Elements/button';
 import { ListOfHoles } from '../ListOfHoles';
-import { createPlayerHandicap } from '../../services';
+import { createNewCourse } from '../../services';
 import { Notification } from '../Notification';
-import { useCurrentUser } from '../../hooks/userCurrentUser';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,45 +21,34 @@ const Container = styled.div`
   margin-left: 1em;
 `;
 const Form = styled.form``;
-const HolesFormContainer = styled.div``;
-const TitleContainer = styled.div`
+const HolesFormContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
 `;
-
-const CourseHandicap = styled.div`
-  margin-top: 25px;
-  font-size: 34px;
-  font-weight: 800;
-  padding: 7px;
+const HoleFormContainer = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
+const HoleTitle = styled.div``;
+const HandicapTitle = styled.div``;
 
 
-export const NewCourse = ({ history }) => {
+export const CourseGenerator = () => {
   const classes = useStyles();
   const [courseName, setCourseName] = useState('');
-  const [personalHandicap, setPersonalHandicap] = useState([]);
-  const [coursePar, setCoursePar] = useState([]);
+  const [coursePuntuation, setCoursePuntuation] = useState([]);
   const [errorCode, setErrorCode] = useState();
   const [openAlert, setOpenAlert] = useState(false);
-  const [user, isFetchingUser] = useCurrentUser();
-  const currentUserId = user && user.id;
 
   useEffect(() => {
-    !currentUserId && !isFetchingUser && history.push('/landing');
-  }, [isFetchingUser, history, currentUserId, user]);
-
-  useEffect(() => {
-    initialStatePersonalHandicap()
+    initialStateCourseHoles()
   }, []);
 
-  const initialStatePersonalHandicap = () => {
+  const initialStateCourseHoles = () => {
     const initialState = [];
     for (var j = 1; j < 19; j++) {
-      initialState.push({ holeNumber: j, result: 0 });
+      initialState.push({ holeNumber: j, strokes: 0, handicap:0 });
     }
-    setPersonalHandicap(initialState)
+    setCoursePuntuation(initialState)
   };
 
   const handleCourseChange = (event) => {
@@ -68,21 +56,17 @@ export const NewCourse = ({ history }) => {
   };
 
   const clearInputs = () => {
-    setPersonalHandicap([]);
-    setCoursePar([]);
+    setCoursePuntuation([]);
     setCourseName('');
   };
 
   const send = async (event) => {
     event.preventDefault();
-    if(courseName && coursePar.length === 18){
+    if(courseName && coursePuntuation.length === 18){
       try {
-        await createPlayerHandicap({
-          email: user.email,
-          uid: currentUserId,
-          course: courseName,
-          personalHandicap,
-          coursePar
+        await createNewCourse({
+          name: courseName,
+          coursePuntuation,
         })
         setOpenAlert(true);
       }
@@ -104,7 +88,7 @@ export const NewCourse = ({ history }) => {
       }        
       setOpenAlert(true);
       setErrorCode(errorCode); 
-    }else if(coursePar.length < 18){
+    }else if(coursePuntuation.length < 18){
       const errorCode = { 
         message:  "Falta introduir els cops d'algun forat",
         severity: "error" 
@@ -114,34 +98,14 @@ export const NewCourse = ({ history }) => {
     }
   };
 
-  const handleCoursePar = (holeResult) => { 
-    const newArray = coursePar.slice();
-    const holesAlreadyIntroduced = newArray.map(a => a.holeNumber);
-      if(newArray.length){
-      const index = holesAlreadyIntroduced.indexOf(holeResult.holeNumber);
-      index === -1
-        ? newArray.push(holeResult)
-        : newArray.splice(index,1,holeResult)
-      }else{
-        newArray.push(holeResult);
-      }
-    const zeroFilter = newArray.filter(a => a.result !== 0);
-    zeroFilter.sort((result1, result2) => result1.holeNumber - result2.holeNumber)
-    setCoursePar(zeroFilter);
+  const handleHoleStrokes = (holeResult) => { 
+    const newArray = coursePuntuation.slice();
+    newArray[holeResult.holeNumber-1].strokes = holeResult.result
   };
 
-  const handlePersonalHandicap = (holeResult) => { 
-    const newArray = personalHandicap.slice();
-    const holesAlreadyIntroduced = newArray.map(a => a.holeNumber);
-      if(newArray.length){
-      const index = holesAlreadyIntroduced.indexOf(holeResult.holeNumber);
-      index === -1
-        ? newArray.push(holeResult)
-        : newArray.splice(index,1,holeResult)
-      }else{
-        newArray.push(holeResult);
-      };
-    setPersonalHandicap(newArray);
+  const handleHoleHandicap = (holeResult) => { 
+    const newArray = coursePuntuation.slice();
+    newArray[holeResult.holeNumber-1].handicap = holeResult.result
   };
 
   const handleCloseAlertSucces = () => {
@@ -165,18 +129,22 @@ export const NewCourse = ({ history }) => {
           value={ courseName }
           className={classes.root}
         /> 
-        <TitleContainer>   
-          <CourseHandicap>Hoyos</CourseHandicap>
-          <CourseHandicap>Golpes</CourseHandicap>
-        </TitleContainer>  
         <HolesFormContainer>
-          <ListOfHoles 
-            handleHoleResult={ handleCoursePar } 
-            selectedCourse={ courseName } 
-            newCourse={ true } 
-            handleHandicapResult={ handlePersonalHandicap }
-            newGame={ true }
-          />
+          <HoleFormContainer>
+            <HoleTitle>Strokes</HoleTitle>
+            <ListOfHoles 
+              handleHoleResult={ handleHoleStrokes } 
+              selectedCourse={ courseName } 
+            />
+          </HoleFormContainer>
+          <HoleFormContainer>
+            <HandicapTitle>Handicap</HandicapTitle>
+            <ListOfHoles 
+              handleHoleResult={ handleHoleHandicap } 
+              selectedCourse={ courseName } 
+              newCourse={ true } 
+            />
+          </HoleFormContainer>
         </HolesFormContainer>
         <Button type="submit" primary onClick={ send }>Enviar</Button>
         <Notification

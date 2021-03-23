@@ -4,10 +4,9 @@ import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Button } from '../../components/Elements/button';
-import { createOrUpdateUserProfile } from '../../services';
-import { fetchUserProfile } from '../../services'; 
 import { useCurrentUser } from '../../hooks/userCurrentUser';
 import { Notification } from '../../components/Notification';
+import { createRanking } from '../../services';
 
 const Container = styled.div`
   margin: 1em;
@@ -28,13 +27,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const Profile = ({ history }) => {
+export const RankingGenerator = ({ history }) => {
   const classes = useStyles();
   const [name, setName] = useState('');
-  const [birthDate, setBirthDate] = useState('');
+  const [code, setCode] = useState('');
   const [openAlert, setOpenAlert] = useState(false);
   const [errorCode, setErrorCode] = useState();
-  const [dbUserProfile, setDbUserProfile] = useState();
   const [user, isFetchingUser] = useCurrentUser();
   const currentUserId = user && user.id;
 
@@ -42,62 +40,45 @@ export const Profile = ({ history }) => {
     !currentUserId && !isFetchingUser && history.push('/landing');
   }, [isFetchingUser, history, currentUserId, user]);
 
-  useEffect(() => {
-    if(user){
-      const getPlayerProfile = async () => {
-        const data = await fetchUserProfile(currentUserId);
-        console.log(data)
-        setDbUserProfile(data);
-        if(data.name){
-          setName(data.name);
-        };
-        if(data.birthDate){
-          setBirthDate(data.birthDate);
-        };
-      };
-      getPlayerProfile();
-    }
-  },[currentUserId, user, errorCode]);
-
   const onChangeName = (event) => {
     setName(event.currentTarget.value);
   };
 
-  const onChangeDate = (event) => {
-    setBirthDate(event.currentTarget.value);
+  const onChangeCode = (event) => {
+    setCode(event.currentTarget.value);
   };
 
   const send = async (event) => {
     event.preventDefault();
-    if(name && birthDate){
+    const codeToString = code.toString().toUpperCase();
+    console.log(codeToString)
+    if(name && code){
       try {
-        const gameResult = await createOrUpdateUserProfile({
+          const ranking = await createRanking({
           name,
-          birthDate,
-          dbUserProfile
-        });
-        gameResult !== 'error'
-        ? setOpenAlert(true)
-        : console.log('error')
+          codeToString,
+          });
+          ranking !== 'error'
+          ? setOpenAlert(true)
+          : console.log('error')
       }
       catch (error){
-        errorCode.message = error.message ? error.message: errorCode.message;
-        setOpenAlert(true)
-        setErrorCode(errorCode);
-      }
+          errorCode.message = error.message ? error.message: errorCode.message;
+          setOpenAlert(true)
+          setErrorCode(errorCode);
+      };
       return;
-    } else{
+    }else {
       const errorCode = { 
-        message:  "Falta introduir un nom o data de naixement",
+        message:  "Falta introduir un nom o codi",
         severity: "error" 
        }
       setErrorCode(errorCode);
       setOpenAlert(true)
-    }
+    };
   };
 
   const handleCloseAlert = () => {
-    setErrorCode();
     setOpenAlert(false);
   };
 
@@ -106,20 +87,15 @@ export const Profile = ({ history }) => {
       <InputContainer className={classes.root} noValidate autoComplete="off">
         <TextField 
           id="standard-basic" 
-          label="Nombre" 
+          label="Nombre del ranking" 
           onChange={ onChangeName }
           value={ name } 
         />
         <TextField
           id="date"
-          label="Fecha de nacimiento"
-          type="date"
-          onChange={ onChangeDate }
-          value={ birthDate }
-          className={classes.textField}
-          InputLabelProps={{
-            shrink: true,
-          }}
+          label="Código del ranking"
+          onChange={ onChangeCode }
+          value={ code }
         />
       </InputContainer>
       <Button type="submit" primary onClick={ send }>Enviar</Button>
