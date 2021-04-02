@@ -188,6 +188,7 @@ export const Home = ({ history }) => {
           multiplier,
           rankingGameIds,
         });
+        setOpenAlert(true);
         return gameResult;
       } else {
         dataIncomplete();
@@ -195,7 +196,7 @@ export const Home = ({ history }) => {
     } catch (error){
       if(error){
         error.message = error.message ? error.message: errorCode.message;
-        setOpenAlert(true)
+        setOpenAlert(true);
         setErrorCode(errorCode);
       };
     }

@@ -9,10 +9,17 @@ import { useCurrentUser } from '../../hooks/userCurrentUser';
 
 const Container = styled.div`
 `; 
-const CourseForRanking = styled.div`
-`; 
 
 const Title = styled.div`
+  margin-bottom: 0.8em;
+`;
+
+const CoursesContainer = styled.div`
+  margin-bottom: 1.5em;
+`;
+
+const CodeContainer = styled.div`
+  margin-bottom: 1.5em;
 `;
 
 export const NoRankingCode = ({ userProfile, history, newCheckedRanking }) => {
@@ -101,6 +108,7 @@ export const NoRankingCode = ({ userProfile, history, newCheckedRanking }) => {
       <Title>
         ¿Añade un nuevo código?
       </Title>
+      <CodeContainer>
       <TextField 
         id="outlined-basic" 
         label="Código" 
@@ -108,10 +116,13 @@ export const NoRankingCode = ({ userProfile, history, newCheckedRanking }) => {
         onChange={ onChangeCode }
         value={ code }
       />
-      <CourseForRanking>
+      </CodeContainer>
+      <Title>
         Seleccion el campo donde jugaras este ranking:
-      </CourseForRanking>
+      </Title>
+      <CoursesContainer>
       { coursesName && <Courses handleCourseChange={ handleCourseChange } value={ selectedCourse } courses={ coursesName } /> }
+      </CoursesContainer>
       <Button type="submit" primary onClick={ sendCode }>Enviar</Button>
       <Notification
           onClose={ handleCloseAlert }
