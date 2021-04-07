@@ -18,4 +18,4 @@ export const createPlayerHandicap = async ({ email, uid, course, personalHandica
     console.log('Error creating a handicap');
     console.log(error);
   }
-}
+};

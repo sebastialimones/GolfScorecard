@@ -17,6 +17,7 @@ import { Notification } from '../Notification';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import { fetchResult, updateGameResult } from '../../services';
+import { gameRatingCalculator } from '../Helpers';
 
 const Container = styled.div` `;
 const FadeContainer = styled.div`
@@ -67,7 +68,7 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-export const GamesEditor = ({ result, refreshResults }) => {
+export const GamesEditor = ({ result, refreshResults, playerHandicap }) => {
   const classes = useStyles();
   const [editRow, setEditRow] = useState('');
   const [openAlert, setOpenAlert] = useState(false);
@@ -117,6 +118,8 @@ export const GamesEditor = ({ result, refreshResults }) => {
       });
       const newObjectGameResult = newGameResult;
       newObjectGameResult.result = updatedGameResult;
+      const updatedGameRating = gameRatingCalculator(newGameResult, playerHandicap);
+      newObjectGameResult.gameRating = updatedGameRating;
       setNewGameResult(newObjectGameResult);
     const sendUpdatedPlayer = async () => {
       try {
@@ -130,7 +133,7 @@ export const GamesEditor = ({ result, refreshResults }) => {
     }
     sendUpdatedPlayer();
     }
-  },[editRow, errorCode, newGameResult]);
+  },[editRow, errorCode, newGameResult, playerHandicap]);
 
   return (
     <Container>

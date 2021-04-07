@@ -14,31 +14,31 @@ const useStyles = makeStyles(() => ({
 
 const SelectCourseContainer = styled.div``;
 
-export const Courses = ({ handleCourseChange, value, courses }) => {
+export const RankingMenu = ({ handleRankingChange, value, rankings }) => {
   const classes = useStyles();
-  const selectCourse = (event) => {
-    handleCourseChange(event.target.value)
+  const selectRanking = (event) => {
+    handleRankingChange(event.target.value)
   };
 
   return(
     <SelectCourseContainer>
       <TextField
-        disabled={ courses && courses.length ? false : true }
+        disabled={ rankings && rankings.length ? false : true }
         className={classes.root}
-        id="select-course"
+        id="select-ranking"
         select
-        label="Campos"
+        label="Rankings"
         value={ value }
-        onChange={ selectCourse }
+        onChange={ selectRanking }
         variant="filled"
         SelectProps={{
             multiple: false,
             value: value
           }}
         >
-        { courses && courses.map((option) => (
-          <MenuItem key={ option.value } value={ option.value }>
-          { option.label }
+        { rankings && rankings.map((option) => (
+          <MenuItem key={ option } value={ option }>
+          { option }
           </MenuItem>
         )) }
       </TextField>

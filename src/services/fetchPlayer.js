@@ -16,4 +16,4 @@ export const fetchPlayer = async (currentUserId, course) => {
     console.log('Error fetching player');
     console.log(error);
   }
-}
+};

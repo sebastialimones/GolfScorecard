@@ -13,7 +13,7 @@ export const createdGameMessages = {
   },
   3: {
     id: 3,
-    message: 'No se lo diremos a nadie.'
+    message: 'No se lo diremos a nadie...'
   },
   4: {
     id: 4,

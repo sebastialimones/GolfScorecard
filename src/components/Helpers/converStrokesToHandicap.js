@@ -18,7 +18,7 @@ export const convertStrokesToHandicap = (result, playerHandicap) => {
       };
       if(hole.result !== 0){
         numberOfHoles = numberOfHoles + 1;
-      }
+      };
       return undefined;
     });
       

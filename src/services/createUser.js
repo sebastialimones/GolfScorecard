@@ -7,6 +7,7 @@ export const createUser = async (user) => {
       uid: user.id,
       email: user.email,
       status: 'active',
+      rankingsIds:[],
     };
     const userRef = await db.collection('users').doc(user.id);
     userRef.get().then(doc => {

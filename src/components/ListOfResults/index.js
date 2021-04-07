@@ -26,7 +26,7 @@ export const ListOfResults = ({ results, playerHandicap, refreshResults }) => {
   };
   const rating = [];
   completeResult.map((result) => {
-    const gameRate = (result.totalPoints / result.numberOfHoles);
+    const gameRate = result.totalPoints / result.numberOfHoles;
     rating.push(gameRate);
     return undefined;
   });
@@ -53,7 +53,7 @@ export const ListOfResults = ({ results, playerHandicap, refreshResults }) => {
       {
         completeResult &&
           completeResult.map((result) =>     
-            <GameResult key={ result.id } result={ result } refreshResults={ refreshResults }/>
+            <GameResult key={ result.id } result={ result } refreshResults={ refreshResults } playerHandicap={ playerHandicap }/>
           )
       }
       </ResultContainer>

@@ -38,7 +38,7 @@ const GreenDataItem = styled.div`
 `;
 
 
-export const GameResult = ({ result, refreshResults }) => {
+export const GameResult = ({ result, refreshResults, playerHandicap }) => {
   const [openEditing, setOpenEditing] = useState(false);
   const [showDeleteIcon, setShowDeleteIcon] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
@@ -149,7 +149,7 @@ export const GameResult = ({ result, refreshResults }) => {
         </Rating>
       </React.Fragment>
       : 
-      <GamesEditor result={ result } refreshResults={ refreshResults }/>
+      <GamesEditor result={ result } refreshResults={ refreshResults } playerHandicap={ playerHandicap }/>
     }
     <Notification
       onClose={ handleCloseAlert }
