@@ -51,7 +51,6 @@ export const RankingGenerator = ({ history }) => {
   const send = async (event) => {
     event.preventDefault();
     const codeToString = code.toString().toUpperCase();
-    console.log(codeToString)
     if(name && code){
       try {
           const ranking = await createRanking({

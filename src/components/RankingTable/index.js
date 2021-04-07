@@ -32,8 +32,9 @@ export const RankingTable = ({ gamesRanking, selectedRankingDetails }) => {
   const [players, setPlayers] = useState([]);
 
   useEffect(() => {
-    getAllPlayers();
-  });
+    getAllPlayers();   
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
 
   const createRowsWithResults = useCallback (() => {
     let position = 0;
@@ -43,6 +44,7 @@ export const RankingTable = ({ gamesRanking, selectedRankingDetails }) => {
       createData(position, player.name, player.average, player.results.length);
       return undefined;
     });
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scores]);
   
   const getResultPerPlayer = useCallback((playerId) => {
@@ -66,11 +68,11 @@ export const RankingTable = ({ gamesRanking, selectedRankingDetails }) => {
     if(playerProfile[0].name){
       return playerProfile[0].name
     }else{
-      return 'el sin nombre'
+      return;
     }
   }, [players]);
   
-  const calculateRankingResult = useCallback ((playerId) => {
+  const calculateRankingResult = useCallback (() => {
     const scoreAgregator = [];
     selectedRankingDetails.players.map((playerId) => {
       const resultPerPlayer = getResultPerPlayer(playerId);
@@ -89,18 +91,21 @@ export const RankingTable = ({ gamesRanking, selectedRankingDetails }) => {
 
   useEffect(() => {
     if(selectedRankingDetails && scores.length < selectedRankingDetails.games.length && players.length){
+      setScores([]);
+      setRows([]);
       calculateRankingResult();
     };
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   },[gamesRanking, selectedRankingDetails, players.length]);
 
   useEffect(() => {
-    if(scores.length && players){
-      createRowsWithResults();
-    }
-  },[scores, createRowsWithResults]);
+    createRowsWithResults();
+  },[scores, createRowsWithResults, players]);
 
   const createData = (position, name, result, games) => {
-    setRows(rows => [ ...rows, { position, name, result, games }]);
+    if(rows.length <= selectedRankingDetails.players.length){
+      setRows(rows => [ ...rows, { position, name, result, games }]);
+    };
     return;
   };
 
@@ -113,24 +118,23 @@ export const RankingTable = ({ gamesRanking, selectedRankingDetails }) => {
             <StyledTableCell align="left">Nombre</StyledTableCell>
             <StyledTableCell align="left">Resultado</StyledTableCell>
             <StyledTableCell align="left">Partidas</StyledTableCell>
-
           </TableRow>
         </TableHead>
         <TableBody>
-        { rows 
+        { rows.length 
             ? rows
-            .map((row) => (
-            <StyledTableRow key={row.position}>
-              <StyledTableCell component="th" scope="row">
-                {row.position}
-              </StyledTableCell>
-              <StyledTableCell align="left">{row.name}</StyledTableCell>
-              <StyledTableCell align="left">{row.result}</StyledTableCell>
-              <StyledTableCell align="left">{row.games}</StyledTableCell>
-            </StyledTableRow>
-          ))
-          : null
-          }
+              .map((row) => (
+              <StyledTableRow key={row.position}>
+                <StyledTableCell component="th" scope="row">
+                  {row.position}
+                </StyledTableCell>
+                <StyledTableCell align="left">{row.name}</StyledTableCell>
+                <StyledTableCell align="left">{row.result}</StyledTableCell>
+                <StyledTableCell align="left">{row.games}</StyledTableCell>
+              </StyledTableRow>
+              ))
+            : null
+        }
         </TableBody>
       </Table>
     </TableContainer>

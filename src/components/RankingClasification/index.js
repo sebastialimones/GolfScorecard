@@ -44,7 +44,7 @@ export const RankingClasification = ({ userProfile, rankingDetails, deleteRankin
           return undefined;
         });
       };
-      rankingDetails && rankingsName();
+      rankingsName();
     }
   }, [userProfile, rankingDetails, rankingName.length]);
 
@@ -62,6 +62,8 @@ export const RankingClasification = ({ userProfile, rankingDetails, deleteRankin
   },[userProfile, rankingName, selectedRanking, rankingDetails]);
 
   const handleRankingChange = (rankingName) => {
+    setGamesRanking([]);
+    setSelectedRanking([]);
     setSelectedRanking(rankingName);
     localStorage.setItem('selectedRanking', rankingName);
   };
@@ -76,7 +78,7 @@ export const RankingClasification = ({ userProfile, rankingDetails, deleteRankin
         { rankingName && <RankingMenu handleRankingChange={ handleRankingChange } value={ selectedRanking } rankings={ rankingName } /> }
       </MenuContainer>
       <TableContainer>
-        { gamesRanking && selectedRanking && <RankingTable gamesRanking={ gamesRanking } selectedRankingDetails={ selectedRankingDetails }/>}
+        { gamesRanking && selectedRankingDetails && <RankingTable gamesRanking={ gamesRanking } selectedRankingDetails={ selectedRankingDetails }/>}
       </TableContainer>
       <PlusButton>
         <IconButton

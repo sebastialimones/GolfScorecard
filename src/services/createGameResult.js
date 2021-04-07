@@ -7,7 +7,6 @@ export const createGameResult = async ({ user, userProfile, playerHandicap, resu
   const currentDate = Timestamp.now().toDate();
   const currentYear = currentDate.getFullYear();
   const rating = liveScore / numberOfHoles;
-  console.log(user)
   try{
     const newGameResult = {
       email: user.email,

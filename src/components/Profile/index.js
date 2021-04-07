@@ -46,7 +46,6 @@ export const Profile = ({ history }) => {
     if(user){
       const getPlayerProfile = async () => {
         const data = await fetchUserProfile(currentUserId);
-        console.log(data)
         setDbUserProfile(data);
         if(data.name){
           setName(data.name);

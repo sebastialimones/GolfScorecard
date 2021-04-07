@@ -1,8 +1,6 @@
 import { db, FieldValue } from './admin';
 
 export const saveCoursePerRankingCode = async (selectedCourse, ranking, userProfile) => {
-  console.log('2', ranking, )
-  console.log('3' , userProfile)
 
   try {
     let updatedCourse;
