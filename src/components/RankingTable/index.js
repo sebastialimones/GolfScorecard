@@ -77,11 +77,15 @@ export const RankingTable = ({ gamesRanking, selectedRankingDetails }) => {
     selectedRankingDetails.players.map((playerId) => {
       const resultPerPlayer = getResultPerPlayer(playerId);
       const playerName = getPlayersName(playerId);
-      const averageResult = resultPerPlayer.length && (resultPerPlayer.reduce((a, b) => a + b) / (resultPerPlayer.length)).toFixed(2);
+      const averageResult = resultPerPlayer.length && (resultPerPlayer.reduce((a, b) => a + b) / (resultPerPlayer.length));
+      let averageResultWithGamesPlayed = 0;
+      if(resultPerPlayer.length){
+        averageResultWithGamesPlayed = (averageResult - (1 / resultPerPlayer.length)).toFixed(2)
+      };
       scoreAgregator.push({ 
         name: playerName,
         results: resultPerPlayer,
-        average: averageResult,
+        average: averageResultWithGamesPlayed,
       });
       return scoreAgregator;
     });
