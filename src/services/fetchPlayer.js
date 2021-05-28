@@ -7,7 +7,7 @@ export const fetchPlayer = async (currentUserId, course) => {
       const snapshots = await playerRef.get();
       snapshots.forEach((snapshot) => {
         const player = snapshot.data();
-        if (player.uid === currentUserId && player.course === course) {
+        if (player.uid === currentUserId && player.course === course && player.status !== 'deleted') {
           players.push((player));
         } 
       });
