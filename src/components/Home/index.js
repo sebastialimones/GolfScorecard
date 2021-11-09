@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
-
 import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '../Elements/button';
 import { ListOfHoles } from '../ListOfHoles';
@@ -10,6 +9,7 @@ import { Courses } from '../Courses';
 import { useCurrentUser } from '../../hooks/userCurrentUser';
 import { convertStrokesWHandicapToPoints } from '../Helpers/convertStrokesWHandicapToPoints';
 import { createdGameMessages } from './helpers';
+import { ConfettiComponent } from '../Confetti';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,6 +46,8 @@ export const Home = ({ history }) => {
   const [userProfile, setUserProfile] = useState('');
   const [holesPlayed, setHolesPlayed] = useState(0);
   const currentUserId = user && user.id;
+  const [confetti, setConfetti] = useState('');
+  const [holeInOne, setHoleInOne] = useState('');
 
   useEffect(() => {
     !currentUserId && !isFetchingUser && history.push('/landing');
@@ -127,6 +129,8 @@ export const Home = ({ history }) => {
     setResult(emptyResult);
     setLiveScore(0);
     setSelectedCourse('');
+    setHoleInOne('');
+    setConfetti('');
   };
 
   const checkForBlankResults = (result) => {
@@ -188,27 +192,27 @@ export const Home = ({ history }) => {
           multiplier,
           rankingGameIds,
         });
+        holeInOneTracker();
+        confettiTracker();
         setOpenAlert(true);
         return gameResult;
       } else {
         dataIncomplete();
       };
     } catch (error){
-      if(error){
-        error.message = error.message ? error.message: errorCode.message;
+        error.message = error.message ? error.message : errorCode.message;
         setOpenAlert(true);
         setErrorCode(errorCode);
-      };
     }
   };
 
   const dataIncomplete = () => { 
-      const errorCode = { 
-        message:  "Falta introduir algun resultat",
-        severity: "error" 
-       }
-      setErrorCode(errorCode);
-      setOpenAlert(true)
+    const errorCode = { 
+      message:  "Falta introduir algun resultat",
+      severity: "error" 
+      }
+    setErrorCode(errorCode);
+    setOpenAlert(true)
   };
 
   const handleHoleResult = (holeResult) => { 
@@ -221,14 +225,33 @@ export const Home = ({ history }) => {
   const handleCloseAlert = () => {
     setErrorCode();
     clearInputs();
-    setSelectedCourse('');
     setOpenAlert(false);
+  };
+
+  const holeInOneTracker = () => {
+    playerHandicap[0].holeHandicap.map((hole) => {
+      if(hole.result === 3 && result[hole.holeNumber - 1].result === 1){
+        setHoleInOne(true);
+        setConfetti(true);
+      };
+      return undefined;
+    });
+  };
+
+  const confettiTracker = () => {
+    if(liveScore / holesPlayed >= 2){
+      setConfetti(true)
+    };
   };
 
   const successMessage = () => {
     if(openAlert && !errorCode){
+      window.scrollTo({top: 0, behavior: 'smooth'});
       const successNumber = liveScore / holesPlayed;
       const messageRating = (successNumber.toFixed(2) * 15) / 1.55555;
+      if(holeInOne){
+        return createdGameMessages[222].message
+      };
       if(messageRating > 25){
         const successMessage = createdGameMessages[25].message;
         return successMessage;
@@ -258,6 +281,7 @@ export const Home = ({ history }) => {
           open={ openAlert }
           severity={ errorCode ? errorCode.severity : "success" }
         />
+        { confetti && <ConfettiComponent />}
     </Container>
   );
 };

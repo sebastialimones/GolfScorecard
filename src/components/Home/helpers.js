@@ -25,11 +25,11 @@ export const createdGameMessages = {
   },
   6: {
     id: 6,
-    message: 'Bastante, bastante mal...'
+    message: 'Hay profesores que te pueden ayudar'
   },
   7: {
     id: 7,
-    message: 'Todos tenemos días malos'
+    message: '¿Conoces una cosa llamada driving range?'
   },
   8: {
     id: 8,
@@ -37,39 +37,39 @@ export const createdGameMessages = {
   },
   9: {
     id: 9,
-    message: 'Día para reflexionar...'
+    message: 'Jornada de reflexion'
   },
   10: {
     id: 10,
-    message: 'Ni fu, ni fa... pero mal...'
+    message: 'no, no, no y no'
   },
   11: {
     id: 11,
-    message: 'Algo de deporte, pero mal...'
+    message: 'Disaster'
   },
   12: {
     id: 12,
-    message: 'Típico día que no sabe a nada'
+    message: 'Pan con aceite y sal, pero sin tomate'
   },
   13: {
     id: 13,
-    message: 'Mehh... '
+    message: 'Ni fu, ni fa, ni fe, ni fi...'
   },
   14: {
     id: 14,
-    message: 'Bueeeno... no está del todo horrible'
+    message: 'Esas noches que te emborrachas pero no ligas, pero te lo pasas decente'
   },
   15: {
     id: 15,
-    message: 'No te quejes... está decente...'
+    message: 'Ni fu, ni fa, ni fe, ni fi...'
   },
   16: {
     id: 16,
-    message: 'Bastante bien...'
+    message: 'Sales y ligas. No es la que querias pero ligas'
   },
   17: {
     id: 17,
-    message: 'Si todos sabemos que sabes pegar los golpes'
+    message: 'Callando bocas!'
   },
   18: {
     id: 18,
@@ -102,5 +102,9 @@ export const createdGameMessages = {
   25: {
     id: 25,
     message: '¡¡AAiiii la virgen!! ¡Se nos ha aparecido!'
+  },
+  222: {
+    id: 222,
+    message: 'Esto lo vas a recordar toda la vida! Enhorabuena por tu hoyo en uno!!!!!!!!!!!!'
   },
 };
