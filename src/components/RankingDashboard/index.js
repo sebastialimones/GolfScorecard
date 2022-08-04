@@ -3,9 +3,9 @@ import styled from 'styled-components';
 
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import { Button } from '../../components/Elements/button';
+import { Button } from '../Elements/button';
 import { useCurrentUser } from '../../hooks/userCurrentUser';
-import { Notification } from '../../components/Notification';
+import { Notification } from '../Notification';
 import { createRanking } from '../../services';
 
 const Container = styled.div`
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const RankingGenerator = ({ history }) => {
+export const RankingDashboard = ({ history }) => {
   const classes = useStyles();
   const [name, setName] = useState('');
   const [code, setCode] = useState('');

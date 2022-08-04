@@ -20,3 +20,9 @@ export const fetchRankingsPerUser = async (rankingsIds) => {
     console.log(error);
   };
 };
+
+
+//3 states for a ranking
+// active - It is shown and also you add a new game to this ranking
+// inactive - It is shown but you don't add new games to this ranking
+// deleted - You neither show nor add any game to this ranking
