@@ -10,7 +10,7 @@ export const updatePlayerHandicap = async (newPlayerHandicap) => {
       result: newPlayerHandicap[0].result,
       timestamp: Timestamp.now(),
       uid: newPlayerHandicap[0].uid,
-      rankingsIds: newPlayerHandicap[0].rankingsIds ? newPlayerHandicap[0].rankingsIds : 'no rank'
+      rankingsIds: newPlayerHandicap[0].rankingsIds ? newPlayerHandicap[0].rankingsIds : [] 
     })
     return playerRef;
   } catch (error) {

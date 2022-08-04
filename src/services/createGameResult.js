@@ -13,7 +13,7 @@ export const createGameResult = async ({ user, userProfile, playerHandicap, resu
       result,
       rating: rating,
       multiplier: multiplier,
-      rankingGames: rankingGameIds ? rankingGameIds : 'no rank',
+      rankingGames: rankingGameIds ? rankingGameIds : [],
       timestamp: Timestamp.now(),
       id: uuidv4(),
       course: selectedCourse,
