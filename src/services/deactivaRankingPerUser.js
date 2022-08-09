@@ -12,7 +12,8 @@ export const deactivaRankingPerUser = async (deactivatedRankingId) => {
               updatedRankingIds.push({ id: rankingId.id, status: 'deactivated' });
             } else {
               updatedRankingIds.push(rankingId);
-            }
+            };
+          return undefined;
           });
           try {
             await db.collection('users').doc(user.uid).update({
