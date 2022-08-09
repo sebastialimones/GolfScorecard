@@ -8,7 +8,7 @@ export const checkCode = async (code, userProfile) => {
     const snapshots = await rankingRef.get();
     snapshots.forEach((snapshot) => {
       const ranking = snapshot.data();
-      if(ranking.code === code && ranking.status !== 'deleted'){
+      if(ranking.code === code && ranking.status === 'active'){
         ranking.players.includes(userProfile.uid);
         rankings.push((ranking));
         newPlayerForRanking(ranking, userProfile);
