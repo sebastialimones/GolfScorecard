@@ -49,7 +49,6 @@ export const RankingDashboard = ({ history }) => {
   const [name, setName] = useState('');
   const [code, setCode] = useState('');
   const [rankingName, setRankingName] = useState('');
-  const [veryfyingRankings, setVeryfyingRankings] = useState(true);
   const [rankingDetails, setRankingDetails] = useState('');
   const [openAlert, setOpenAlert] = useState(false);
   const [errorCode, setErrorCode] = useState();
@@ -73,10 +72,7 @@ export const RankingDashboard = ({ history }) => {
       if(userProfile.rankingsIds.length){
         const rankings = await fetchRankingsPerUser(userProfile.rankingsIds);
         setRankingDetails(rankings);
-        setVeryfyingRankings(false);
-      } else{
-        setVeryfyingRankings(false);
-      }
+      };
     };
     setNewVerifyedRanking(false);
     currentUserId && userProfile && getRankings();
@@ -103,11 +99,6 @@ export const RankingDashboard = ({ history }) => {
 
   const onChangeCode = (event) => {
     setCode(event.currentTarget.value);
-  };
-
-  const ConsoleLog = ({ children }) => {
-    console.log(children);
-    return false;
   };
 
   const send = async (event) => {
@@ -149,8 +140,8 @@ export const RankingDashboard = ({ history }) => {
             rankingId.push(ranking.id);
             deactivateRanking(ranking.id);
           };
-        });
         return undefined;
+        });
       };
       rankindIdExtractor();
     }
@@ -197,7 +188,6 @@ export const RankingDashboard = ({ history }) => {
         <Container>
           {rankingName.length && rankingName.map((rankingItem, index) => (
             <RankingContainer  key={ index }>
-              {/* <ConsoleLog>{index}</ConsoleLog> */}
               <RankingName >{ rankingItem }</RankingName>
               <RadioGroup
                 aria-labelledby="demo-controlled-radio-buttons-group"

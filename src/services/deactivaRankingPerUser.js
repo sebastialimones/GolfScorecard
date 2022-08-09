@@ -23,8 +23,8 @@ export const deactivaRankingPerUser = async (deactivatedRankingId) => {
             console.log(error);
           }
         }
+        return undefined;
       });
-      return undefined;
     }
     catch (error) {
     console.log('Error fetching players');
