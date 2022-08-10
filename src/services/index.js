@@ -29,4 +29,5 @@ export * from './updateGameInRankings';
 export * from './deleteGamesInRanking';
 export * from './fetchPlayers';
 export * from './deactivateRanking';
-export * from './deactivaRankingPerUser';
+export * from './deactivateRankingPerUser';
+export * from './deactivateRankingPerCourse';

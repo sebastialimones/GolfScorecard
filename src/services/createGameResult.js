@@ -7,13 +7,22 @@ export const createGameResult = async ({ user, userProfile, playerHandicap, resu
   const currentDate = Timestamp.now().toDate();
   const currentYear = currentDate.getFullYear();
   const rating = liveScore / numberOfHoles;
+  const activeRankings = [];
+  if(rankingGameIds.length){
+    rankingGameIds.map((ranking) => {
+        if(ranking.status === 'active'){
+          activeRankings.push(ranking);
+        }
+        return undefined;
+      })
+  }
   try{
     const newGameResult = {
       email: user.email,
       result,
       rating: rating,
       multiplier: multiplier,
-      rankingGames: rankingGameIds ? rankingGameIds : [],
+      rankingGames: activeRankings ? activeRankings : [],
       timestamp: Timestamp.now(),
       id: uuidv4(),
       course: selectedCourse,

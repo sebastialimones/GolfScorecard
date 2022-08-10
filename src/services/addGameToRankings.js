@@ -10,13 +10,16 @@ export const addGameToRankings = async (userId, rating, rankingGameIds, gameId) 
       status: 'active',
     }
     rankingGameIds.map((ranking) => {
-      const rankingGames = async ()=> {
-        await db.collection('rankings').doc(ranking.id).update({
-          games: FieldValue.arrayUnion(newGameCreated)
-        });
-      };
-      rankingGames();
-      return rankingGames;
+      if(ranking.status === 'active'){
+        const rankingGames = async ()=> {
+          await db.collection('rankings').doc(ranking.id).update({
+            games: FieldValue.arrayUnion(newGameCreated)
+          });
+        };
+        rankingGames();
+        return rankingGames;
+      }
+      return undefined;
     })
   } catch(error) {
     console.log('Error adding a game to a ranking');
