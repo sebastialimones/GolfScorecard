@@ -8,7 +8,7 @@ export const fetchRankingsPerUser = async (rankingsIds) => {
     snapshots.forEach((snapshot) => {
       const ranking = snapshot.data();
       rankingsIds.map((userRanking) => {
-        if(userRanking.status === 'active' && userRanking.id === ranking.id){
+        if((userRanking.status === 'active' || userRanking.status === 'deactivated') && userRanking.id === ranking.id){
           rankings.push((ranking));
         };
         return rankings;

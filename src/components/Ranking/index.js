@@ -70,8 +70,8 @@ export const Ranking = ({ history }) => {
         />
         : 
         <NoRankingCode 
-        userProfile={ userProfile }
-        newCheckedRanking= { newCheckedRanking }
+          userProfile={ userProfile }
+          newCheckedRanking= { newCheckedRanking }
         />
       }
     </Container>

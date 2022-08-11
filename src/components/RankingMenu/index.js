@@ -43,5 +43,5 @@ export const RankingMenu = ({ handleRankingChange, value, rankings }) => {
         )) }
       </TextField>
     </SelectCourseContainer>
-  )
+  );
 };

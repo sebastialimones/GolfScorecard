@@ -126,12 +126,9 @@ export const RankingTable = ({ gamesRanking, selectedRankingDetails }) => {
         </TableHead>
         <TableBody>
         { rows.length 
-            ? rows
-              .map((row) => (
-              <StyledTableRow key={row.position}>
-                <StyledTableCell component="th" scope="row">
-                  {row.position}
-                </StyledTableCell>
+            ? rows.map((row, index) => (
+              <StyledTableRow key={index}>
+                <StyledTableCell component="th" scope="row">{row.position}</StyledTableCell>
                 <StyledTableCell align="left">{row.name}</StyledTableCell>
                 <StyledTableCell align="left">{row.result}</StyledTableCell>
                 <StyledTableCell align="left">{row.games}</StyledTableCell>
