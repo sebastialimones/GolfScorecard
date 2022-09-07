@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import media from '../../styles/media';
 
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -26,7 +27,12 @@ const HolesFormContainer = styled.div``;
 const TitleContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  ${media.smallScreen`
+    justify-content: space-between;
+  `}
+`;
+const GolpesContainer = styled.div`
+  padding-left: 8em;
 `;
 
 const CourseHandicap = styled.div`
@@ -167,7 +173,9 @@ export const NewCourse = ({ history }) => {
         /> 
         <TitleContainer>   
           <CourseHandicap>Hoyos</CourseHandicap>
-          <CourseHandicap>Golpes</CourseHandicap>
+          <GolpesContainer>
+            <CourseHandicap>Golpes</CourseHandicap>
+          </GolpesContainer>
         </TitleContainer>  
         <HolesFormContainer>
           <ListOfHoles 
