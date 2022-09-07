@@ -38,6 +38,7 @@ export const RankingTable = ({ gamesRanking, selectedRankingDetails }) => {
 
   const createRowsWithResults = useCallback (() => {
     let position = 0;
+    setRows([]);
     scores.sort((result1, result2) => result2.average - result1.average)
     scores.map((player) => {
       position = position + 1;
@@ -107,9 +108,7 @@ export const RankingTable = ({ gamesRanking, selectedRankingDetails }) => {
   },[scores, createRowsWithResults, players]);
 
   const createData = (position, name, result, games) => {
-    if(rows.length <= selectedRankingDetails.players.length){
-      setRows(rows => [ ...rows, { position, name, result, games }]);
-    };
+    setRows(rows => [ ...rows, { position, name, result, games }]);
     return;
   };
 
