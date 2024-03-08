@@ -13,7 +13,7 @@ const ResultContainer = styled.div`
 
 const TotalGames = styled.div``;
 
-export const ListOfResults = ({ results, playerHandicap, refreshResults }) => {
+export const ListOfResults = ({ results, playerHandicap, refreshResults, sortedResults }) => {
   const completeResult = [];
   results.length && playerHandicap.length &&
   results.map((result) => {
@@ -21,16 +21,20 @@ export const ListOfResults = ({ results, playerHandicap, refreshResults }) => {
     completeResult.push(completeResultPerGame);
     return undefined;
   });
-  if(completeResult.length){
-    completeResult.sort((result1, result2) => result2.timestamp - result1.timestamp)
-  };
+  if(completeResult.length && !sortedResults.length ){
+    completeResult.sort((result1, result2) => result2.timestamp - result1.timestamp);
+  }
+  
   const rating = [];
   completeResult.map((result) => {
     const gameRate = result.totalPoints / result.numberOfHoles;
     rating.push(gameRate);
     return undefined;
   });
-
+  
+  if(completeResult.length && sortedResults ){
+    completeResult.sort((result1, result2) => result2.rating - result1.rating);
+  }
   const averageRatingCalculator = (ratings) => {
     return ratings.reduce((a,b) => (a + b)) / rating.length; 
   };

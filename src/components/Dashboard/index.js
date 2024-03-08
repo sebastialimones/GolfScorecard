@@ -8,6 +8,8 @@ import { fetchResults, fetchPlayer, fetchCoursesPerUser } from '../../services/i
 import { ListOfResults } from '../ListOfResults';
 import { ResultsTable } from '../ResultsTable';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import IconButton from '@material-ui/core/IconButton';
+import SortIcon from '@mui/icons-material/Sort';
 import Switch from '@material-ui/core/Switch';
 import { useCurrentUser } from '../../hooks/userCurrentUser';
 import { fetchYearsPerCourse } from '../../services/fetchYearsPerCourse';
@@ -91,10 +93,9 @@ export const Dashboard = ({ history }) => {
   const [modal, setModal] = useState(true);
   const [selectedYear, setSelectedYear] = useState ('');
   const [yearsPlayedArray, setYearsPlayedArray] = useState([]);
-  const [switchState, setSwitchState] = useState({
-    checkedA: true,
-  });
+  const [switchState, setSwitchState] = useState({ checkedA: true,});
   const [user, isFetchingUser] = useCurrentUser();
+  const [sortedResults, setSortedResults] = useState(false);
   const currentUserId = user && user.id;
 
   useEffect(() => {
@@ -149,7 +150,7 @@ export const Dashboard = ({ history }) => {
         setGamesResults(data);
       };
     };
-    playerHandicap && selectedCourse && getResult()  
+    playerHandicap && selectedCourse && getResult();  
   },[playerHandicap, selectedCourse, switchState, modal, selectedYear, yearsPlayedArray]);
 
   const handleSwitchChange = (event) => {
@@ -160,18 +161,25 @@ export const Dashboard = ({ history }) => {
     setGamesResults([]);
     setYearsPlayedArray([]);
     setSelectedCourse(courseName);
+    setSortedResults([]);
     localStorage.setItem('selectedCourse', courseName);
   };
 
   const handleYearChange = (yearChange) => {
     setGamesResults([]);
     setSelectedYear(yearChange);
+    setSortedResults([]);
     localStorage.setItem('selectedYear', yearChange);
   };
 
   const refreshResults = () => {
     setModal(!modal);
   };
+
+  const handleSort = () => {
+    setSortedResults(!sortedResults);
+  };
+
 
   return(
     <Container>
@@ -183,13 +191,23 @@ export const Dashboard = ({ history }) => {
             label=""
           />
         </SwitchContainer>
+          {yearsPlayedArray && 
+            <IconButton
+              aria-label="more"
+              aria-controls="fade-menu"
+              aria-haspopup="true"
+              onClick={ () => handleSort() }
+              >
+              <SortIcon/>
+            </IconButton>
+          }
         { yearsPlayedArray && <Years handleYearChange={ handleYearChange } value={ selectedYear } years={ yearsPlayedArray } />  }
       </MenuContainer>
       <DataContainer>
         {
           playerHandicap && gamesResults && switchState.checkedA &&
-          <ListOfResults year={ selectedYear } results={ gamesResults } playerHandicap={ playerHandicap } refreshResults={ refreshResults } />
-        }
+          <ListOfResults year={ selectedYear } results= { gamesResults } playerHandicap={ playerHandicap } refreshResults={ refreshResults } sortedResults={ sortedResults } />
+        }     
         {
           playerHandicap && gamesResults && !switchState.checkedA &&
           <ResultsTable results={ gamesResults } playerHandicap={ playerHandicap }/>
