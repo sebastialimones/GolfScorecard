@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     '& .MuiTextField-root': {
       margin: theme.spacing(1),
-      width: '25ch',
+      // maxWidth: '15ch',
     },
     '& .MuiSelect-outlined': {
       minWidth: '170px',

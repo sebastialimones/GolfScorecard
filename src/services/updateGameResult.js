@@ -1,11 +1,10 @@
-import { db, Timestamp } from './admin';
+import { db } from './admin';
 import { updateGameInRankings } from '../services';
 
 export const updateGameResult = async (newGameResult) => {
   try {
     const newGameResultRef = db.collection('games').doc(newGameResult.id).update({
       result: newGameResult.result,
-      timestamp: Timestamp.now(),
       rating: newGameResult.rating,
     });
     if(newGameResult.rankingGames){
